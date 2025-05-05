@@ -1,14 +1,14 @@
 # Importiere die entsprechenden Funktionen aus jedem Modul
-from DatenEinlesen import DatenEinlesen
-from SpaltennamenKorrigieren import SpaltennamenKorrigieren
-from DatumFormatieren import DatumFormatieren
-from TemperaturUndDatumExtrahieren import TemperaturUndDatumExtrahieren
-from ZeitreiheAb1850 import ZeitreiheAb1850
-from TemperaturRunden import TemperaturRunden
-from NaNPruefen import NaNPruefen
-from DatentypenPruefen import DatentypenPruefen
-from DuplikatePruefen import DuplikatePruefen
-from BereinigteDatenSpeichern import BereinigteDatenSpeichern
+from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
+from Hilfsfunktionen.SpaltennamenKorrigieren import SpaltennamenKorrigieren
+from Hilfsfunktionen.DatumFormatieren import DatumFormatieren
+from Hilfsfunktionen.TemperaturUndDatumExtrahieren import TemperaturUndDatumExtrahieren
+from Hilfsfunktionen.ZeitreiheAb1850 import ZeitreiheAb1850
+from Hilfsfunktionen.TemperaturRunden import TemperaturRunden
+from Hilfsfunktionen.NaNPruefen import NaNPruefen
+from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
+from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
+from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
 
 def main():
     # 1. Definiere die Eingabe- und Ausgabepfade
