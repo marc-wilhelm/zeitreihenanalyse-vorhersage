@@ -15,9 +15,9 @@ Zeitreihenanalyse-vorhersage/
 │   │   ├── zeitreihe_berlin.txt
 │   │   └── zeitreihe_guangzhou.txt
 │   ├── bereinigte-daten/          
-│   │   ├── series1_bereinigt.csv
-│   │   ├── series2_bereinigt.csv
-│   │   └── series3_bereinigt.csv
+│   │   ├── zeitreihe_kampala_bereinigt.csv
+│   │   ├── zeitreihe_berlin_bereinigt.csv
+│   │   └── zeitreihe_guangzhou_bereinigt.csv
 │   
 │
 ├── module/    
@@ -57,7 +57,7 @@ Features:
 
 ## 3. Best Practices
 ### 3.1 Commit-Messages
-Orientierung an allgemeiner Konvention (fix, chore, feat, docs)
+Orientierung an allgemeiner Konvention (fix, chore, feat, docs, add)
 
 https://www.conventionalcommits.org/en/v1.0.0/ 
 
