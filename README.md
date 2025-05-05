@@ -1,10 +1,8 @@
 # Zeitreihenanalyse und Vorhersage
 
----
 ## 1. Thematischer Überblick
 Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdaten verschiedener Länder enthalten, analysiert werden. Darüber hinaus soll im Rahmen eines Forecasting Engineerings die zukünftige Entwicklung der jährlichen Durchschnittstemperaturen vorhergesagt werden. Dabei wird folgendes Vorgehen angewandt. Zunächst wird für jede einzelne Zeitreihe ein einzelnes passendes Prognosemodell gesucht. Anschließend wird darauf aufbauend ein übergreifender Algorithmus aufgesetzt, der eine passende Temperaturvorhersage für alle drei gewählten Länder liefert. Die Programmierung wird mittels Python durchgeführt. 
 
----
 ## 2. Struktur des Repositories
 
 
@@ -54,7 +52,7 @@ Zeitreihenanalyse-vorhersage/
   - Zeitreihe_Berlin
   - Zeitreihe_Guangzhou
 
----
+
 ## 3. Best Practices
 ### 3.1 Commit-Messages
 Orientierung an allgemeiner Konvention (fix, chore, feat, docs, add)
