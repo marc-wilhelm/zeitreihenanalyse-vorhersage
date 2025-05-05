@@ -11,13 +11,13 @@ Zeitreihenanalyse-vorhersage/
 │
 ├── daten/
 │   ├── original-daten/                
-│   │   ├── series1.csv
-│   │   ├── series2.csv
-│   │   └── series3.csv
+│   │   ├── zeitreihe_kampala.csv
+│   │   ├── zeitreihe_berlin.csv
+│   │   └── zeitreihe_guangzhou.csv
 │   ├── bereinigte-daten/          
-│   │   ├── series1_bereinigt.csv
-│   │   ├── series2_bereinigt.csv
-│   │   └── series3_bereinigt.csv
+│   │   ├── zeitreihe_kampala_bereinigt.csv
+│   │   ├── zeitreihe_berlin_bereinigt.csv
+│   │   └── zeitreihe_guangzhou_bereinigt.csv
 │   
 │
 ├── module/    
@@ -30,11 +30,11 @@ Zeitreihenanalyse-vorhersage/
 │
 │
 ├── ergebnisse/   
-│   ├── zeitreihe-land-1/                                 
+│   ├── zeitreihe-kampala/                                 
 │   │  
-│   ├── zeitreihe_land-2/          
+│   ├── zeitreihe_berlin/          
 │   │
-│   │── zeitreihe_land-3/ 
+│   │── zeitreihe_guangzhou/ 
 │
 ├── requirements.txt       
 ├── setup.py                
@@ -51,13 +51,13 @@ Main branch (stabile Version)
 Develop branch (Entwicklungsumgebung)
 
 Features:
-- Zeitreihe_Land1
-- Zeitreihe_Land2
-- Zeitreihe_Land3
+- Zeitreihe_Kampala
+- Zeitreihe_Berlin
+- Zeitreihe_Guangzhou
 
 ## 3. Best Practices
 ### 3.1 Commit-Messages
-Orientierung an allgemeiner Konvention (fix, chore, feat, docs)
+Orientierung an allgemeiner Konvention (fix, chore, feat, docs, add)
 
 https://www.conventionalcommits.org/en/v1.0.0/ 
 
