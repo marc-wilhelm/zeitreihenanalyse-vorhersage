@@ -11,9 +11,9 @@ Zeitreihenanalyse-vorhersage/
 │
 ├── daten/
 │   ├── original-daten/                
-│   │   ├── series1.csv
-│   │   ├── series2.csv
-│   │   └── series3.csv
+│   │   ├── zeitreihe_kampala.txt
+│   │   ├── zeitreihe_berlin.txt
+│   │   └── zeitreihe_guangzhou.txt
 │   ├── bereinigte-daten/          
 │   │   ├── series1_bereinigt.csv
 │   │   ├── series2_bereinigt.csv
@@ -30,11 +30,11 @@ Zeitreihenanalyse-vorhersage/
 │
 │
 ├── ergebnisse/   
-│   ├── zeitreihe-land-1/                                 
+│   ├── zeitreihe-kampala/                                 
 │   │  
-│   ├── zeitreihe_land-2/          
+│   ├── zeitreihe_berlin/          
 │   │
-│   │── zeitreihe_land-3/ 
+│   │── zeitreihe_guangzhou/ 
 │
 ├── requirements.txt       
 ├── setup.py                
@@ -51,9 +51,9 @@ Main branch (stabile Version)
 Develop branch (Entwicklungsumgebung)
 
 Features:
-- Zeitreihe_Land1
-- Zeitreihe_Land2
-- Zeitreihe_Land3
+- Zeitreihe_Kampala
+- Zeitreihe_Berlin
+- Zeitreihe_Guangzhou
 
 ## 3. Best Practices
 ### 3.1 Commit-Messages
