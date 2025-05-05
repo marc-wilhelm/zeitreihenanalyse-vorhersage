@@ -1,8 +1,10 @@
 # Zeitreihenanalyse und Vorhersage
+
 ---
 ## 1. Thematischer Überblick
 Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdaten verschiedener Länder enthalten, analysiert werden. Darüber hinaus soll im Rahmen eines Forecasting Engineerings die zukünftige Entwicklung der jährlichen Durchschnittstemperaturen vorhergesagt werden. Dabei wird folgendes Vorgehen angewandt. Zunächst wird für jede einzelne Zeitreihe ein einzelnes passendes Prognosemodell gesucht. Anschließend wird darauf aufbauend ein übergreifender Algorithmus aufgesetzt, der eine passende Temperaturvorhersage für alle drei gewählten Länder liefert. Die Programmierung wird mittels Python durchgeführt. 
 
+---
 ## 2. Struktur des Repositories
 
 
@@ -43,18 +45,16 @@ Zeitreihenanalyse-vorhersage/
 
 ```
 
-
 **Branch-Struktur**
 
-Main branch (stabile Version) 
+- Main branch (stabile Version)
+- Develop branch (Entwicklungsumgebung)
+- Features:
+  - Zeitreihe_Kampala
+  - Zeitreihe_Berlin
+  - Zeitreihe_Guangzhou
 
-Develop branch (Entwicklungsumgebung)
-
-Features:
-- Zeitreihe_Kampala
-- Zeitreihe_Berlin
-- Zeitreihe_Guangzhou
-
+---
 ## 3. Best Practices
 ### 3.1 Commit-Messages
 Orientierung an allgemeiner Konvention (fix, chore, feat, docs, add)
@@ -69,29 +69,22 @@ Ausführlichere Beschreibung der Funktion, die mehrere Zeilen umfassen kann. Hie
 
 
 *Parameters:*
-
-param1: typ
-
-Beschreibung von param1 und seine Rolle
+- param1: typ
+- Beschreibung von param1 und seine Rolle
 
 
 *Returns:*
-
-rückgabetyp
-
-Beschreibung dessen, was zurückgegeben wird
+- rückgabetyp
+- Beschreibung dessen, was zurückgegeben wird
 
 *Erklärung spezifischer Funktionsdetails:*
-
-Stichpunktartige Beschreibung neben entsprechende Codezeile 
+- Stichpunktartige Beschreibung neben entsprechende Codezeile 
 
 ### 3.3 Benennungen
 
-Funktionsnamen: UpperCamelCase
-
-Hilfsfunktionen: Funktionsnamen
-
-Modulnamen: Überbegriff in snake_case
+- Funktionsnamen: UpperCamelCase
+- Hilfsfunktionen: Funktionsnamen
+- Modulnamen: Überbegriff in snake_case
 
 ### 3.4 Umgang mit merge-Konflikten
 
