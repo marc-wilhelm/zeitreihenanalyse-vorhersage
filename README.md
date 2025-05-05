@@ -36,8 +36,7 @@ Zeitreihenanalyse-vorhersage/
 │   │
 │   │── zeitreihe_guangzhou/ 
 │
-├── requirements.txt       
-├── setup.py                
+├── requirements.txt                      
 ├── .gitignore              
 └── README.md               
 
