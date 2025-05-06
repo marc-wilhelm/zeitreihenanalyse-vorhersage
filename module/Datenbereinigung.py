@@ -56,28 +56,21 @@ def main():
     df = TemperaturRunden(df)
     print("Temperaturwerte gerundet!")
 
-
     # 8. NaN-Werte prüfen
     df = NaNPruefen(df)  
-
 
     # 9. Datentypen prüfen
     DatentypenPruefen(df)
     
-
     # 10. Duplikate prüfen
     DuplikatePruefen(df)
 
-    #11. Datum als Index festlegen
-    df= IndexFestlegen(df)
+    # 11. Datum als Index festlegen (hier wird 'Datum' als Spaltenname übergeben)
+    df = IndexFestlegen(df)  # Hier den Namen der Datumsspalte als String übergeben
 
-    #12 Daten speichern
+    # 12. Daten speichern
     BereinigteDatenSpeichern(df, output_path)
     print(f"Daten erfolgreich gespeichert unter {output_path}!")
 
-
-    
-
 if __name__ == "__main__":
     main()
-

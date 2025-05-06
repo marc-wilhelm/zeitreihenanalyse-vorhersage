@@ -1,30 +1,24 @@
 import pandas as pd
 
-def IndexFestlegen(df, datumsspalte):
+def IndexFestlegen(df):
     """
-    Setzt die angegebene Datumsspalte als Index des DataFrames.
+    Setzt die erste Spalte des DataFrames als Index.
 
     *Parameters:*
     - df: pandas.DataFrame
-        Der DataFrame, bei dem die Datumsspalte als Index gesetzt werden soll.
-    - datumsspalte: str
-        Der Name der Spalte, die das Datum enthält und als Index gesetzt werden soll.
+        Der DataFrame, bei dem die erste Spalte als Index gesetzt werden soll.
 
     *Returns:*
     - pandas.DataFrame
-        Der DataFrame mit der Datumsspalte als Index.
+        Der DataFrame mit der ersten Spalte als Index.
     """
     
-    # Stelle sicher, dass die Datumsspalte im Datetime-Format vorliegt
-    df[datumsspalte] = pd.to_datetime(df[datumsspalte], errors='coerce')
+    # Hole den Namen der ersten Spalte
+    erste_spalte = df.columns[0]
     
-    # Setze die Datumsspalte als Index
-    df.set_index(datumsspalte, inplace=True)
+    # Setze die erste Spalte als Index
+    df.set_index(erste_spalte, inplace=True)
     
-    print(f"Die Datumsspalte '{datumsspalte}' wurde erfolgreich als Index gesetzt.")
+    print(f"Die erste Spalte '{erste_spalte}' wurde erfolgreich als Index gesetzt.")
     
     return df
-
-# Beispielaufruf
-# Angenommen, df ist dein DataFrame und die Datumsspalte heißt 'Datum':
-# df = SetzeDatumAlsIndex(df, 'Datum')
