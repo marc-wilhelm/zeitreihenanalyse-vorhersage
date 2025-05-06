@@ -3,7 +3,7 @@ from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
 from Hilfsfunktionen.SpaltennamenKorrigieren import SpaltennamenKorrigieren
 from Hilfsfunktionen.DatumFormatieren import DatumFormatieren
 from Hilfsfunktionen.TemperaturUndDatumExtrahieren import TemperaturUndDatumExtrahieren
-from Hilfsfunktionen.ZeitreiheAb1850 import ZeitreiheAb1850
+from Hilfsfunktionen.ZeitreiheAb1880 import ZeitreiheAb1880
 from Hilfsfunktionen.TemperaturRunden import TemperaturRunden
 from Hilfsfunktionen.NaNPruefen import NaNPruefen
 from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
@@ -19,8 +19,8 @@ import config
 
 def main():
     # 1. Definiere die Eingabe- und Ausgabepfade
-    file_path = config.datapathzeitreiheberlin 
-    output_path = config.datapathzeitreiheberlinbereinigt
+    file_path = config.datapathzeitreiheangeles
+    output_path = config.datapathzeitreiheangelesbereinigt
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep= ";")
     
@@ -43,9 +43,9 @@ def main():
     df = TemperaturUndDatumExtrahieren(df)
     print("Nur Temperatur und Datum extrahiert!")
 
-    # 6. Zeitreihe ab 1850 filtern
-    df = ZeitreiheAb1850(df)
-    print("Daten ab 1850 gefiltert!")
+    # 6. Zeitreihe ab 1880 filtern
+    df = ZeitreiheAb1880(df)
+    print("Daten ab 1880 gefiltert!")
 
     # 7. Temperaturwerte runden
     df = TemperaturRunden(df)
