@@ -18,9 +18,7 @@ if df is None:
     print("Fehler beim Einlesen der Daten. Beende das Skript.")
 
 
-temp_diff = df['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
-
-adf_result_diff = adfuller(temp_diff)
+adf_result_diff = adfuller(config.temp_diff_angeles)
 print(f'ADF Statistic: {adf_result_diff[0]}')
 print(f'p-value: {adf_result_diff[1]}')
 print('Critical Values:')
