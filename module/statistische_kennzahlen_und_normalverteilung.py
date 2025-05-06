@@ -67,7 +67,7 @@ def StatistischeKennzahlenUndNormalverteilung(df, spalte):
     else:
         print("Die Zeitreihe entspricht der 95%-Regel.")
     
-    # Optional: Histogramm der Zeitreihe zur Visualisierung
+    # Histogramm der Zeitreihe zur Visualisierung
     plt.hist(df[spalte], bins=30, edgecolor='black')
     plt.axvline(mu - sigma, color='r', linestyle='dashed', linewidth=2, label='mu - sigma')
     plt.axvline(mu + sigma, color='r', linestyle='dashed', linewidth=2, label='mu + sigma')
