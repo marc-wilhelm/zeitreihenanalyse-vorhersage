@@ -9,18 +9,23 @@ from Hilfsfunktionen.NaNPruefen import NaNPruefen
 from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
+from Hilfsfunktionen.IndexFestlegen import IndexFestlegen
+
 import sys
 import os
 
-# Übergeordnetes Verzeichnis damit config Modul gefunden wird
+# Übergeordnetes Verzeichnis hinzufügen
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Jetzt sollte config importiert werden können
 import config
+
 
 def main():
     # 1. Definiere die Eingabe- und Ausgabepfade
-    file_path = config.datapathzeitreiheangeles
-    output_path = config.datapathzeitreiheangelesbereinigt
+    file_path = config.datapathzeitreiheberlin
+    output_path = config.datapathzeitreiheberlinbereinigt
+    
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep= ";")
     
@@ -62,11 +67,16 @@ def main():
 
     # 10. Duplikate prüfen
     DuplikatePruefen(df)
-    
 
-    # 11. Daten speichern
+    #11. Datum als Index festlegen
+    df= IndexFestlegen(df)
+
+    #12 Daten speichern
     BereinigteDatenSpeichern(df, output_path)
     print(f"Daten erfolgreich gespeichert unter {output_path}!")
+
+
+    
 
 if __name__ == "__main__":
     main()
