@@ -9,6 +9,11 @@ from Hilfsfunktionen.NaNPruefen import NaNPruefen
 from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
+import sys
+import os
+
+# Übergeordnetes Verzeichnis damit config Modul gefunden wird
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import config
 
