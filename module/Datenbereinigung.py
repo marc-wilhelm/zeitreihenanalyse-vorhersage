@@ -19,8 +19,8 @@ import config
 
 def main():
     # 1. Definiere die Eingabe- und Ausgabepfade
-    file_path = config.datapathzeitreiheberlin
-    output_path = config.datapathzeitreiheberlinbereinigt
+    file_path = config.datapathzeitreiheangeles
+    output_path = config.datapathzeitreiheangelesbereinigt
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep= ";")
     
