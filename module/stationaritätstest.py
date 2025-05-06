@@ -30,9 +30,10 @@ def main():
     AdfTest(df_adf)
     
     # 4. CUSUM-Test durchführen
-    # Stelle sicher, dass die richtige Spalte für die Zeitreihe verwendet wird
-    # Anpassen, falls die tatsächliche Spalte anders heißt
+    
     cusum_test(df, target_column='MonatlicheDurchschnittsTemperatur', date_column='Datum')
+
+
 
 if __name__ == "__main__":
     main()
