@@ -10,11 +10,12 @@ from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
 
+import config
+
 def main():
     # 1. Definiere die Eingabe- und Ausgabepfade
-    file_path = "D:\\Johanna\\Studium\\6.Semester\\BBA Schwerpunkt\\Menden\\Git\\zeitreihenanalyse-vorhersage\\daten\\original-daten\\Zeitreihe_Berlin.csv"
-    output_path = "D:\\Johanna\\Studium\\6.Semester\\BBA Schwerpunkt\\Menden\\Git\\zeitreihenanalyse-vorhersage\\daten\\bereinigte-daten\\zeitreihe_berlin_bereinigt.csv"
-
+    file_path = config.datapathzeitreiheberlin 
+    output_path = config.datapathzeitreiheberlinbereinigt
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep= ";")
     
