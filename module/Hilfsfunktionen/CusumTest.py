@@ -15,37 +15,42 @@ def cusum_test(df, target_column='MonatlicheDurchschnittsTemperatur', date_colum
         Der Name der Spalte mit der Zielvariable. Standard: 'MonatlicheDurchschnittsTemperatur'.
     - date_column: str
         Der Name der Datumsspalte. Standard: 'Datum'.
-
+    
     Returns:
     - None: Der CUSUM-Test wird durchgeführt und ein Plot angezeigt.
     """
-
-    # 1. Stelle sicher, dass das Datum datetime ist
-    df[date_column] = pd.to_datetime(df[date_column])
-
-    # 2. Zielvariable y
+    # Überprüfen, ob 'Datum' bereits als Index verwendet wird
+    if date_column not in df.columns and date_column == df.index.name:
+        # Wenn 'Datum' der Index ist, verwenden wir den Index für den Plot
+        date_values = df.index
+    else:
+        # Ansonsten konvertieren wir die Datumsspalte
+        df[date_column] = pd.to_datetime(df[date_column])
+        date_values = df[date_column]
+    
+    # Zielvariable y
     y = df[target_column].values
-
-    # 3. Zeitvariable X definieren (numerisch)
+    
+    # Zeitvariable X definieren (numerisch)
     X = np.arange(len(y)).reshape(-1, 1)
     X = sm.add_constant(X)
-
-    # 4. OLS-Modell anpassen
+    
+    # OLS-Modell anpassen
     model = OLS(y, X).fit()
     residuals = model.resid
-
-    # 5. CUSUM berechnen
+    
+    # CUSUM berechnen
     mean_resid = np.mean(residuals)
     std_resid = np.std(residuals)
     cusum = np.cumsum((residuals - mean_resid) / std_resid)
-
-    # 6. Grenzen definieren (z. B. ±3σ)
+    
+    # Grenzen definieren (z. B. ±3σ)
     upper_bound = 3
     lower_bound = -3
-
-    # 7. Plot
+    
+    # Plot
     plt.figure(figsize=(12, 6))
-    plt.plot(df[date_column], cusum, label='CUSUM', color='blue')
+    plt.plot(date_values, cusum, label='CUSUM', color='blue')
     plt.axhline(y=upper_bound, color='red', linestyle='--', label='Upper bound (+3σ)')
     plt.axhline(y=lower_bound, color='red', linestyle='--', label='Lower bound (−3σ)')
     plt.title(f'CUSUM Test der Residuen – {target_column}')
