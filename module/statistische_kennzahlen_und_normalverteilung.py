@@ -12,7 +12,7 @@ import config
 
 
 # 1. Definiere die Eingabe- und Ausgabepfade
-file_path = config.datapathzeitreiheangelesbereinigt
+file_path = config.datapathzeitreiheberlinbereinigt
     # 2. Daten einlesen
 df = DatenEinlesen(file_path, sep= ",")
     
