@@ -1,5 +1,3 @@
-sys
-os
 pandas
 statsmodels
 matplotlib
