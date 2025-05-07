@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 import os
-from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
+from hilfsfunktionen.DatenEinlesen import DatenEinlesen
 
 # Übergeordnetes Verzeichnis damit config Modul gefunden wird
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))

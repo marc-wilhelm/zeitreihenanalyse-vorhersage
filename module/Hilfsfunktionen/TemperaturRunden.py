@@ -1,7 +1,5 @@
 import pandas as pd
 
-import pandas as pd
-
 def TemperaturRunden(df, Dezimalstellen=2):
     """
     Rundet die Werte in der Spalte 'MonatlicheDurchschnittsTemperatur' auf eine angegebene Anzahl von Dezimalstellen.
