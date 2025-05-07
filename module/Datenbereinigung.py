@@ -9,7 +9,7 @@ from Hilfsfunktionen.NaNPruefen import NaNPruefen
 from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
-from Hilfsfunktionen.IndexFestlegen import IndexFestlegen
+
 
 import sys
 import os
@@ -65,10 +65,8 @@ def main():
     # 10. Duplikate prüfen
     DuplikatePruefen(df)
 
-    # 11. Datum als Index festlegen (hier wird 'Datum' als Spaltenname übergeben)
-    df = IndexFestlegen(df)  # Hier den Namen der Datumsspalte als String übergeben
 
-    # 12. Daten speichern
+    # 11. Daten speichern
     BereinigteDatenSpeichern(df, output_path)
     print(f"Daten erfolgreich gespeichert unter {output_path}!")
 
