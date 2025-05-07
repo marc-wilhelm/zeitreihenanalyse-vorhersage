@@ -10,14 +10,15 @@ Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdat
 Zeitreihenanalyse-vorhersage/
 │
 ├── daten/
-│   ├── original-daten/                
-│   │   ├── zeitreihe_kampala.txt
-│   │   ├── zeitreihe_berlin.txt
-│   │   └── zeitreihe_guangzhou.txt
 │   ├── bereinigte-daten/          
-│   │   ├── zeitreihe_kampala_bereinigt.csv
-│   │   ├── zeitreihe_berlin_bereinigt.csv
-│   │   └── zeitreihe_guangzhou_bereinigt.csv
+│   │   ├── bereinigt_zeitreihe_abakan.csv
+│   │   ├── bereinigt_zeitreihe_angeles.csv
+│   │   └── bereinigt_zeitreihe_berlin.csv
+│   |
+|   ├── original-daten/                
+│   │   ├── zeitreihe_abakan.csv
+│   │   ├── zeitreihe_angeles.csv
+│   │   └── zeitreihe_berlin.csv
 │   
 │
 ├── module/    
@@ -47,10 +48,9 @@ Zeitreihenanalyse-vorhersage/
 - Main branch (stabile Version)
 - Develop branch (Entwicklungsumgebung)
 - Features:
-  - Zeitreihe_Kampala
+  - Zeitreihe_Abakan
+  - Zeitreihe_Angeles
   - Zeitreihe_Berlin
-  - Zeitreihe_Guangzhou
-
 
 ## 3. Best Practices
 ### 3.1 Commit-Messages
