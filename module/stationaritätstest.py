@@ -1,6 +1,6 @@
 # Importiere die entsprechenden Funktionen aus jedem Modul
 from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
-from Hilfsfunktionen.CusumTest import cusum_test  # Stelle sicher, dass du die neue Version nutzt
+from Hilfsfunktionen.CusumTest import cusum_test  
 from Hilfsfunktionen.AdfTest import AdfTest
 import sys
 import os
@@ -13,7 +13,7 @@ import config
 
 def main():
     # 1. Definiere die Eingabepfade
-    file_path = config.datapathzeitreiheangelesbereinigt  # Pfad zu den bereinigten Daten
+    file_path = config.datapathzeitreiheberlinbereinigt  # Pfad zu den bereinigten Daten
     
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep=",")  # Daten einlesen, separiert durch Komma
@@ -36,3 +36,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#Daten sind bereits stationär, Integrationsstufe ist 0 
