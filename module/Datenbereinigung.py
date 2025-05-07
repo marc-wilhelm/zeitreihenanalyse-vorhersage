@@ -1,14 +1,14 @@
 # Importiere die entsprechenden Funktionen aus jedem Modul
-from hilfsfunktionen.DatenEinlesen import DatenEinlesen
-from hilfsfunktionen.SpaltennamenKorrigieren import SpaltennamenKorrigieren
-from hilfsfunktionen.DatumFormatieren import DatumFormatieren
-from hilfsfunktionen.TemperaturUndDatumExtrahieren import TemperaturUndDatumExtrahieren
-from hilfsfunktionen.ZeitreiheAb1880 import ZeitreiheAb1880
-from hilfsfunktionen.TemperaturRunden import TemperaturRunden
-from hilfsfunktionen.NaNPruefen import NaNPruefen
-from hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
-from hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
-from hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
+from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
+from Hilfsfunktionen.SpaltennamenKorrigieren import SpaltennamenKorrigieren
+from Hilfsfunktionen.DatumFormatieren import DatumFormatieren
+from Hilfsfunktionen.TemperaturUndDatumExtrahieren import TemperaturUndDatumExtrahieren
+from Hilfsfunktionen.ZeitreiheAb1880 import ZeitreiheAb1880
+from Hilfsfunktionen.TemperaturRunden import TemperaturRunden
+from Hilfsfunktionen.NaNPruefen import NaNPruefen
+from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
+from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
+from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
 
 import sys
 import os

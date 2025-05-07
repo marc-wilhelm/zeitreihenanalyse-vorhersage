@@ -1,7 +1,7 @@
 # Importiere die entsprechenden Funktionen aus jedem Modul
-from hilfsfunktionen.DatenEinlesen import DatenEinlesen
-from hilfsfunktionen.CusumTest import cusum_test
-from hilfsfunktionen.AdfTest import AdfTest
+from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
+from Hilfsfunktionen.CusumTest import cusum_test
+from Hilfsfunktionen.AdfTest import AdfTest
 import sys
 import os
 
