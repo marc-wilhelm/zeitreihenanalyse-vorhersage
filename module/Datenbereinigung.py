@@ -44,7 +44,6 @@ def verarbeite_datei(input_file, output_file):
     # 3. Datum formatieren
     df = DatumFormatieren(df)
     print("Datum formatiert!")
-    print(df.tail())
 
     # 4. Temperatur und Datum extrahieren
     df = TemperaturUndDatumExtrahieren(df)
