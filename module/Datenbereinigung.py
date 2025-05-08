@@ -10,67 +10,103 @@ from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
 
-
 import sys
 import os
+import glob
 
 # Übergeordnetes Verzeichnis hinzufügen
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Jetzt sollte config importiert werden können
-import config
+def verarbeite_datei(input_file, output_file):
+    """
+    Verarbeitet eine einzelne CSV-Datei und speichert die bereinigten Daten.
 
+    Args:
+        input_file (str): Pfad zur Eingabedatei
+        output_file (str): Pfad zur Ausgabedatei
+    """
+    print(f"\nVerarbeite Datei: {input_file}")
+    print(f"Ausgabepfad: {output_file}")
 
-def main():
-    # 1. Definiere die Eingabe- und Ausgabepfade
-    file_path = config.PATH_TS_BERLIN
-    output_path = config.PATH_TS_BERLIN_CLEAN
-    
-    # 2. Daten einlesen
-    df = DatenEinlesen(file_path, sep= ";")
-    
+    # 1. Daten einlesen
+    df = DatenEinlesen(input_file, sep=";")
+
     if df is None:
-        print("Fehler beim Einlesen der Daten. Beende das Skript.")
+        print(f"Fehler beim Einlesen der Daten aus {input_file}. Überspringe diese Datei.")
         return
 
     print("Daten erfolgreich eingelesen!")
 
-    # 3. Spaltennamen korrigieren
+    # 2. Spaltennamen korrigieren
     df = SpaltennamenKorrigieren(df)
     print("Spaltennamen korrigiert!")
-    print(df.head())
 
-    
-
-    # 5. Temperatur und Datum extrahieren
-    df = TemperaturUndDatumExtrahieren(df)
-    print("Nur Temperatur und Datum extrahiert!")
-
-    # 6. Zeitreihe ab 1880 filtern
-    df = ZeitreiheAb1880(df)
-    print("Daten ab 1880 gefiltert!")
-
-    # 4. Datum formatieren
+    # 3. Datum formatieren
     df = DatumFormatieren(df)
     print("Datum formatiert!")
 
-    # 7. Temperaturwerte runden
+    # 4. Temperatur und Datum extrahieren
+    df = TemperaturUndDatumExtrahieren(df)
+    print("Nur Temperatur und Datum extrahiert!")
+
+    # 5. Zeitreihe ab 1880 filtern
+    df = ZeitreiheAb1880(df)
+    print("Daten ab 1880 gefiltert!")
+
+    # 6. Temperaturwerte runden
     df = TemperaturRunden(df)
     print("Temperaturwerte gerundet!")
 
-    # 8. NaN-Werte prüfen
-    #df = NaNPruefen(df)  
+    # 7. NaN-Werte prüfen
+    df = NaNPruefen(df)
 
-    # 9. Datentypen prüfen
+    # 8. Datentypen prüfen
     DatentypenPruefen(df)
-    
-    # 10. Duplikate prüfen
+
+    # 9. Duplikate prüfen
     DuplikatePruefen(df)
 
+    # 10. Daten speichern
+    BereinigteDatenSpeichern(df, output_file)
+    print(f"Daten erfolgreich gespeichert unter {output_file}!")
 
-    # 11. Daten speichern
-    BereinigteDatenSpeichern(df, output_path)
-    print(f"Daten erfolgreich gespeichert unter {output_path}!")
+
+def main():
+    # Basispfad ist das Verzeichnis, in dem das Skript liegt
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Pfad zum Projektverzeichnis (eine Ebene höher)
+    project_dir = os.path.join(script_dir, "..")
+
+    # Pfad zum Verzeichnis mit den originalen Daten (relativ zum Projektverzeichnis)
+    original_data_dir = os.path.join(project_dir, "daten", "original-daten")
+
+    # Pfad zum Verzeichnis für bereinigte Daten (relativ zum Projektverzeichnis)
+    bereinigt_data_dir = os.path.join(project_dir, "daten", "bereinigte-daten")
+
+    # Stelle sicher, dass das Ausgabeverzeichnis existiert
+    os.makedirs(bereinigt_data_dir, exist_ok=True)
+
+    # Suche alle CSV-Dateien im Originalverzeichnis
+    csv_files = glob.glob(os.path.join(original_data_dir, "*.csv"))
+
+    if not csv_files:
+        print(f"Keine CSV-Dateien im Verzeichnis {original_data_dir} gefunden.")
+        return
+
+    print(f"Gefundene CSV-Dateien: {len(csv_files)}")
+
+    # Verarbeite jede CSV-Datei
+    for input_file in csv_files:
+        # Extrahiere den Dateinamen ohne Pfad
+        filename = os.path.basename(input_file)
+        # Erzeuge den Ausgabepfad
+        output_file = os.path.join(bereinigt_data_dir, f"bereinigt_{filename}")
+
+        # Verarbeite die Datei
+        verarbeite_datei(input_file, output_file)
+
+    print("\nAlle Dateien wurden verarbeitet!")
 
 
 if __name__ == "__main__":
