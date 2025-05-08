@@ -38,9 +38,11 @@ def main():
     # 3. Spaltennamen korrigieren
     df = SpaltennamenKorrigieren(df)
     print("Spaltennamen korrigiert!")
-    print(df.head())
 
-    
+    # 3. Datum formatieren
+    df = DatumFormatieren(df)
+    print("Datum formatiert!")
+    print(df.tail())
 
     # 5. Temperatur und Datum extrahieren
     df = TemperaturUndDatumExtrahieren(df)
