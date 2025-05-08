@@ -2,23 +2,24 @@ import pandas as pd
 
 def ZeitreiheAb1880(df):
     """
-    Filtert die Zeitreihe, sodass nur Daten ab 1880 enthalten sind.
+    Entfernt nur Zeilen, deren Datum im Format YYYY-MM-DD erkannt wird und vor dem Jahr 1880 liegt.
 
-    Diese Funktion entfernt alle Zeilen, bei denen das Jahr in der 'Datum'-Spalte vor 1880 liegt, sodass nur Daten ab 1850 im 
-    DataFrame verbleiben.
+    Alle anderen Zeilen (z. B. mit DD.MM.YYYY oder ungültigem Datum) bleiben erhalten.
 
-    *Parameters:*
+    Parameters:
     - df: pandas.DataFrame
-        Der DataFrame, der auf das Jahr 1880 gefiltert werden soll.
 
-    *Returns:*
+    Returns:
     - pandas.DataFrame
-        Der gefilterte DataFrame mit nur den Daten ab 1880.
     """
-    # Stelle sicher, dass die 'Datum'-Spalte im Datetime-Format vorliegt
-    df['Datum'] = pd.to_datetime(df['Datum'], errors='coerce')  # Konvertiere zu Datetime, falls nötig
-    
-    # Filtere die Daten nach dem Jahr (nur Daten ab 1880)
-    df_filtered = df[df['Datum'].dt.year >= 1880]
-    
-    return df_filtered
+    # Kopie der ursprünglichen Daten
+    df = df.copy()
+
+    # Versuche das Datum zu konvertieren (nur für Filterung verwenden)
+    datum_konvertiert = pd.to_datetime(df['Datum'], errors='coerce')
+
+    # Maske: Nur Zeilen, bei denen das konvertierte Datum entweder NaT ist oder Jahr >= 1880
+    maske = datum_konvertiert.isna() | (datum_konvertiert.dt.year >= 1880)
+
+    # Nur die Zeilen behalten, die die Maske erfüllen
+    return df[maske].reset_index(drop=True)
