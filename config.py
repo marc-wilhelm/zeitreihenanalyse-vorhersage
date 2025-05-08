@@ -1,5 +1,5 @@
 PATH_TS_BERLIN = "./daten/original-daten/zeitreihe_berlin.csv"
-PATH_TS_BERLIN_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_berlin.csv"
+PATH_TS_BERLIN_CLEAN = "./daten/bereinigte-daten/zeitreihe_berlin_bereinigt.csv"
 
 PATH_TS_ANGELES = "./daten/original-daten/zeitreihe_angeles.csv"
 PATH_TS_ANGELES_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_angeles.csv"
