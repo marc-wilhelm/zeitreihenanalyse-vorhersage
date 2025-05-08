@@ -39,10 +39,11 @@ def main():
     df = SpaltennamenKorrigieren(df)
     print("Spaltennamen korrigiert!")
 
-    # 3. Datum formatieren
+    # 4. Datum formatieren
     df = DatumFormatieren(df)
     print("Datum formatiert!")
     print(df.tail())
+
 
     # 5. Temperatur und Datum extrahieren
     df = TemperaturUndDatumExtrahieren(df)
@@ -52,16 +53,14 @@ def main():
     df = ZeitreiheAb1880(df)
     print("Daten ab 1880 gefiltert!")
 
-    # 4. Datum formatieren
-    df = DatumFormatieren(df)
-    print("Datum formatiert!")
+    
 
     # 7. Temperaturwerte runden
     df = TemperaturRunden(df)
     print("Temperaturwerte gerundet!")
 
     # 8. NaN-Werte prüfen
-    #df = NaNPruefen(df)  
+    df = NaNPruefen(df)  
 
     # 9. Datentypen prüfen
     DatentypenPruefen(df)

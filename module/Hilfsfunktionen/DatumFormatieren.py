@@ -19,6 +19,6 @@ def DatumFormatieren(df, datums_spalte='Datum'):
             return pd.NaT
 
     df['Datum'] = df['Datum'].apply(parse_datum)
-    df['Datum'] = df['Datum'].dt.strftime('%Y-%m-%d')
+    #df['Datum'] = df['Datum'].dt.strftime('%Y-%m-%d')
     return df
 
