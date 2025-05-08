@@ -2,22 +2,21 @@ import pandas as pd
 
 def DatumFormatieren(df):
     """
-    Wandelt die Werte in der Spalte 'Datum' in das Format YYYY-MM-DD um.
-
-    Diese Funktion stellt sicher, dass alle Werte in der Spalte 'Datum' in das Format YYYY-MM-DD konvertiert werden,
-    unabhängig davon, ob sie im Format DD.MM.YYYY oder YYYY-MM-DD vorliegen.
-
-    *Parameters:*
-    - df: pandas.DataFrame
-        Der DataFrame, dessen Datumswerte formatiert werden sollen.
-
-    *Returns:*
-    - pandas.DataFrame
-        Der DataFrame mit den konvertierten Datumswerten im Format YYYY-MM-DD.
+    Konvertiert gemischte Datumsformate in einheitliches YYYY-MM-DD-Format.
     """
-    
-    # Umwandlung der 'Datum' Spalte in das einheitliche Format YYYY-MM-DD
-    df['Datum'] = pd.to_datetime(df['Datum'], errors='coerce', dayfirst=True)  # dayfirst=True für DD.MM.YYYY
-    df['Datum'] = df['Datum'].dt.strftime('%Y-%m-%d')  # Format auf YYYY-MM-DD setzen
-    
+
+    def parse_datum(datum):
+        try:
+            if isinstance(datum, str):
+                if "." in datum:
+                    return pd.to_datetime(datum, dayfirst=True, errors='coerce')
+                else:
+                    return pd.to_datetime(datum, dayfirst=False, errors='coerce')
+            return pd.NaT
+        except Exception:
+            return pd.NaT
+
+    df['Datum'] = df['Datum'].apply(parse_datum)
+    df['Datum'] = df['Datum'].dt.strftime('%Y-%m-%d')
     return df
+
