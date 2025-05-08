@@ -10,12 +10,12 @@ import config
 
 
 # 1. Definiere die Eingabe- und Ausgabepfade
-file_path = config.datapathzeitreiheangelesbereinigt
+#file_path = config.PATH_TS_BERLIN_CLEAN
     # 2. Daten einlesen
-df = DatenEinlesen(file_path, sep= ",")
+#df = DatenEinlesen(file_path, sep= ",")
     
-if df is None:
-    print("Fehler beim Einlesen der Daten. Beende das Skript.")
+#if df is None:
+  #  print("Fehler beim Einlesen der Daten. Beende das Skript.")
 
 
 adf_result_diff = adfuller(config.temp_diff_angeles)
