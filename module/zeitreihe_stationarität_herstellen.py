@@ -18,7 +18,7 @@ import config
   #  print("Fehler beim Einlesen der Daten. Beende das Skript.")
 
 
-adf_result_diff = adfuller(config.temp_diff_angeles)
+adf_result_diff = adfuller(config.seasonal_diff_angeles)
 print(f'ADF Statistic: {adf_result_diff[0]}')
 print(f'p-value: {adf_result_diff[1]}')
 print('Critical Values:')

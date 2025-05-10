@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore")
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
-def evaluate_sarima_combination(train, order, seasonal_order, d=0, D=0, m=12):
+def evaluate_sarima_combination(train, order, seasonal_order, d=1, D=1, m=12):
     """
     Evaluiere eine einzelne SARIMA-Parameterkombination und gib AIC zurück
     """
@@ -113,7 +113,7 @@ def main():
     print("Starte Bestimmung der optimalen SARIMA-Parameter...")
     
     # Zeitreihe aus Config laden
-    stat_ts = config.temp_abakan.squeeze()
+    stat_ts = config.seasonal_diff_angeles.squeeze()
     print(f"Zeitreihe geladen: {len(stat_ts)} Datenpunkte")
     
     # Parameter bestimmen
@@ -121,8 +121,8 @@ def main():
         best_order, best_seasonal_order = find_best_sarima_parameters(
             stat_ts, 
             'angeles',
-            d=0, 
-            D=0, 
+            d=1, 
+            D=1, 
             m=12
         )
         print("\nParameterbestimmung erfolgreich abgeschlossen.")

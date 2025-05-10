@@ -199,7 +199,10 @@ def sarima_kfold_analysis(ts_data, ts_name, order, seasonal_order, k=5):
 
 def main():
     # Zeitreihe aus Config laden
-    stat_ts = config.temp_abakan.squeeze()
+    stat_ts = config.seasonal_diff_angeles.squeeze()
+  
+
+
     print(f"Zeitreihe geladen: {len(stat_ts)} Datenpunkte")
     
     # K-Fold-Validierung und Residuenanalyse durchführen

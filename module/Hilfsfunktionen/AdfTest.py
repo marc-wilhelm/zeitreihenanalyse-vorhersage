@@ -11,6 +11,13 @@ def AdfTest(data):
     Returns:
     None: Gibt die Ergebnisse des ADF-Tests aus.
     """
+
+    
+    
+    if 'MonatlicheDurchschnittsTemperatur' not in data.columns:
+        print("Fehler: 'MonatlicheDurchschnittsTemperatur' ist nicht im DataFrame enthalten.")
+        return
+    
     # Stelle sicher, dass 'Datum' als Datetime-Objekt interpretiert wird
     data['Datum'] = pd.to_datetime(data['Datum'])
     

@@ -38,7 +38,7 @@ def main(input_file):
 
     # 2. Zeitreihe extrahieren
     #stat_ts = df['MonatlicheDurchschnittsTemperatur'].dropna().squeeze()
-    stat_ts = config.temp_abakan.squeeze()
+    stat_ts = config.seasonal_diff_angeles.squeeze()
 
     # 3. K-Fold Cross-Validation
     k = 5
@@ -50,7 +50,7 @@ def main(input_file):
     def find_best_arima(train, p_values, q_values):
         best_aic = float('inf')
         best_order = None
-        d = 0
+        d = 2
           # keine Differenzierung notwendig, da stationär
         for p in p_values:
             for q in q_values:
