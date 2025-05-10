@@ -7,7 +7,7 @@ import os
 
 # Übergeordnetes Verzeichnis hinzufügen
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Jetzt sollte config importiert werden können
 import config
 

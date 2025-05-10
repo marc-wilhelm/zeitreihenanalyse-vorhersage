@@ -11,6 +11,8 @@ warnings.filterwarnings("ignore")
 
 # Projektkonfiguration laden
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import config
 
 def evaluate_sarima_combination(train, order, seasonal_order, d=1, D=1, m=12):
@@ -97,7 +99,7 @@ def find_best_sarima_parameters(ts_data, ts_name, pdq_range=None, seasonal_pdq_r
     os.makedirs('./parameter', exist_ok=True)
     
     # Parameter als Python-Modul speichern
-    with open(f'.sarima_params_{ts_name}.py', 'w') as f:
+    with open(f'./parameter/sarima_params_{ts_name}.py', 'w', encoding='utf-8') as f:
         f.write(f"# Automatisch generierte SARIMA-Parameter für {ts_name}\n")
         f.write(f"# Generiert am {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         f.write(f"name = '{ts_name}'\n")
@@ -113,14 +115,14 @@ def main():
     print("Starte Bestimmung der optimalen SARIMA-Parameter...")
     
     # Zeitreihe aus Config laden
-    stat_ts = config.seasonal_diff_angeles.squeeze()
+    stat_ts = config.seasonal_diff_abakan.squeeze()
     print(f"Zeitreihe geladen: {len(stat_ts)} Datenpunkte")
     
     # Parameter bestimmen
     try:
         best_order, best_seasonal_order = find_best_sarima_parameters(
             stat_ts, 
-            'angeles',
+            'abakan',
             d=1, 
             D=1, 
             m=12
