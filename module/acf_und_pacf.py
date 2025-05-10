@@ -12,12 +12,12 @@ import config
 
 
 # 1. Definiere die Eingabe- und Ausgabepfade
-file_path = config.datapathzeitreiheberlinbereinigt
+#file_path = config.PATH_TS_ANGELES_CLEAN
     # 2. Daten einlesen
-df = DatenEinlesen(file_path, sep= ",")
+#df = DatenEinlesen(file_path, sep= ",")
     
-if df is None:
-    print("Fehler beim Einlesen der Daten. Beende das Skript.")
+#if df is None:
+    #print("Fehler beim Einlesen der Daten. Beende das Skript.")
 
 
 def plot_acf_series(series, lags=40, title='ACF'):
@@ -56,4 +56,4 @@ def plot_pacf_series(series, lags=40, title='PACF'):
     plt.show()
     
 plot_acf_series(config.temp_diff_angeles, lags=30, title="ACF der differenzierten Temperatur")
-plot_pacf_series(config.temp_diff_angeles, lags=30, title="PACF der differenzierten Temperatur")
+#plot_pacf_series(config.temp_diff_angeles, lags=30, title="PACF der differenzierten Temperatur")

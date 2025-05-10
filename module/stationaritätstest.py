@@ -13,7 +13,7 @@ import config
 
 def main():
     # 1. Definiere die Eingabepfade
-    file_path = config.PATH_TS_ANGELES_CLEAN  # Pfad zu den bereinigten Daten
+    file_path = config.PATH_TS_ABAKAN_CLEAN # Pfad zu den bereinigten Daten
     
     # 2. Daten einlesen
     df = DatenEinlesen(file_path, sep=",")  # Daten einlesen, separiert durch Komma
