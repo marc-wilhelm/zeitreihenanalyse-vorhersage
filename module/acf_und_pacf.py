@@ -6,6 +6,7 @@ from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
 
 # Übergeordnetes Verzeichnis damit config Modul gefunden wird
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import config
 
@@ -54,5 +55,5 @@ def plot_pacf_series(series, lags=40, title='PACF'):
     plt.tight_layout()
     plt.show()
     
-plot_acf_series(config.temp_diff_angeles, lags=30, title="ACF der differenzierten Temperatur")
-#plot_pacf_series(config.temp_diff_angeles, lags=30, title="PACF der differenzierten Temperatur")
+plot_acf_series(config.temp_diff_abakan, lags=30, title="ACF der differenzierten Temperatur")
+plot_pacf_series(config.temp_diff_abakan, lags=30, title="PACF der differenzierten Temperatur")

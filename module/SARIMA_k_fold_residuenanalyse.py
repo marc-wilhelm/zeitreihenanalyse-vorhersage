@@ -17,6 +17,7 @@ warnings.filterwarnings("ignore")
 
 # Projektkonfiguration laden
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
 # Importiere die zuvor bestimmten SARIMA-Parameter

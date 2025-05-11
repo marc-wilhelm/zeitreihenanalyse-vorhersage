@@ -1,7 +1,7 @@
-# Automatisch generierte SARIMA-Parameter für angeles
-# Generiert am 2025-05-09 14:16:52
+# Automatisch generierte SARIMA-Parameter fÃ¼r angeles
+# Generiert am 2025-05-11 18:11:23
 
 name = 'angeles'
 order = (2, 1, 2)
-seasonal_order = (0, 1, 1, 12)
-aic = 1863.7636683691524
+seasonal_order = (1, 1, 1, 12)
+aic = 2486.5868702767766

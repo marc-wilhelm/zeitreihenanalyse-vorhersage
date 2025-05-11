@@ -15,7 +15,7 @@ os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import config
 
-def evaluate_sarima_combination(train, order, seasonal_order, d=1, D=1, m=12):
+def evaluate_sarima_combination(train, order, seasonal_order, d=0, D=1, m=12):
 
     """
 Diese Funktion nimmt eine Trainingszeitreihe und eine einzelne Kombination von SARIMA-Parametern (nicht-saisonale und saisonale Parameter) und erstellt ein SARIMA-Modell.
@@ -119,15 +119,15 @@ def main():
     print("Starte Bestimmung der optimalen SARIMA-Parameter...")
     
     # Zeitreihe aus Config laden
-    stat_ts = config.seasonal_diff_abakan.squeeze()
+    stat_ts = config.seasonal_diff_angeles.squeeze()
     print(f"Zeitreihe geladen: {len(stat_ts)} Datenpunkte")
     
     # Parameter bestimmen
     try:
         best_order, best_seasonal_order = find_best_sarima_parameters(
             stat_ts, 
-            'abakan',
-            d=1, 
+            'angeles',
+            d=1,
             D=1, 
             m=12
         )

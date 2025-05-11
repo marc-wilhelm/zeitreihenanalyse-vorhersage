@@ -7,11 +7,12 @@ from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
 
 # Übergeordnetes Verzeichnis damit config Modul gefunden wird
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
 # Das Working Directory zum Projektverzeichnis ändern
 # Diese Zeile ist entscheidend für die relativen Pfade
-os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 # Aktuelle Working Directory ausgeben zur Überprüfung
 print(f"Aktuelles Arbeitsverzeichnis: {os.getcwd()}")

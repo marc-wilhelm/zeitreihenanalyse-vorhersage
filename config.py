@@ -12,7 +12,9 @@ PATH_TS_ABAKAN_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_abakan.csv"
 
 
 df_berlin = pd.read_csv(PATH_TS_BERLIN_CLEAN)
-seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12).dropna()
+#seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12).dropna()
+temp_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(1)
+seasonal_diff_berlin = temp_diff_berlin.diff(12).dropna()
 
 
 df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
@@ -40,7 +42,7 @@ df_seasonal_diff_abakan['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_aba
 
 df_seasonal_diff_abakan = df_seasonal_diff_abakan[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna() #für Stationaritätstest nehmen
 
-
+temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1)
 
 
 #df_berlin["Datum"] = pd.to_datetime(df_berlin["Datum"])
