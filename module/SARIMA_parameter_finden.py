@@ -16,8 +16,12 @@ os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
 def evaluate_sarima_combination(train, order, seasonal_order, d=1, D=1, m=12):
+
     """
-    Evaluiere eine einzelne SARIMA-Parameterkombination und gib AIC zurück
+Diese Funktion nimmt eine Trainingszeitreihe und eine einzelne Kombination von SARIMA-Parametern (nicht-saisonale und saisonale Parameter) und erstellt ein SARIMA-Modell.
+Sie berechnet das Modell und gibt den AIC-Wert zusammen mit den Parametern zurück.
+Wenn ein Fehler auftritt (z. B. das Modell konvergiert nicht), gibt die Funktion np.inf zurück, um diese Kombination von Parametern als ungültig zu kennzeichnen.
+
     """
     try:
         model = SARIMAX(train,
@@ -67,22 +71,22 @@ def find_best_sarima_parameters(ts_data, ts_name, pdq_range=None, seasonal_pdq_r
     print(f"Starte SARIMA-Parametersuche für Zeitreihe '{ts_name}'...")
     print(f"Verwende {len(pdq_range) * len(seasonal_pdq_range)} Parameterkombinationen")
     
-    combinations = list(product(pdq_range, seasonal_pdq_range))
+    combinations = list(product(pdq_range, seasonal_pdq_range)) #speichert alle mölichen Parameterkombinationen innerhalb der gewählten range
     
     start_time = time.time()
-    results = Parallel(n_jobs=n_jobs)(
+    results = Parallel(n_jobs=n_jobs)( #Parallele Berechnung für verschieden Paraberkominationen um Geschwindigkeit zu erhöhen
         delayed(evaluate_sarima_combination)(ts_data, order, seasonal_order, d, D, m)
-        for order, seasonal_order in combinations
+        for order, seasonal_order in combinations # für jede Parameterkombination wird SARIMA-Modell ausgeführt und AIC wert berechnet 
     )
     duration = time.time() - start_time
     print(f"Parallele Parametersuche abgeschlossen in {duration:.2f} Sekunden")
     
     # Bestes Ergebnis filtern
-    valid_results = [r for r in results if r[1] is not None]
+    valid_results = [r for r in results if r[1] is not None] #enthält alle Ergebnisse für alle validen Paramterkombination
     if not valid_results:
         raise RuntimeError(f"Keine gültigen SARIMA-Modelle für {ts_name} gefunden.")
     
-    best_result = min(valid_results, key=lambda x: x[0])
+    best_result = min(valid_results, key=lambda x: x[0]) #filtert Paramterkombination mit niedrigstem AIC
     best_aic, best_order, best_seasonal_order = best_result
     
     print(f"Bestes Modell für {ts_name}: SARIMA{best_order}x{best_seasonal_order} mit AIC: {best_aic:.2f}")

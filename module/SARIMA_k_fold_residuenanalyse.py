@@ -131,7 +131,7 @@ def sarima_kfold_analysis(ts_data, ts_name, order, seasonal_order, k=5):
             
             # Residuenanalyse
             resid = result.resid
-            lb_test = acorr_ljungbox(resid, lags=[10], return_df=True)
+            lb_test = acorr_ljungbox(resid, lags=[12], return_df=True)
             stat, p_value = shapiro(resid)
             resid_skew = skew(resid)
             resid_kurtosis = kurtosis(resid)
