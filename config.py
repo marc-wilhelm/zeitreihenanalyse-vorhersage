@@ -12,7 +12,16 @@ PATH_TS_ABAKAN_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_abakan.csv"
 
 
 df_berlin = pd.read_csv(PATH_TS_BERLIN_CLEAN)
-seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12)
+seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12).dropna()
+
+
+df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
+temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1)
+seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
+
+
+
+
 
 df_seasonal_diff_berlin = df_berlin.copy()
 df_seasonal_diff_berlin['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_berlin
@@ -20,8 +29,11 @@ df_seasonal_diff_berlin['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_ber
 df_seasonal_diff_berlin = df_seasonal_diff_berlin[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
 
 
+
+
+
 df_abakan = pd.read_csv(PATH_TS_ABAKAN_CLEAN)
-seasonal_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(12) #für ARIMA/SARIMA nehmen
+seasonal_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(12).dropna() #für ARIMA/SARIMA nehmen
 
 df_seasonal_diff_abakan = df_abakan.copy()
 df_seasonal_diff_abakan['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_abakan
@@ -45,13 +57,14 @@ df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
 
 temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1)
 seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
-print(seasonal_diff_angeles)
+#print(seasonal_diff_angeles)
 
 
 df_seasonal_diff = df_angeles.copy()
 df_seasonal_diff['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
 
 df_seasonal_diff = df_seasonal_diff[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
+print(df_seasonal_diff)
 
 
 
@@ -63,12 +76,11 @@ df_seasonal_diff = df_seasonal_diff[['Datum', 'MonatlicheDurchschnittsTemperatur
 
 
 
-
-df_abakan = pd.read_csv(PATH_TS_ABAKAN_CLEAN)
-df_abakan["Datum"] = pd.to_datetime(df_abakan["Datum"])
-df_abakan.set_index("Datum", inplace=True)
-df_abakan = df_abakan.asfreq('MS')  # Setzt die Frequenz auf Monatsanfang (Monatlich)
-temp_abakan = df_abakan["MonatlicheDurchschnittsTemperatur"]
+#df_abakan = pd.read_csv(PATH_TS_ABAKAN_CLEAN)
+#df_abakan["Datum"] = pd.to_datetime(df_abakan["Datum"])
+#df_abakan.set_index("Datum", inplace=True)
+#df_abakan = df_abakan.asfreq('MS')  # Setzt die Frequenz auf Monatsanfang (Monatlich)
+#temp_abakan = df_abakan["MonatlicheDurchschnittsTemperatur"]
 
 
 
