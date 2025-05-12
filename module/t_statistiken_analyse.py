@@ -55,6 +55,7 @@ def analyse_arima_koeffizienten(ts_data, city_name, order):
 
     print("\nKoeffizientenstatistiken:")
     print(stats_df)
+    print("\n", result.summary())
 
     return stats_df
 
