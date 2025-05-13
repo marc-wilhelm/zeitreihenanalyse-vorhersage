@@ -57,16 +57,16 @@ temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1)
 
 df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
 
-temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1)
+temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
 seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
-#print(seasonal_diff_angeles)
+#print(temp_diff_angeles)
 
 
 df_seasonal_diff = df_angeles.copy()
 df_seasonal_diff['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
 
 df_seasonal_diff = df_seasonal_diff[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
-print(df_seasonal_diff)
+#print(df_seasonal_diff)
 
 
 
