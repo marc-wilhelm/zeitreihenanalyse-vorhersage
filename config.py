@@ -12,61 +12,54 @@ PATH_TS_ABAKAN_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_abakan.csv"
 
 
 df_berlin = pd.read_csv(PATH_TS_BERLIN_CLEAN)
-#seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12).dropna()
-temp_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(1)
-seasonal_diff_berlin = temp_diff_berlin.diff(12).dropna()
+#Series
+seasonal_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(12).dropna()
+temp_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
+#Dataframe
+df_seasonal_diff_berlin = df_berlin.copy()
+df_seasonal_diff_berlin['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_berlin
+df_seasonal_diff_berlin = df_seasonal_diff_berlin[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
+
+
 
 
 df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
-temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1)
+#Series
+temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
 seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
-
-
-
-
-
-df_seasonal_diff_berlin = df_berlin.copy()
-df_seasonal_diff_berlin['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_berlin
-
-df_seasonal_diff_berlin = df_seasonal_diff_berlin[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
+#Dataframe
+df_seasonal_diff_angeles = df_angeles.copy()
+df_seasonal_diff_angeles['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
+df_seasonal_diff_angeles = df_seasonal_diff_angeles[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
 
 
 
 
 
 df_abakan = pd.read_csv(PATH_TS_ABAKAN_CLEAN)
+#Series
 seasonal_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(12).dropna() #für ARIMA/SARIMA nehmen
-
+temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
+#Dataframe
 df_seasonal_diff_abakan = df_abakan.copy()
 df_seasonal_diff_abakan['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_abakan
-
 df_seasonal_diff_abakan = df_seasonal_diff_abakan[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna() #für Stationaritätstest nehmen
 
-temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1)
 
 
+
+#temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1)
 #df_berlin["Datum"] = pd.to_datetime(df_berlin["Datum"])
 #df_berlin.set_index("Datum", inplace=True)
 #df_berlin = df_berlin.asfreq('MS')  # Setzt die Frequenz auf Monatsanfang (Monatlich)
 #temp_berlin = df_berlin["MonatlicheDurchschnittsTemperatur"]
-
-#temp_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
-
-
+#temp_diff_berlin = df_berlin['MonatlicheDurchschnittsTemperatur'].diff(1)
+#seasonal_diff_berlin = temp_diff_berlin.diff(12).dropna()
 
 
-df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
-
-temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
-seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
-#print(temp_diff_angeles)
 
 
-df_seasonal_diff = df_angeles.copy()
-df_seasonal_diff['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
 
-df_seasonal_diff = df_seasonal_diff[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
-#print(df_seasonal_diff)
 
 
 
