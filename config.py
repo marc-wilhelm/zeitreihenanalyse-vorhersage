@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np 
 
 PATH_TS_BERLIN = "./daten/original-daten/zeitreihe_berlin.csv"
 PATH_TS_BERLIN_CLEAN = "./daten/bereinigte-daten/bereinigt_zeitreihe_berlin.csv"
@@ -32,6 +33,12 @@ df_seasonal_diff_angeles = df_angeles.copy()
 df_seasonal_diff_angeles['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
 df_seasonal_diff_angeles = df_seasonal_diff_angeles[['Datum', 'MonatlicheDurchschnittsTemperatur']].dropna()
 
+
+
+
+
+# 3. Zeitvariable korrekt parsen
+#df_angeles['Datum'] = pd.to_datetime(df_angeles['Datum'])
 
 
 

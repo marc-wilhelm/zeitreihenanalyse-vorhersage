@@ -3,63 +3,96 @@ import sys
 import importlib
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from statsmodels.tools.eval_measures import rmse
+from statsmodels.tools.eval_measures import rmse, mse
 
-# === Verbesserte Expanding-Window-Klasse ===
+# === Expanding-Window-Klasse ===
 class expanding_window(object):
-    def __init__(self, ratio=0.7, horizon=160, period=160):
-        self.ratio = ratio
-        self.horizon = horizon
-        self.period = period
+    def __init__(self, initial=1, horizon=1, period=1):
+        self.initial = initial
+        self.horizon = horizon 
+        self.period = period 
 
     def split(self, data):
-        data_length = len(data)
-
-        initial_window = int(data_length * self.ratio)
+        self.data = data
+        self.counter = 0
+        data_length = data.shape[0]
+        data_index = list(np.arange(data_length))
         output_train = []
         output_test = []
 
-        train_end = initial_window
-        while train_end + self.horizon <= data_length:
-            train_idx = list(range(train_end))
-            test_idx = list(range(train_end, train_end + self.horizon))
+        output_train.append(list(np.arange(self.initial)))
+        progress = [x for x in data_index if x not in list(np.arange(self.initial))]
+        output_test.append([x for x in data_index if x not in output_train[self.counter]][:self.horizon])
 
-            output_train.append(train_idx)
-            output_test.append(test_idx)
+        while len(progress) != 0:
+            temp = progress[:self.period]
+            to_add = output_train[self.counter] + temp
+            output_train.append(to_add)
+            self.counter += 1
+            to_add_test = [x for x in data_index if x not in output_train[self.counter]][:self.horizon]
+            output_test.append(to_add_test)
+            progress = [x for x in data_index if x not in output_train[self.counter]]
 
-            train_end += self.period
-
+        output_train = output_train[:-1]
+        output_test = output_test[:-1]
         return list(zip(output_train, output_test))
 
 
-# === SARIMA Expanding Window Cross-Validation ===
+def plot_residuals(residuals, city, fold):
+    output_dir = os.path.join("results", "sarima_residuen_auswertung", city)
+    os.makedirs(output_dir, exist_ok=True)
+
+    plt.figure(figsize=(10, 8))
+
+    # 1. Residuen über Zeit
+    plt.subplot(2, 2, 1)
+    plt.plot(residuals)
+    plt.title("Residuen über Zeit")
+    plt.xlabel("Zeit")
+    plt.ylabel("Residuum")
+
+    # 2. ACF
+    plt.subplot(2, 2, 2)
+    plot_acf(residuals, ax=plt.gca(), alpha=0.05)
+    plt.title("ACF der Residuen")
+
+    # 3. Histogramm mit Dichtekurve
+    plt.subplot(2, 2, 3)
+    import seaborn as sns
+    sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
+    plt.title("Histogramm der Residuen")
+
+    # 4. Q-Q-Plot
+    plt.subplot(2, 2, 4)
+    stats.probplot(residuals, dist="norm", plot=plt)
+    plt.title("Q-Q-Plot der Residuen")
+
+    plt.suptitle(f"Residuenanalyse – Fold {fold}", y=1.02)
+    plt.tight_layout()
+    plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
+    plt.savefig(plot_path)
+    plt.close()
+
+
 def run_expanding_sarima_cv(city):
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-    # SARIMA-Parameter laden
     param_module = f"results.model_parameters.{city}_params"
     params = importlib.import_module(param_module)
     order = params.order
     seasonal_order = params.seasonal_order
 
-    # Daten laden
-   
-
-
     import config
     series = getattr(config, f'seasonal_diff_{city}').squeeze()
-    print(series)
-    
-    
-
 
     print(f"\n📍 Stadt: {city}")
     print(f"🔧 Verwende SARIMA{order}x{seasonal_order}")
     print(f"📄 Anzahl Datenpunkte: {len(series)}")
 
-    # Expanding Window mit stabiler Testgröße
-    splitter = expanding_window(ratio=0.7, horizon=160, period=160)
+    splitter = expanding_window(initial=800, horizon=160, period=160)
     splits = splitter.split(series)
 
     results = []
@@ -82,20 +115,27 @@ def run_expanding_sarima_cv(city):
 
             forecast = fit.forecast(steps=len(test))
             pred_train = fit.get_prediction(start=0, end=len(train)-1).predicted_mean
+            residuals = train - pred_train
 
             test_rmse = rmse(test.values, forecast.values)
             train_rmse = rmse(train.values, pred_train.values)
+            test_mse = mse(test.values, forecast.values)
+            train_mse = mse(train.values, pred_train.values)
 
             results.append({
                 "fold": fold + 1,
                 "train_size": len(train),
                 "test_size": len(test),
                 "train_rmse": train_rmse,
-                "test_rmse": test_rmse
+                "test_rmse": test_rmse,
+                "train_mse": train_mse,
+                "test_mse": test_mse
             })
 
-            print(f"   ✅ Train-RMSE: {train_rmse:.4f}")
-            print(f"   ✅ Test-RMSE:  {test_rmse:.4f}")
+            print(f"   ✅ Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
+            print(f"   ✅ Test-RMSE:  {test_rmse:.4f} | Test-MSE:  {test_mse:.4f}")
+
+            plot_residuals(residuals, city, fold + 1)
 
         except Exception as e:
             print(f"   ❌ Fehler in Fold {fold + 1}: {e}")
@@ -104,16 +144,19 @@ def run_expanding_sarima_cv(city):
     results_df = pd.DataFrame(results)
 
     if not results_df.empty:
-        print("\n📊 --- Zusammenfassung ---")
+        print(f"\n📊 --- Zusammenfassung für {city} ---")
         print(f"Folds ausgewertet: {len(results_df)}")
         print(f"Durchschnittlicher Train-RMSE: {results_df['train_rmse'].mean():.4f}")
         print(f"Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
+        print(f"Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
+        print(f"Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
     else:
-        print("\n⚠️ Keine gültigen Folds ausgewertet.")
+        print(f"\n⚠️ Keine gültigen Folds ausgewertet für {city}.")
 
     return results_df
 
 
-# === Main ===
+# === Hauptschleife über alle Städte ===
 if __name__ == "__main__":
-    run_expanding_sarima_cv("angeles")
+    for city in ["angeles"]:
+        run_expanding_sarima_cv(city)
