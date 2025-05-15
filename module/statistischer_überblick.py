@@ -114,7 +114,8 @@ def StatistischeAnalyse(df, spalte, city):
 # === Hauptschleife durch alle Städte ===
 for file_path, city in dateipfade_mit_namen:
     print(f"\nAnalysiere Datei: {file_path} für Stadt: {city}")
-    df = DatenEinlesen(file_path, sep=",")
+    df = DatenEinlesen(file_path, sep=",", decimal=".")
+
 
     if df is None:
         print(f"❌ Fehler beim Einlesen von {file_path}. Überspringe.")

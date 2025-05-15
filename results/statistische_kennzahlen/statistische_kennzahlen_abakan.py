@@ -1,9 +1,9 @@
 # Statistische Kennzahlen für Abakan
 # mean = -0.3418
-# std = 13.8963
-# median = 1.0650
-# min = -31.1400
-# max = 21.5000
+# std = 13.8964
+# median = 1.0645
+# min = -31.1380
+# max = 21.5030
 
 # Normalverteilungsprüfung:
 # Anteil in [mu - sigma, mu + sigma] (~70%): 52.99%

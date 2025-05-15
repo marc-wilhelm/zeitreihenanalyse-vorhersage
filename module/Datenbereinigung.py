@@ -31,13 +31,16 @@ def verarbeite_datei(input_file, output_file):
     print(f"Ausgabepfad: {output_file}")
 
     # 1. Daten einlesen
-    df = DatenEinlesen(input_file, sep=";")
+    df = DatenEinlesen(input_file, sep=";", decimal=",")
+
 
     if df is None:
         print(f"Fehler beim Einlesen der Daten aus {input_file}. Überspringe diese Datei.")
         return
 
     print("Daten erfolgreich eingelesen!")
+
+    
 
     # 2. Spaltennamen korrigieren
     df = SpaltennamenKorrigieren(df)
@@ -75,6 +78,8 @@ def verarbeite_datei(input_file, output_file):
 
     # 8. Duplikate prüfen
     DuplikatePruefen(df)
+
+
 
     # 9. Daten speichern
     BereinigteDatenSpeichern(df, output_file)
@@ -117,6 +122,8 @@ def main():
         verarbeite_datei(input_file, output_file)
 
     print("\nAlle Dateien wurden verarbeitet!")
+
+
 
 
 if __name__ == "__main__":

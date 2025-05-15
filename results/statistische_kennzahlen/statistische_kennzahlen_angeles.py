@@ -1,9 +1,9 @@
 # Statistische Kennzahlen für Angeles
 # mean = 26.5497
-# std = 1.2977
-# median = 26.4700
-# min = 22.7900
-# max = 30.2000
+# std = 1.2976
+# median = 26.4680
+# min = 22.7940
+# max = 30.2010
 
 # Normalverteilungsprüfung:
 # Anteil in [mu - sigma, mu + sigma] (~70%): 67.21%

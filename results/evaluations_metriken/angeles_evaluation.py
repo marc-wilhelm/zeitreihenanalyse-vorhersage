@@ -8,8 +8,8 @@ evaluation_metrics = {
 }
 # === Residuenanalyse nach Test des gefundenen SARIMA-Modells ===
 # Folds ausgewertet: 5
-# Durchschnittlicher Train-RMSE: 0.4542
-# Durchschnittlicher Test-RMSE:  0.7003
-# Durchschnittlicher Train-MSE:  0.2063
-# Durchschnittlicher Test-MSE:   0.4946
-# Durchschnittlicher Ljung-Box p-Wert (Lag 10): 0.0933
+# Durchschnittlicher Train-RMSE: 0.4541
+# Durchschnittlicher Test-RMSE:  0.6999
+# Durchschnittlicher Train-MSE:  0.2062
+# Durchschnittlicher Test-MSE:   0.4941
+# Durchschnittlicher Ljung-Box p-Wert (Lag 10): 0.0964
