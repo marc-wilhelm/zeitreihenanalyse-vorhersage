@@ -9,12 +9,13 @@ from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tools.eval_measures import rmse, mse
 
+
 # === Expanding-Window-Klasse ===
 class expanding_window(object):
     def __init__(self, initial=1, horizon=1, period=1):
         self.initial = initial
-        self.horizon = horizon 
-        self.period = period 
+        self.horizon = horizon
+        self.period = period
 
     def split(self, data):
         self.data = data
@@ -74,9 +75,40 @@ def plot_residuals(residuals, city, fold):
     plt.close()
 
 
+def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
+    file_path = os.path.join("Results", "evaluations_metriken", f"{city}_evaluation.py")
+    header = "# === Residuenanalyse nach Test des gefundenen SARIMA-Modells ==="
+
+    summary_lines = [f"\n{header}"]
+    summary_lines.append(f"# Folds ausgewertet: {len(results_df)}")
+    summary_lines.append(f"# Durchschnittlicher Train-RMSE: {results_df['train_rmse'].mean():.4f}")
+    summary_lines.append(f"# Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
+    summary_lines.append(f"# Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
+    summary_lines.append(f"# Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
+    summary_lines.append(f"# Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
+
+    summary_text = "\n".join(summary_lines) + "\n"
+
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        if header in content:
+            pre_content = content.split(header)[0].rstrip()
+            new_content = pre_content + summary_text
+        else:
+            new_content = content.rstrip() + summary_text
+    else:
+        new_content = summary_text
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+
+    print(f"📁 Zusammenfassung für {city} gespeichert unter: {file_path}")
+
 def run_expanding_sarima_cv(city):
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    
+
     # === Modellparameter laden ===
     param_module = f"results.model_parameters.{city}_params"
     params = importlib.import_module(param_module)
@@ -161,6 +193,11 @@ def run_expanding_sarima_cv(city):
         if ljung_pvalues:
             avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues)
             print(f"Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
+        else:
+            avg_ljung_pvalue = float("nan")
+
+        append_residual_analysis_summary(city, results_df, avg_ljung_pvalue)
+
     else:
         print(f"\n⚠️ Keine gültigen Folds ausgewertet für {city}.")
 

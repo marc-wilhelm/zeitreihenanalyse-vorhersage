@@ -1,4 +1,4 @@
-kruskal_results = [
-    {'Stadt': 'berlin', 'Phase': 'vor saisonaler Differenzierung', 'Teststatistik': 1486.002252179247, 'p_Wert': 0.0},
-    {'Stadt': 'berlin', 'Phase': 'nach saisonaler Differenzierung', 'Teststatistik': 1.100014992912082, 'p_Wert': 0.9999183669379873},
-]
+# Saisonalitätsanalyse für Berlin
+p_wert_vor = 0.00000
+p_wert_nach = 0.99992
+D = 1

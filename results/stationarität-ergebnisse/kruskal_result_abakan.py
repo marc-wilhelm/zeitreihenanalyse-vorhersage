@@ -1,4 +1,4 @@
-kruskal_results = [
-    {'Stadt': 'abakan', 'Phase': 'vor saisonaler Differenzierung', 'Teststatistik': 1536.9894213174414, 'p_Wert': 0.0},
-    {'Stadt': 'abakan', 'Phase': 'nach saisonaler Differenzierung', 'Teststatistik': 1.1252751857269108, 'p_Wert': 0.9999084810626397},
-]
+# Saisonalitätsanalyse für Abakan
+p_wert_vor = 0.00000
+p_wert_nach = 0.99991
+D = 1

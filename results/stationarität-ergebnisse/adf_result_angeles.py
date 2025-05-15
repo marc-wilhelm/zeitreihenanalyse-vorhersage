@@ -1,4 +1,13 @@
-adf_results = [
-    {'Stadt': 'angeles', 'Differenzierung': 0, 'ADF_Statistik': -2.451674806369767, 'p_Wert': 0.127679308017223, 'Krit_Wert_1%': -3.4345008044458614, 'Krit_Wert_5%': -2.8633733328409368, 'Krit_Wert_10%': -2.56774603301736},
-    {'Stadt': 'angeles', 'Differenzierung': 1, 'ADF_Statistik': -12.43522270964065, 'p_Wert': 3.86057434792912e-23, 'Krit_Wert_1%': -3.4345034408379527, 'Krit_Wert_5%': -2.863374496477375, 'Krit_Wert_10%': -2.567746652650719},
-]
+# Trendanalyse für Angeles
+adf_statistik_vor = -2.45167
+p_wert_vor = 0.12768
+kritischer_wert_0_01_vor = -3.43450
+kritischer_wert_0_05_vor = -2.86337
+kritischer_wert_0_10_vor = -2.56775
+
+adf_statistik_nach = -12.43522
+p_wert_nach = 0.00000
+kritischer_wert_0_01_nach = -3.43450
+kritischer_wert_0_05_nach = -2.86337
+kritischer_wert_0_10_nach = -2.56775
+d = 1

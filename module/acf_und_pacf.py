@@ -1,59 +1,54 @@
 import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-import sys
+import pandas as pd
 import os
-from Hilfsfunktionen.DatenEinlesen import DatenEinlesen
+import sys
 
-# Übergeordnetes Verzeichnis damit config Modul gefunden wird
+# Projektverzeichnis setzen
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import config
+# Ergebnisordner vorbereiten
+output_dir = os.path.join("results", "acf_pacf_plots")
+os.makedirs(output_dir, exist_ok=True)
 
+# Liste der Städte
+cities = ["abakan", "berlin", "angeles"]
 
-# 1. Definiere die Eingabe- und Ausgabepfade
-#file_path = config.PATH_TS_ANGELES_CLEAN
-    # 2. Daten einlesen
-#df = DatenEinlesen(file_path, sep= ",")
-    
-#if df is None:
-    #print("Fehler beim Einlesen der Daten. Beende das Skript.")
-
-
-def plot_acf_series(series, lags=40, title='ACF'):
-    """
-    Plottet die Autokorrelationsfunktion (ACF) einer Zeitreihe.
-    
-    Parameters:
-    - series: pd.Series
-        Zeitreihe (z. B. differenzierte Temperaturdaten)
-    - lags: int
-        Anzahl der zu betrachtenden Verzögerungen (Lags)
-    - title: str
-        Titel des Plots
-    """
+def plot_acf_series(series, lags, city):
     plt.figure(figsize=(10, 5))
-    plot_acf(series.dropna(), lags=lags, ax=plt.gca(), title=title)
+    plot_acf(series.dropna(), lags=lags, ax=plt.gca(), title=f"ACF – {city.capitalize()}")
     plt.tight_layout()
-    plt.show()
+    acf_path = os.path.join(output_dir, f"acf_plot_{city}.png")
+    plt.savefig(acf_path, dpi=300, bbox_inches="tight")
+    plt.close()
+    print(f"✅ ACF gespeichert: {acf_path}")
 
-
-def plot_pacf_series(series, lags=40, title='PACF'):
-    """
-    Plottet die partielle Autokorrelationsfunktion (PACF) einer Zeitreihe.
-    
-    Parameters:
-    - series: pd.Series
-        Zeitreihe (z. B. differenzierte Temperaturdaten)
-    - lags: int
-        Anzahl der zu betrachtenden Verzögerungen (Lags)
-    - title: str
-        Titel des Plots
-    """
+def plot_pacf_series(series, lags, city):
     plt.figure(figsize=(10, 5))
-    plot_pacf(series.dropna(), lags=lags, ax=plt.gca(), method='ywm', title=title)
+    plot_pacf(series.dropna(), lags=lags, ax=plt.gca(), method='ywm', title=f"PACF – {city.capitalize()}")
     plt.tight_layout()
-    plt.show()
-    
-plot_acf_series(config.temp_diff_abakan, lags=30, title="ACF der differenzierten Temperatur")
-plot_pacf_series(config.temp_diff_abakan, lags=30, title="PACF der differenzierten Temperatur")
+    pacf_path = os.path.join(output_dir, f"pacf_plot_{city}.png")
+    plt.savefig(pacf_path, dpi=300, bbox_inches="tight")
+    plt.close()
+    print(f"✅ PACF gespeichert: {pacf_path}")
+
+# Schleife über alle Städte
+for city in cities:
+    path = os.path.join("daten", "stationäre-daten", f"stationaere_zeitreihe_{city}.csv")
+    if not os.path.exists(path):
+        print(f"❌ Datei nicht gefunden für Stadt: {city} → {path}")
+        continue
+
+    df = pd.read_csv(path)
+    if "MonatlicheDurchschnittsTemperatur" not in df.columns:
+        print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in Datei: {path}")
+        continue
+
+    series = df["MonatlicheDurchschnittsTemperatur"]
+    print(f"\n🔍 Verarbeite Stadt: {city} – {len(series)} Datenpunkte")
+
+    plot_acf_series(series, lags=30, city=city)
+    plot_pacf_series(series, lags=30, city=city)
+
+print("\n✅ ACF- und PACF-Analyse für alle Städte abgeschlossen.")
