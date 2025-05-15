@@ -27,10 +27,6 @@ df_seasonal_diff_berlin = df_seasonal_diff_berlin[['Datum', 'MonatlicheDurchschn
 df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
 #print(df_angeles)
 
-#Test
-#df_angeles['Datum'] = pd.to_datetime(df_angeles['Datum'])
-#df_angeles.set_index('Datum', inplace=True)
-
 # Series extrahieren (nicht differenziert)
 #original_angeles = df_angeles['MonatlicheDurchschnittsTemperatur']
 #print(original_angeles)
@@ -41,6 +37,7 @@ df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
 #Series
 temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
 seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
+#print(seasonal_diff_angeles)
 #Dataframe
 df_seasonal_diff_angeles = df_angeles.copy()
 df_seasonal_diff_angeles['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_angeles
@@ -50,16 +47,13 @@ df_seasonal_diff_angeles = df_seasonal_diff_angeles[['Datum', 'MonatlicheDurchsc
 
 
 
-# 3. Zeitvariable korrekt parsen
-#df_angeles['Datum'] = pd.to_datetime(df_angeles['Datum'])
-
 
 
 
 df_abakan = pd.read_csv(PATH_TS_ABAKAN_CLEAN)
 #Series
 seasonal_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(12).dropna() #für ARIMA/SARIMA nehmen
-temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
+#temp_diff_abakan = df_abakan['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
 #Dataframe
 df_seasonal_diff_abakan = df_abakan.copy()
 df_seasonal_diff_abakan['MonatlicheDurchschnittsTemperatur'] = seasonal_diff_abakan

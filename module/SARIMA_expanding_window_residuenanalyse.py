@@ -48,25 +48,21 @@ def plot_residuals(residuals, city, fold):
 
     plt.figure(figsize=(10, 8))
 
-    # 1. Residuen über Zeit
     plt.subplot(2, 2, 1)
     plt.plot(residuals)
     plt.title("Residuen über Zeit")
     plt.xlabel("Zeit")
     plt.ylabel("Residuum")
 
-    # 2. ACF
     plt.subplot(2, 2, 2)
     plot_acf(residuals, ax=plt.gca(), alpha=0.05)
     plt.title("ACF der Residuen")
 
-    # 3. Histogramm mit Dichtekurve
     plt.subplot(2, 2, 3)
     import seaborn as sns
     sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
     plt.title("Histogramm der Residuen")
 
-    # 4. Q-Q-Plot
     plt.subplot(2, 2, 4)
     stats.probplot(residuals, dist="norm", plot=plt)
     plt.title("Q-Q-Plot der Residuen")
@@ -80,13 +76,17 @@ def plot_residuals(residuals, city, fold):
 
 def run_expanding_sarima_cv(city):
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    
+    # === Modellparameter laden ===
     param_module = f"results.model_parameters.{city}_params"
     params = importlib.import_module(param_module)
     order = params.order
     seasonal_order = params.seasonal_order
 
-    import config
-    series = getattr(config, f'seasonal_diff_{city}').squeeze()
+    # === Daten aus CSV laden ===
+    input_path = os.path.join("daten", "stationäre-daten", f"stationaere_zeitreihe_{city}.csv")
+    df = pd.read_csv(input_path)
+    series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
 
     print(f"\n📍 Stadt: {city}")
     print(f"🔧 Verwende SARIMA{order}x{seasonal_order}")
@@ -96,7 +96,7 @@ def run_expanding_sarima_cv(city):
     splits = splitter.split(series)
 
     results = []
-    ljung_pvalues = []  # Liste für alle p-Werte des Ljung-Box-Tests
+    ljung_pvalues = []
 
     for fold, (train_idx, test_idx) in enumerate(splits):
         train = series.iloc[train_idx]
@@ -124,10 +124,9 @@ def run_expanding_sarima_cv(city):
             train_mse = mse(train.values, pred_train.values)
 
             from statsmodels.stats.diagnostic import acorr_ljungbox
-            # Ljung-Box-Test auf Residuen (Lag 10)
             ljung_result = acorr_ljungbox(residuals, lags=[10], return_df=True)
             ljung_pvalue = ljung_result["lb_pvalue"].iloc[0]
-            ljung_pvalues.append(ljung_pvalue)  # P-Wert zur Liste hinzufügen
+            ljung_pvalues.append(ljung_pvalue)
 
             results.append({
                 "fold": fold + 1,
@@ -137,7 +136,7 @@ def run_expanding_sarima_cv(city):
                 "test_rmse": test_rmse,
                 "train_mse": train_mse,
                 "test_mse": test_mse,
-                "ljung_pvalue": ljung_pvalue  # P-Wert auch in den Ergebnissen speichern
+                "ljung_pvalue": ljung_pvalue
             })
 
             print(f"   ✅ Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
@@ -159,7 +158,6 @@ def run_expanding_sarima_cv(city):
         print(f"Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
         print(f"Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
         
-        # Durchschnittlicher p-Wert des Ljung-Box-Tests
         if ljung_pvalues:
             avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues)
             print(f"Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")

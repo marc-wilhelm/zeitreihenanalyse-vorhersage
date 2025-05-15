@@ -1,28 +1,28 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import pmdarima as pm
-from statsmodels.graphics.tsaplots import plot_acf
 import os
 import sys
+import pandas as pd
+import pmdarima as pm
 
-# Übergeordnetes Verzeichnis hinzufügen
+# === Projektstruktur einbinden ===
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
-# Liste der Zeitreihen
+# === Zeitreihenpfade ===
 time_series_info = {
     "abakan": config.PATH_TS_ABAKAN_CLEAN,
     "berlin": config.PATH_TS_BERLIN_CLEAN,
     "angeles": config.PATH_TS_ANGELES_CLEAN
 }
 
-# Verzeichnisse vorbereiten
-output_dir = os.path.join(os.path.dirname(__file__), "..", "results")
-param_dir = os.path.join(output_dir, "model_parameters")
-os.makedirs(output_dir, exist_ok=True)
+# === Speicherverzeichnisse ===
+base_dir = os.path.dirname(__file__)
+results_dir = os.path.join(base_dir, "..", "results")
+param_dir = os.path.join(results_dir, "model_parameters")
+eval_dir = os.path.join(results_dir, "evaluations_metriken")
 os.makedirs(param_dir, exist_ok=True)
+os.makedirs(eval_dir, exist_ok=True)
 
-# Hauptloop
+# === Hauptloop ===
 for city, path in time_series_info.items():
     print(f"\n--- Bearbeite: {city} ---")
 
@@ -33,7 +33,7 @@ for city, path in time_series_info.items():
     df = df.sort_index()
     series = df['MonatlicheDurchschnittsTemperatur'].dropna()
 
-    # Modell fitten
+    # Auto-ARIMA fitten
     model = pm.auto_arima(
         series,
         start_p=0, max_p=3,
@@ -50,51 +50,42 @@ for city, path in time_series_info.items():
         stepwise=False
     )
 
-    print(model.summary())
+    # Parameter extrahieren, aber d und D manuell auf 0 setzen
+    order = list(model.order)
+    seasonal_order = list(model.seasonal_order)
+    order[1] = 0
+    seasonal_order[1] = 0
 
-    # Modellparameter extrahieren
-    order = model.order
-    seasonal_order = model.seasonal_order
-    aic = model.aic()
-
-    # In Python-Datei speichern
-    param_file_path = os.path.join(param_dir, f"{city}_params.py")
-    with open(param_file_path, "w") as f:
+    # === 1. Modellparameter speichern ===
+    param_path = os.path.join(param_dir, f"{city}_params.py")
+    with open(param_path, "w") as f:
         f.write(f"name = '{city}'\n")
-        f.write(f"order = {order}\n")
-        f.write(f"seasonal_order = {seasonal_order}\n")
-        f.write(f"aic = {aic}\n")
+        f.write(f"order = {tuple(order)}  \n")
+        f.write(f"seasonal_order = {tuple(seasonal_order)}  \n")
+        f.write(f"aic = {model.aic()}\n")
 
-    # Differenzierte Zeitreihe berechnen
-    d = order[1]
-    D = seasonal_order[1]
-    m = seasonal_order[3]
-    differenced_series = series.copy()
+    # === 2. Evaluationsmetriken extrahieren ===
+    metrics = {
+        "Stadt": city,
+        "AIC": model.aic(),
+        "BIC": model.bic()
+    }
 
-    if d > 0:
-        differenced_series = differenced_series.diff(d)
-    if D > 0:
-        differenced_series = differenced_series.diff(m * D)
+    try:
+        res = model.arima_res_
+        metrics["parameter_names"] = res.params.index.tolist()
+        metrics["t_values"] = res.tvalues.tolist()
+        metrics["p_values"] = res.pvalues.tolist()
+    except Exception as e:
+        print(f"⚠️ Keine t-/p-Werte extrahierbar für {city}: {e}")
+        metrics["parameter_names"] = None
+        metrics["t_values"] = None
+        metrics["p_values"] = None
 
-    differenced_series = differenced_series.dropna()
-    differenced_series.name = "Differenzierte Zeitreihe"
-
-    # Speichern als CSV
-    diff_out_path = os.path.join(output_dir, f"{city}_differenced.csv")
-    differenced_series.to_csv(diff_out_path, header=True)
-
-    # Residuen plotten
-    resid = model.resid()
-    plt.figure(figsize=(10, 4))
-    plt.plot(resid)
-    plt.title(f"Residuen - {city}")
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, f"{city}_residuals.png"))
-    plt.close()
-
-    # ACF der Residuen
-    fig = plot_acf(resid)
-    plt.title(f"ACF der Residuen - {city}")
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, f"{city}_acf_residuals.png"))
-    plt.close()
+    # Speichern als Python-Datei
+    eval_path = os.path.join(eval_dir, f"{city}_evaluation.py")
+    with open(eval_path, "w", encoding="utf-8") as f:
+        f.write("evaluation_metrics = {\n")
+        for k, v in metrics.items():
+            f.write(f"    '{k}': {repr(v)},\n")
+        f.write("}\n")
