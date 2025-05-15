@@ -13,7 +13,7 @@ import config
 
 def main():
     
-    timeseries = config.df_seasonal_diff
+    timeseries = config.df_seasonal_diff_angeles
     
     
     # 3. Kruskal-Wallis-Test durchführen (Prüfung auf saisonale Unterschiede)

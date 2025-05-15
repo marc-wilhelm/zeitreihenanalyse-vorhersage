@@ -3,5 +3,5 @@
 
 name = 'berlin'
 order = (1, 0, 1)
-seasonal_order = (3, 1, 0, 12)
+seasonal_order = (3, 0, 0, 12)
 aic = 7084.126530244598

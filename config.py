@@ -25,6 +25,19 @@ df_seasonal_diff_berlin = df_seasonal_diff_berlin[['Datum', 'MonatlicheDurchschn
 
 
 df_angeles = pd.read_csv(PATH_TS_ANGELES_CLEAN)
+#print(df_angeles)
+
+#Test
+#df_angeles['Datum'] = pd.to_datetime(df_angeles['Datum'])
+#df_angeles.set_index('Datum', inplace=True)
+
+# Series extrahieren (nicht differenziert)
+#original_angeles = df_angeles['MonatlicheDurchschnittsTemperatur']
+#print(original_angeles)
+
+
+
+
 #Series
 temp_diff_angeles = df_angeles['MonatlicheDurchschnittsTemperatur'].diff(1).dropna()
 seasonal_diff_angeles = temp_diff_angeles.diff(12).dropna()
