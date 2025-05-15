@@ -96,6 +96,7 @@ def run_expanding_sarima_cv(city):
     splits = splitter.split(series)
 
     results = []
+    ljung_pvalues = []  # Liste für alle p-Werte des Ljung-Box-Tests
 
     for fold, (train_idx, test_idx) in enumerate(splits):
         train = series.iloc[train_idx]
@@ -122,6 +123,12 @@ def run_expanding_sarima_cv(city):
             test_mse = mse(test.values, forecast.values)
             train_mse = mse(train.values, pred_train.values)
 
+            from statsmodels.stats.diagnostic import acorr_ljungbox
+            # Ljung-Box-Test auf Residuen (Lag 10)
+            ljung_result = acorr_ljungbox(residuals, lags=[10], return_df=True)
+            ljung_pvalue = ljung_result["lb_pvalue"].iloc[0]
+            ljung_pvalues.append(ljung_pvalue)  # P-Wert zur Liste hinzufügen
+
             results.append({
                 "fold": fold + 1,
                 "train_size": len(train),
@@ -129,7 +136,8 @@ def run_expanding_sarima_cv(city):
                 "train_rmse": train_rmse,
                 "test_rmse": test_rmse,
                 "train_mse": train_mse,
-                "test_mse": test_mse
+                "test_mse": test_mse,
+                "ljung_pvalue": ljung_pvalue  # P-Wert auch in den Ergebnissen speichern
             })
 
             print(f"   ✅ Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
@@ -150,6 +158,11 @@ def run_expanding_sarima_cv(city):
         print(f"Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
         print(f"Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
         print(f"Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
+        
+        # Durchschnittlicher p-Wert des Ljung-Box-Tests
+        if ljung_pvalues:
+            avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues)
+            print(f"Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
     else:
         print(f"\n⚠️ Keine gültigen Folds ausgewertet für {city}.")
 
@@ -158,5 +171,5 @@ def run_expanding_sarima_cv(city):
 
 # === Hauptschleife über alle Städte ===
 if __name__ == "__main__":
-    for city in ["angeles"]:
+    for city in ["angeles", "abakan", "berlin"]:
         run_expanding_sarima_cv(city)

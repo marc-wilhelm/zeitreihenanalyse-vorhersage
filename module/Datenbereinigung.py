@@ -9,6 +9,8 @@ from Hilfsfunktionen.NaNPruefen import NaNPruefen
 from Hilfsfunktionen.DatentypenPruefen import DatentypenPruefen
 from Hilfsfunktionen.DuplikatePruefen import DuplikatePruefen
 from Hilfsfunktionen.BereinigteDatenSpeichern import BereinigteDatenSpeichern
+#from scipy.stats import zscore
+import pandas as pd
 
 import sys
 import os
@@ -53,20 +55,28 @@ def verarbeite_datei(input_file, output_file):
     df = ZeitreiheAb1880(df)
     print("Daten ab 1880 gefiltert!")
 
-    # 6. Temperaturwerte runden
-    df = TemperaturRunden(df)
-    print("Temperaturwerte gerundet!")
+    
 
-    # 7. NaN-Werte prüfen
+    # 6. NaN-Werte prüfen
     df = NaNPruefen(df)
 
-    # 8. Datentypen prüfen
+
+    # 7. Datentypen prüfen
     DatentypenPruefen(df)
 
-    # 9. Duplikate prüfen
+    # Z-Transformation
+    #df['MonatlicheDurchschnittsTemperatur'] = pd.to_numeric(df['MonatlicheDurchschnittsTemperatur'], errors='coerce')
+    #df['MonatlicheDurchschnittsTemperatur'] = zscore(df['MonatlicheDurchschnittsTemperatur'])
+
+    #df['MonatlicheDurchschnittsTemperatur'] = zscore(df['MonatlicheDurchschnittsTemperatur'])
+
+
+
+
+    # 8. Duplikate prüfen
     DuplikatePruefen(df)
 
-    # 10. Daten speichern
+    # 9. Daten speichern
     BereinigteDatenSpeichern(df, output_file)
     print(f"Daten erfolgreich gespeichert unter {output_file}!")
 
