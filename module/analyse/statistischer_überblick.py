@@ -1,28 +1,16 @@
 import matplotlib.pyplot as plt
 import sys
 import os
-from module.datenvorbereitung.DatenEinlesen import DatenEinlesen
 
-# Projektverzeichnis setzen
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# === Zentrale Konfiguration importieren ===
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import config
 
-# Arbeitsverzeichnis auf Projektverzeichnis setzen
-os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-print(f"Aktuelles Arbeitsverzeichnis: {os.getcwd()}")
+# Projektpfade initialisieren
+config.init_project_paths()
 
-# Ergebnisverzeichnisse erstellen
-results_dir = os.path.join("results")
-os.makedirs(os.path.join(results_dir, "statistische_kennzahlen"), exist_ok=True)
-os.makedirs(os.path.join(results_dir, "histogramme"), exist_ok=True)
-os.makedirs(os.path.join(results_dir, "boxplots"), exist_ok=True)
-
-# Liste der Eingabepfade und Städtenamen
-dateipfade_mit_namen = [
-    (config.PATH_TS_BERLIN_CLEAN, "berlin"),
-    (config.PATH_TS_ANGELES_CLEAN, "angeles"),
-    (config.PATH_TS_ABAKAN_CLEAN, "abakan")
-]
+# Import der Dateneinlese-Funktion
+from module.datenvorbereitung.DatenEinlesen import DatenEinlesen
 
 def StatistischeAnalyse(df, spalte, city):
     """
@@ -55,6 +43,15 @@ def StatistischeAnalyse(df, spalte, city):
     regel_70_ok = abs(prozent_70 - 70) <= 10
     regel_95_ok = abs(prozent_95 - 95) <= 10
 
+    # === Ausgabeverzeichnisse für statistische Kennzahlen ===
+    stats_dir = os.path.join(config.OUTPUT_FOLDER, "statistische_kennzahlen")
+    hist_dir = os.path.join(config.OUTPUT_FOLDER, "histogramme")
+    boxplot_dir = os.path.join(config.OUTPUT_FOLDER, "boxplots")
+
+    # Verzeichnisse erstellen falls sie nicht existieren
+    for directory in [stats_dir, hist_dir, boxplot_dir]:
+        os.makedirs(directory, exist_ok=True)
+
     # === Statistische Kennzahlen als Kommentierte Textzeilen vorbereiten ===
     summary_lines = [
         f"# Statistische Kennzahlen für {city.capitalize()}",
@@ -73,7 +70,7 @@ def StatistischeAnalyse(df, spalte, city):
     summary_text = "\n".join(summary_lines)
 
     # Datei speichern
-    stats_path = os.path.join(results_dir, "statistische_kennzahlen", f"statistische_kennzahlen_{city}.py")
+    stats_path = os.path.join(stats_dir, f"statistische_kennzahlen_{city}.py")
     with open(stats_path, "w", encoding="utf-8") as f:
         f.write(summary_text + "\n")
     print(f"✅ Statistiken gespeichert unter: {stats_path}")
@@ -92,7 +89,7 @@ def StatistischeAnalyse(df, spalte, city):
     plt.legend()
     plt.grid(True, alpha=0.3)
 
-    hist_path = os.path.join(results_dir, "histogramme", f"histogramm_{city}.png")
+    hist_path = os.path.join(hist_dir, f"histogramm_{city}.png")
     plt.savefig(hist_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"📊 Histogramm gespeichert unter: {hist_path}")
@@ -104,25 +101,37 @@ def StatistischeAnalyse(df, spalte, city):
     plt.ylabel("Monatliche Durchschnittstemperatur")
     plt.grid(True, alpha=0.3)
 
-    boxplot_path = os.path.join(results_dir, "boxplots", f"boxplot_{city}.png")
+    boxplot_path = os.path.join(boxplot_dir, f"boxplot_{city}.png")
     plt.savefig(boxplot_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"📦 Boxplot gespeichert unter: {boxplot_path}")
 
-# === Hauptschleife durch alle Städte ===
-for file_path, city in dateipfade_mit_namen:
-    print(f"\nAnalysiere Datei: {file_path} für Stadt: {city}")
-    df = DatenEinlesen(file_path, sep=",", decimal=".")
+def main():
+    """
+    Hauptfunktion für den statistischen Überblick aller Städte
+    """
+    print("📈 Starte Statistischen Überblick...")
+    print(f"📁 Ausgabeverzeichnis: {config.OUTPUT_FOLDER}")
 
+    # Alle Städte durchlaufen
+    for city in config.CITIES:
+        file_path = config.CITY_PATHS_CLEAN[city]
+        print(f"\nAnalysiere Datei: {file_path} für Stadt: {city}")
 
-    if df is None:
-        print(f"❌ Fehler beim Einlesen von {file_path}. Überspringe.")
-        continue
+        df = DatenEinlesen(file_path, sep=",", decimal=".")
 
-    if "MonatlicheDurchschnittsTemperatur" not in df.columns:
-        print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in {file_path}.")
-        continue
+        if df is None:
+            print(f"❌ Fehler beim Einlesen von {file_path}. Überspringe {city}.")
+            continue
 
-    StatistischeAnalyse(df, "MonatlicheDurchschnittsTemperatur", city)
+        if "MonatlicheDurchschnittsTemperatur" not in df.columns:
+            print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in {file_path}.")
+            continue
 
-print("\n✅ Analyse abgeschlossen. Ergebnisse wurden im 'results'-Ordner gespeichert.")
+        StatistischeAnalyse(df, "MonatlicheDurchschnittsTemperatur", city)
+
+    print(f"\n✅ Statistischer Überblick abgeschlossen. Ergebnisse in: {config.OUTPUT_FOLDER}")
+
+# === Hauptausführung ===
+if __name__ == "__main__":
+    main()

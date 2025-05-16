@@ -45,11 +45,14 @@ OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, "ergebnisse")
 
 # Spezifische Ausgabeordner
 OUTPUT_ACF_PACF_PLOTS = os.path.join(OUTPUT_FOLDER, "acf_pacf_plots")
-OUTPUT_LINIENDIAGRAMME = os.path.join(OUTPUT_FOLDER, "Liniendiagramme")
+OUTPUT_LINIENDIAGRAMME = os.path.join(OUTPUT_FOLDER, "liniendiagramme")
 OUTPUT_STATIONARITAET = os.path.join(OUTPUT_FOLDER, "stationarität-ergebnisse")
 OUTPUT_SARIMA_RESIDUEN = os.path.join(OUTPUT_FOLDER, "sarima_residuen_auswertung")
 OUTPUT_EVALUATIONS_METRIKEN = os.path.join(OUTPUT_FOLDER, "evaluations_metriken")
 OUTPUT_MODEL_PARAMETERS = os.path.join(OUTPUT_FOLDER, "model_parameters")
+OUTPUT_STATISTIK_KENNZAHLEN = os.path.join(OUTPUT_FOLDER, "statistische_kennzahlen")
+OUTPUT_HISTOGRAMME = os.path.join(OUTPUT_FOLDER, "histogramme")
+OUTPUT_BOXPLOTS = os.path.join(OUTPUT_FOLDER, "boxplots")
 
 # === STÄDTELISTE UND DATENPFADE ===
 CITIES = ["abakan", "berlin", "angeles"]
