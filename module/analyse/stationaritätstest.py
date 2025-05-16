@@ -5,14 +5,15 @@ from statsmodels.tsa.stattools import adfuller
 from scipy.stats import kruskal
 from module.analyse.CusumTest import cusum_test
 
-# === Projektpfad setzen ===
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(project_root)
+# === Zentrale Konfiguration importieren ===
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import config
 
+# Projektpfade initialisieren
+config.init_project_paths()
 
 def make_stationary_by_adf(series, city):
-    """Führt ADF-Test durch, differenziert max. 2x und speichert Ergebnis als .py-Datei im neuen Format"""
+    """Führt ADF-Test durch, differenziert max. 2x und speichert Ergebnis als .py-Datei"""
     differencing_count = 0
     results = []
 
@@ -43,9 +44,7 @@ def make_stationary_by_adf(series, city):
             differencing_count += 1
 
     # === Ergebnisse in .py-Datei speichern ===
-    result_dir = os.path.join(project_root, config.OUTPUT_FOLDER, "stationarität-ergebnisse")
-    os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, f"adf_result_{city}.py")
+    file_path = os.path.join(config.OUTPUT_STATIONARITAET, f"adf_result_{city}.py")
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(f"# Trendanalyse für {city.capitalize()}\n")
@@ -70,12 +69,10 @@ def make_stationary_by_adf(series, city):
             f.write(f"d = 0\n")
 
     print(f"📝 ADF-Ergebnisse gespeichert unter: {file_path}")
-
     return series
 
-
-
 def analyse_city(city, path):
+    """Führt vollständige Stationaritätsanalyse für eine Stadt durch"""
     print(f"\n==============================")
     print(f"🌆 Stadt: {city}")
     print(f"==============================")
@@ -126,15 +123,13 @@ def analyse_city(city, path):
         print(f"✅ Kein saisonaler Effekt festgestellt für {city}. Speichere direkt.")
 
     # === Speicherung der finalen Zeitreihe ===
-    output_dir = os.path.join(project_root, "daten", "stationäre-daten")
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, f"stationaere_zeitreihe_{city}.csv")
+    output_path = config.get_stationary_data_path(city)
     df_stationary = df_stationary[['Datum', 'MonatlicheDurchschnittsTemperatur']]
     df_stationary.to_csv(output_path, index=False)
     print(f"💾 Stationäre Zeitreihe gespeichert unter: {output_path}")
 
     # === CUSUM-Test ===
-    cusum_output_path = os.path.join(project_root, "results", "stationarität-ergebnisse", f"cusum_result_{city}.png")
+    cusum_output_path = os.path.join(config.OUTPUT_STATIONARITAET, f"cusum_result_{city}.png")
     try:
         cusum_test(df_stationary, city=city, save_path=cusum_output_path)
         print(f"🖼️ CUSUM-Plot gespeichert unter: {cusum_output_path}")
@@ -142,9 +137,7 @@ def analyse_city(city, path):
         print(f"❌ Fehler beim CUSUM-Test für {city}: {e}")
 
     # === Speichern von Kruskal-Wallis-Auswertung als Variablen ===
-    result_dir = os.path.join(project_root, "results", "stationarität-ergebnisse")
-    os.makedirs(result_dir, exist_ok=True)
-    result_path = os.path.join(result_dir, f"kruskal_result_{city}.py")
+    result_path = os.path.join(config.OUTPUT_STATIONARITAET, f"kruskal_result_{city}.py")
     with open(result_path, "w", encoding="utf-8") as f:
         f.write(f"# Saisonalitätsanalyse für {city.capitalize()}\n")
         f.write(f"p_wert_vor = {p_vor:.5f}\n")
@@ -152,17 +145,20 @@ def analyse_city(city, path):
         f.write(f"D = {D}\n")
     print(f"📝 Kruskal-Ergebnis gespeichert unter: {result_path}")
 
+def main():
+    """Führt Stationaritätsanalyse für alle Städte durch"""
+    print("🔬 Stationaritätsanalyse wird gestartet...")
 
-# === Hauptausführung ===
-if __name__ == "__main__":
-    stadt_dateien = {
-        "abakan": config.PATH_TS_ABAKAN_CLEAN,
-        "berlin": config.PATH_TS_BERLIN_CLEAN,
-        "angeles": config.PATH_TS_ANGELES_CLEAN
-    }
-
-    for city, path in stadt_dateien.items():
+    for city in config.CITIES:
+        path = config.CITY_PATHS_CLEAN[city]
         try:
             analyse_city(city, path)
         except Exception as e:
             print(f"❌ Fehler bei Stadt {city}: {e}")
+
+    print(f"\n✅ Stationaritätsanalyse abgeschlossen.")
+    print(f"📁 Ergebnisse gespeichert in: {config.OUTPUT_STATIONARITAET}")
+
+# === Hauptausführung ===
+if __name__ == "__main__":
+    main()

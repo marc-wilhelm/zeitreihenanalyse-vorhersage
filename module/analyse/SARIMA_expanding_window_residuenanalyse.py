@@ -9,6 +9,12 @@ from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tools.eval_measures import rmse, mse
 
+# === Zentrale Konfiguration importieren ===
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+import config
+
+# Projektpfade initialisieren
+config.init_project_paths()
 
 # === Expanding-Window-Klasse ===
 class expanding_window(object):
@@ -42,10 +48,9 @@ class expanding_window(object):
         output_test = output_test[:-1]
         return list(zip(output_train, output_test))
 
-
 def plot_residuals(residuals, city, fold):
-    output_dir = os.path.join("results", "sarima_residuen_auswertung", city)
-    os.makedirs(output_dir, exist_ok=True)
+    """Erstellt Residuenanalyse-Plots für einen Fold"""
+    output_dir = config.get_city_output_dir(config.OUTPUT_SARIMA_RESIDUEN, city)
 
     plt.figure(figsize=(10, 8))
 
@@ -60,8 +65,11 @@ def plot_residuals(residuals, city, fold):
     plt.title("ACF der Residuen")
 
     plt.subplot(2, 2, 3)
-    import seaborn as sns
-    sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
+    try:
+        import seaborn as sns
+        sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
+    except ImportError:
+        plt.hist(residuals, bins=30, density=True, alpha=0.7, color='skyblue')
     plt.title("Histogramm der Residuen")
 
     plt.subplot(2, 2, 4)
@@ -73,10 +81,11 @@ def plot_residuals(residuals, city, fold):
     plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
     plt.savefig(plot_path)
     plt.close()
-
+    print(f"📊 Residuenanalyse gespeichert: residuen_fold_{fold}.png")
 
 def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
-    file_path = os.path.join("Results", "evaluations_metriken", f"{city}_evaluation.py")
+    """Fügt Residuenanalyse-Zusammenfassung zur Evaluation-Datei hinzu"""
+    file_path = os.path.join(config.OUTPUT_EVALUATIONS_METRIKEN, f"{city}_evaluation.py")
     header = "# === Residuenanalyse nach Test des gefundenen SARIMA-Modells ==="
 
     summary_lines = [f"\n{header}"]
@@ -107,20 +116,28 @@ def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
     print(f"📁 Zusammenfassung für {city} gespeichert unter: {file_path}")
 
 def run_expanding_sarima_cv(city):
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    """Führt Expanding-Window Cross-Validation für SARIMA-Modell durch"""
+    print(f"\n📍 Stadt: {city}")
 
     # === Modellparameter laden ===
-    param_module = f"results.model_parameters.{city}_params"
-    params = importlib.import_module(param_module)
-    order = params.order
-    seasonal_order = params.seasonal_order
+    param_module = f"ergebnisse.model_parameters.{city}_params"
+    try:
+        params = importlib.import_module(param_module)
+        order = params.order
+        seasonal_order = params.seasonal_order
+    except ImportError:
+        print(f"❌ Keine Parameter-Datei gefunden für {city}")
+        return pd.DataFrame()
 
     # === Daten aus CSV laden ===
-    input_path = os.path.join("daten", "stationäre-daten", f"stationaere_zeitreihe_{city}.csv")
-    df = pd.read_csv(input_path)
-    series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
+    input_path = config.get_stationary_data_path(city)
+    try:
+        df = pd.read_csv(input_path)
+        series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
+    except Exception as e:
+        print(f"❌ Fehler beim Laden der Daten für {city}: {e}")
+        return pd.DataFrame()
 
-    print(f"\n📍 Stadt: {city}")
     print(f"🔧 Verwende SARIMA{order}x{seasonal_order}")
     print(f"📄 Anzahl Datenpunkte: {len(series)}")
 
@@ -189,7 +206,7 @@ def run_expanding_sarima_cv(city):
         print(f"Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
         print(f"Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
         print(f"Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
-        
+
         if ljung_pvalues:
             avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues)
             print(f"Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
@@ -203,8 +220,19 @@ def run_expanding_sarima_cv(city):
 
     return results_df
 
+def main():
+    """Führt SARIMA Expanding Window Residuenanalyse für alle Städte durch"""
+    print("🔬 SARIMA Expanding Window Residuenanalyse wird gestartet...")
 
-# === Hauptschleife über alle Städte ===
+    for city in config.CITIES:
+        try:
+            run_expanding_sarima_cv(city)
+        except Exception as e:
+            print(f"❌ Fehler bei Stadt {city}: {e}")
+
+    print(f"\n✅ SARIMA Residuenanalyse abgeschlossen.")
+    print(f"📁 Ergebnisse gespeichert in: {config.OUTPUT_SARIMA_RESIDUEN}")
+
+# === Hauptausführung ===
 if __name__ == "__main__":
-    for city in ["angeles", "abakan", "berlin"]:
-        run_expanding_sarima_cv(city)
+    main()

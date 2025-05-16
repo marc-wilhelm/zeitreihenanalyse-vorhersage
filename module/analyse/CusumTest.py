@@ -3,6 +3,12 @@ import pandas as pd
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 from statsmodels.regression.linear_model import OLS
+import os
+import sys
+
+# === Zentrale Konfiguration importieren ===
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+import config
 
 def cusum_test(df, target_column='MonatlicheDurchschnittsTemperatur', date_column='Datum', city=None, save_path=None):
     """
@@ -52,7 +58,10 @@ def cusum_test(df, target_column='MonatlicheDurchschnittsTemperatur', date_colum
     plt.tight_layout()
 
     if save_path:
+        # Ausgabeordner sicherstellen
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path)
         plt.close()
+        print(f"📈 CUSUM-Plot gespeichert: {save_path}")
     else:
         plt.show()
