@@ -7,49 +7,50 @@ Hauptprogramm für die Datenvorbereitungs-Pipeline
 import sys
 import os
 
-# Robuste Pfad-Lösung: Eine Ebene hoch zum Projekt-Root
+# Zentrale Konfiguration importieren und Pfade initialisieren
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 os.chdir(project_root)
 
-# Konfigurations- und Pipeline-Module importieren
 import config
-from module.datenvorbereitung import DatenvorbereitungsPipeline
+config.init_project_paths()
+
+from module.datenvorbereitung import run_complete_preprocessing, run_single_preprocessing
 
 def main():
     """
-    Hauptfunktion - ruft die Pipeline für alle drei Städte auf
+    Hauptfunktion - führt die Datenvorbereitungs-Pipeline durch
+
+    KONFIGURATION: Hier können Sie einstellen, was ausgeführt werden soll
     """
     print("Starte Datenvorbereitungs-Pipeline...\n")
 
-    # Pipeline-Instanz erstellen
-    pipeline = DatenvorbereitungsPipeline()
+    # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
-    # Berlin verarbeiten
-    pipeline.verarbeite_datei(
-        config.PATH_TS_BERLIN,
-        config.PATH_TS_BERLIN_CLEAN,
-        sep=";",
-        decimal=","
-    )
+    # Option 1: Komplette Pipeline für alle Städte ausführen (Standard)
+    mode = "complete"  # Ändern Sie das hier für andere Modi
 
-    # Angeles verarbeiten
-    pipeline.verarbeite_datei(
-        config.PATH_TS_ANGELES,
-        config.PATH_TS_ANGELES_CLEAN,
-        sep=";",
-        decimal=","
-    )
+    # Option 2: Nur spezifische Städte verarbeiten
+    # mode = "abakan"         # Nur Abakan
+    # mode = "berlin"         # Nur Berlin
+    # mode = "angeles"        # Nur Angeles
 
-    # Abakan verarbeiten
-    pipeline.verarbeite_datei(
-        config.PATH_TS_ABAKAN,
-        config.PATH_TS_ABAKAN_CLEAN,
-        sep=";",
-        decimal=","
-    )
+    # ==================================================================
 
-    print("\nDatenvorbereitungs-Pipeline abgeschlossen.")
+    if mode == "complete":
+        print("🚀 Führe komplette Datenvorbereitungspipeline aus...")
+        run_complete_preprocessing()
+
+    elif mode in ["abakan", "berlin", "angeles"]:
+        print(f"📍 Führe Datenvorbereitung nur für {mode} aus...")
+        run_single_preprocessing(mode)
+
+    else:
+        print(f"❌ Unbekannter Modus: {mode}")
+        print("Verfügbare Modi: 'complete', 'abakan', 'berlin', 'angeles'")
+        return
+
+    print("✅ Datenvorbereitungs-Pipeline abgeschlossen!")
 
 if __name__ == "__main__":
     main()

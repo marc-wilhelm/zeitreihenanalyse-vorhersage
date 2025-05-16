@@ -1,5 +1,10 @@
-# SARIMA-Parameter für Abakan
-# Automatisch generiert - können manuell angepasst werden
+"""
+AutoARIMA Modellparameter fÃ¼r Abakan
+Generiert am: 2025-05-17 00:12:04
+"""
 
-order = (1, 1, 1)
-seasonal_order = (1, 1, 1, 12)
+name = 'abakan'
+order = (3, 0, 0)
+seasonal_order = (1, 0, 1, 12)
+aic = 7660.01825636895
+bic = 7697.680046887935

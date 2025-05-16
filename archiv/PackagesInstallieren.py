@@ -11,7 +11,7 @@ def install_required_packages():
 
     # Versuche, die requirements.txt zu lesen
     try:
-        with open('../../requirements.txt', 'r') as f:
+        with open('../requirements.txt', 'r') as f:
             requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
     except FileNotFoundError:
         print("FEHLER: requirements.txt nicht gefunden!")

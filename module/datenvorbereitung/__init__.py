@@ -1,4 +1,4 @@
-# module/datenbereinigung/__init__.py
+# module/datenvorbereitung/__init__.py
 
 # Alle Funktionen aus den einzelnen Modulen importieren
 from .DatenEinlesen import DatenEinlesen
@@ -11,8 +11,8 @@ from .DatentypenPruefen import DatentypenPruefen
 from .DuplikatePruefen import DuplikatePruefen
 from .BereinigteDatenSpeichern import BereinigteDatenSpeichern
 
-# Pipeline importieren
-from .pipeline_datenvorbereitung import DatenvorbereitungsPipeline
+# Pipeline-Funktionen importieren
+from .pipeline_datenvorbereitung import run_complete_preprocessing, run_single_preprocessing
 
 # Liste aller verfügbaren Funktionen
 __all__ = [
@@ -25,5 +25,6 @@ __all__ = [
     'DatentypenPruefen',
     'DuplikatePruefen',
     'BereinigteDatenSpeichern',
-    'DatenvorbereitungsPipeline'
+    'run_complete_preprocessing',
+    'run_single_preprocessing'
 ]
