@@ -1,6 +1,6 @@
 import pandas as pd
 
-def DatenEinlesen(Dateipfad, sep=';'):
+def DatenEinlesen(Dateipfad, sep=';', decimal=','):
     """
     Liest eine CSV-Datei ein und gibt das DataFrame zurück.
 
@@ -17,10 +17,20 @@ def DatenEinlesen(Dateipfad, sep=';'):
     - pandas.DataFrame or None
         Ein DataFrame, das die eingelesenen Daten enthält, oder `None`, falls ein Fehler auftritt.
     """
+    '''
     try:
-        df = pd.read_csv(Dateipfad, sep=sep)  # Hier sep übergeben
+        df = pd.read_csv(Dateipfad, sep=';', decimal=',')  # Hier sep übergeben
         return df
     except Exception as e:
         print(f"Fehler beim Einlesen der Daten: {e}")
         return None
+    '''
+  
+    try:
+        df = pd.read_csv(Dateipfad, sep=sep, decimal=decimal)
+        return df
+    except Exception as e:
+        print(f"Fehler beim Einlesen der Daten: {e}")
+        return None
+
 
