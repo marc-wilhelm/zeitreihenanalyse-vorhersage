@@ -47,12 +47,18 @@ OUTPUT_FOLDER = os.path.join(PROJECT_ROOT, "ergebnisse")
 OUTPUT_ACF_PACF_PLOTS = os.path.join(OUTPUT_FOLDER, "acf_pacf_plots")
 OUTPUT_LINIENDIAGRAMME = os.path.join(OUTPUT_FOLDER, "liniendiagramme")
 OUTPUT_STATIONARITAET = os.path.join(OUTPUT_FOLDER, "stationarität_ergebnisse")
-OUTPUT_SARIMA_RESIDUEN = os.path.join(OUTPUT_FOLDER, "sarima_residuen_auswertung")
+OUTPUT_SARIMA_RESIDUEN = os.path.join(OUTPUT_FOLDER, "sarima_residuen")
 OUTPUT_EVALUATIONS_METRIKEN = os.path.join(OUTPUT_FOLDER, "evaluations_metriken")
 OUTPUT_MODEL_PARAMETERS = os.path.join(OUTPUT_FOLDER, "model_parameters")
 OUTPUT_STATISTIK_KENNZAHLEN = os.path.join(OUTPUT_FOLDER, "statistische_kennzahlen")
 OUTPUT_HISTOGRAMME = os.path.join(OUTPUT_FOLDER, "histogramme")
 OUTPUT_BOXPLOTS = os.path.join(OUTPUT_FOLDER, "boxplots")
+
+# Universelle Ausgabeordner (für gemeinsame Parameter über alle Städte)
+OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "evaluations_metriken_universell")
+OUTPUT_MODEL_PARAMETERS_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "model_parameters_universell")
+OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "prognose_ergebnisse_universell")
+OUTPUT_SARIMA_RESIDUEN_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "sarima_residuen_universell")
 
 # === STÄDTELISTE UND DATENPFADE ===
 CITIES = ["abakan", "berlin", "angeles"]
@@ -80,7 +86,12 @@ def ensure_output_dirs():
         OUTPUT_SARIMA_RESIDUEN,
         OUTPUT_EVALUATIONS_METRIKEN,
         OUTPUT_MODEL_PARAMETERS,
-        STATIONAER_DATEN_DIR
+        STATIONAER_DATEN_DIR,
+        # Universelle Ausgabeordner
+        OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL,
+        OUTPUT_MODEL_PARAMETERS_UNIVERSELL,
+        OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL,
+        OUTPUT_SARIMA_RESIDUEN_UNIVERSELL
     ]
 
     for directory in output_dirs:

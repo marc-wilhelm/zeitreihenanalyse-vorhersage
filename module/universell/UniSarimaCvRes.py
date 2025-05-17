@@ -1,6 +1,6 @@
 import os
 import sys
-import importlib
+import importlib.util
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,7 +8,12 @@ import scipy.stats as stats
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tools.eval_measures import rmse, mse
+import warnings
+warnings.filterwarnings("ignore")
 
+# === Projektstruktur einbinden ===
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import config
 
 # === Expanding-Window-Klasse ===
 class expanding_window(object):
@@ -44,8 +49,8 @@ class expanding_window(object):
 
 
 def plot_residuals(residuals, city, fold):
-    output_dir = os.path.join("results", "sarima_residuen_universell", city)
-    os.makedirs(output_dir, exist_ok=True)
+    """Erstellt Residuenanalyse-Plots für einen Fold mit universellen Parametern"""
+    output_dir = config.get_city_output_dir(config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL, city)
 
     plt.figure(figsize=(10, 8))
 
@@ -60,8 +65,11 @@ def plot_residuals(residuals, city, fold):
     plt.title("ACF der Residuen")
 
     plt.subplot(2, 2, 3)
-    import seaborn as sns
-    sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
+    try:
+        import seaborn as sns
+        sns.histplot(residuals, kde=True, stat="density", bins=30, color='skyblue')
+    except ImportError:
+        plt.hist(residuals, bins=30, density=True, alpha=0.7, color='skyblue')
     plt.title("Histogramm der Residuen")
 
     plt.subplot(2, 2, 4)
@@ -73,12 +81,13 @@ def plot_residuals(residuals, city, fold):
     plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
     plt.savefig(plot_path)
     plt.close()
+    print(f"   📊 Residuenanalyse gespeichert: {plot_path}")
 
 
 def append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung_pvalue):
-    output_dir = os.path.join("results", "evaluations_metriken_universell")  
-    os.makedirs(output_dir, exist_ok=True)
-    file_path = os.path.join(output_dir, f"{city}_evaluation.py")
+    """Fügt Konfidenzintervall und Evaluationsmetriken zur Evaluation-Datei hinzu"""
+    os.makedirs(config.OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL, exist_ok=True)
+    file_path = os.path.join(config.OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL, f"{city}_evaluation.py")
 
     header_ci = "\n# === Konfidenzintervall ==="
     header_eval = "# === Durchschnittliche Evaluationsmetriken ==="
@@ -111,25 +120,35 @@ def append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung
     print(f"📁 Konfidenzintervall und Metriken gespeichert unter: {file_path}")
 
 
-
 def run_expanding_sarima_cv(city):
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    """Führt Expanding-Window Cross-Validation für SARIMA-Modell mit universellen Parametern durch"""
+    # Universelle Parameter laden
+    shared_param_path = os.path.join(config.OUTPUT_MODEL_PARAMETERS_UNIVERSELL, "gemeinsame_parameter.py")
 
-    shared_param_path = os.path.join("results", "model_parameters_universell", "gemeinsame_parameter.py")
-    spec = importlib.util.spec_from_file_location("shared_params", shared_param_path)
-    params = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(params)
-    order = params.order
-    seasonal_order = params.seasonal_order
+    try:
+        spec = importlib.util.spec_from_file_location("shared_params", shared_param_path)
+        params = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(params)
+        order = params.order
+        seasonal_order = params.seasonal_order
+    except Exception as e:
+        print(f"❌ Fehler beim Laden der universellen Parameter: {e}")
+        return pd.DataFrame()
 
-    input_path = os.path.join("daten", "stationäre-daten", f"stationaere_zeitreihe_{city}.csv")
-    df = pd.read_csv(input_path)
-    series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
+    # Daten aus stationärer Zeitreihe laden
+    input_path = config.get_stationary_data_path(city)
+    try:
+        df = pd.read_csv(input_path)
+        series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
+    except Exception as e:
+        print(f"❌ Fehler beim Laden der stationären Daten für {city}: {e}")
+        return pd.DataFrame()
 
     print(f"\n📍 Stadt: {city}")
     print(f"🔧 Verwende gemeinsame SARIMA{order}x{seasonal_order}")
     print(f"📄 Anzahl Datenpunkte: {len(series)}")
 
+    # CV mit Expanding Window
     splitter = expanding_window(initial=800, horizon=160, period=160)
     splits = splitter.split(series)
 
@@ -201,7 +220,43 @@ def run_expanding_sarima_cv(city):
     return results_df
 
 
-# === Hauptschleife über alle Städte ===
+def main():
+    """Hauptfunktion für universelle SARIMA Cross-Validation"""
+    print("🔬 Universelle SARIMA Cross-Validation wird gestartet...")
+
+    # Ausgabeordner erstellen
+    config.ensure_output_dirs()
+
+    # CrossValidation für alle Städte durchführen
+    cities = config.CITIES
+    successful_cities = 0
+
+    for city in cities:
+        try:
+            print("\n" + "="*50)
+            print(f"📌 Bearbeite Stadt: {city.upper()}")
+            print("="*50)
+
+            results_df = run_expanding_sarima_cv(city)
+
+            if not results_df.empty:
+                successful_cities += 1
+                print(f"\n✅ SARIMA CV für {city} erfolgreich durchgeführt.")
+            else:
+                print(f"\n⚠️ Keine validen Ergebnisse für {city}.")
+
+        except Exception as e:
+            print(f"❌ Fehler bei Stadt {city}: {str(e)[:150]}...")
+
+    # Zusammenfassung ausgeben
+    print("\n" + "="*60)
+    print("📋 ZUSAMMENFASSUNG - UNIVERSELLE SARIMA CV")
+    print("="*60)
+    print(f"✅ Erfolgreiche Städte: {successful_cities}/{len(cities)}")
+    print(f"📁 Ergebnisse gespeichert unter: {config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL}")
+    print("="*60)
+
+
+# === Hauptausführung ===
 if __name__ == "__main__":
-    for city in ["angeles", "abakan", "berlin"]:
-        run_expanding_sarima_cv(city)
+    main()

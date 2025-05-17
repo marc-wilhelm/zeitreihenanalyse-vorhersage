@@ -163,8 +163,8 @@ def run_expanding_sarima_cv(city):
                             enforce_invertibility=False)
             fit = model.fit(disp=False)
 
-            forecast = fit.forecast(steps=len(test))
             pred_train = fit.get_prediction(start=0, end=len(train)-1).predicted_mean
+            forecast = fit.get_forecast(steps=len(test)).predicted_mean
             residuals = train - pred_train
 
             test_rmse = rmse(test.values, forecast.values)

@@ -1,8 +1,18 @@
-pandas
-statsmodels
-matplotlib
-numpy
-scikit-learn
-scipy
-seaborn
-pmdarima
+##########################################
+###### Alle Packages DEINSTALLIEREN ######
+# pip uninstall -r requirements.txt -y
+###### Alle Packages INSTALLIEREN ########
+# pip install -r requirements.txt
+##########################################
+
+# Feste Versionen
+numpy==1.26.0
+pmdarima==2.0.4
+scikit-learn==1.5.0
+
+# Andere Packages
+pandas>=2.1.1
+matplotlib>=3.8.0
+statsmodels>=0.14.0
+scipy>=1.11.2
+seaborn>=0.13.2
