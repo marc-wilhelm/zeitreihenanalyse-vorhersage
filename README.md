@@ -189,7 +189,7 @@ Diese Anwendung bietet folgende Funktionen:
 
 ## Entwickler Guide
 
-Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/DEVELOPER_GUIDE.md) erstellt. Hier findest du Best Practices, Code-Standards und Workflow-Guidelines.
+Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/Entwickler_Guide.md) erstellt. Hier findest du Best Practices, Code-Standards und Workflow-Guidelines.
 
 
 ## Mitwirkende
