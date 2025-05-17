@@ -198,8 +198,8 @@ Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics"
 
 **Team MJM**
 <table>
-  <tr><td>Maike Knauer</td>     <td>6622009</td></tr>
-  <tr><td>Johanna Kießling</td> <td>6622007</td></tr>
+  <tr><td>Maike Knauer</td>     <td>6622007</td></tr>
+  <tr><td>Johanna Kießling</td> <td>6622009</td></tr>
   <tr><td>Marc Wilhelm</td>     <td>6622005</td></tr>
 </table>
 
