@@ -21,7 +21,7 @@ Der methodische Ansatz umfasst sowohl univariate Analysen für jede einzelne Sta
 ## Projekt-Anforderungen
 
 - **Python 3.12.X** (neuere Versionen werden akutell nicht vom [pmdarima](https://pypi.org/project/pmdarima/)-Package unterstützt.
-- **Virtuelle Umgebung** (werden durch Setup-Skripte erstellt - siehe [Installation](##installation))
+- **Virtuelle Umgebung** (werden durch Setup-Skripte erstellt - siehe [Installation](#installation))
 - **Erforderliche Pakete** (in [requirements.txt](requirements.txt) spezifiziert)
 
 
