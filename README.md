@@ -5,6 +5,7 @@
 
 ## Thematischer Überblick
 
+
 Im Rahmen dieses Projekts werden drei Zeitreihen mit historischen Temperaturdaten ([Quelle](https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data)) folgender Städte analysiert:
 
 - **Abakan**, Russland
