@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller
 from scipy.stats import kruskal
-from module.analyse.CusumTest import cusum_test
+from .CusumTest import cusum_test
 
 # === Zentrale Konfiguration importieren ===
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))

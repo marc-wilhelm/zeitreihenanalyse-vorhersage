@@ -8,7 +8,7 @@ import sys
 import os
 
 # Zentrale Konfiguration importieren und Pfade initialisieren
-project_root = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 os.chdir(project_root)
 
@@ -28,7 +28,7 @@ def main():
     # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
     # Option 1: Komplette Pipeline ausführen (Standard)
-    mode = "complete"  # Ändern Sie das hier für andere Modi
+    mode = "sarima_cv"  # Ändern Sie das hier für andere Modi
 
     # Option 2: Nur spezifische Schritte ausführen
     # mode = "autoarima"      # Nur AutoARIMA Modellauswahl

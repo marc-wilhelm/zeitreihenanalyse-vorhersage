@@ -8,7 +8,7 @@ import sys
 import os
 
 # Zentrale Konfiguration importieren und Pfade initialisieren
-project_root = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 os.chdir(project_root)
 

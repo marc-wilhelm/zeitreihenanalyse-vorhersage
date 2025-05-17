@@ -73,8 +73,8 @@ def sarima_forecast_with_backtransform(city, diff_data, original_data, order, se
     # DataFrame für differenzierte Prognose
     forecast_df = pd.DataFrame({
         'Prognose_Differenziert': mean_forecast,
-        'Untere_KI_Differenziert': conf_int.iloc[:, 0],
-        'Obere_KI_Differenziert': conf_int.iloc[:, 1],
+        'Unteres_PI_Differenziert': conf_int.iloc[:, 0],
+        'Oberes_PI_Differenziert': conf_int.iloc[:, 1],
         'Datum': pd.date_range(start=original_data['Datum'].iloc[-1], periods=forecast_steps+1, freq='MS')[1:]
     })
 
@@ -92,8 +92,8 @@ def sarima_forecast_with_backtransform(city, diff_data, original_data, order, se
 
         for i in range(forecast_steps):
             val = prev_value + prev_season - prev_season_minus1 + forecast_df.iloc[i]['Prognose_Differenziert']
-            l = prev_value + prev_season - prev_season_minus1 + forecast_df.iloc[i]['Untere_KI_Differenziert']
-            u = prev_value + prev_season - prev_season_minus1 + forecast_df.iloc[i]['Obere_KI_Differenziert']
+            l = prev_value + prev_season - prev_season_minus1 + forecast_df.iloc[i]['Unteres_PI_Differenziert']
+            u = prev_value + prev_season - prev_season_minus1 + forecast_df.iloc[i]['Oberes_PI_Differenziert']
 
             absolute_forecast.append(val)
             lower_bound.append(l)
@@ -105,15 +105,15 @@ def sarima_forecast_with_backtransform(city, diff_data, original_data, order, se
         # Nur erste Differenz rücktransformieren
         last_value = temp_series.iloc[-1]
         absolute_forecast = last_value + np.cumsum(forecast_df['Prognose_Differenziert'].values)
-        lower_bound = last_value + np.cumsum(forecast_df['Untere_KI_Differenziert'].values)
-        upper_bound = last_value + np.cumsum(forecast_df['Obere_KI_Differenziert'].values)
+        lower_bound = last_value + np.cumsum(forecast_df['Unteres_PI_Differenziert'].values)
+        upper_bound = last_value + np.cumsum(forecast_df['Oberes_PI_Differenziert'].values)
 
     elif d_trans == 0 and D_trans == 1:
         # Nur saisonale Differenz rücktransformieren
         season_values = temp_series.iloc[-m:].values if len(temp_series) >= m else np.zeros(m)
         absolute_forecast = [season_values[i % m] + val for i, val in enumerate(forecast_df['Prognose_Differenziert'])]
-        lower_bound = [season_values[i % m] + val for i, val in enumerate(forecast_df['Untere_KI_Differenziert'])]
-        upper_bound = [season_values[i % m] + val for i, val in enumerate(forecast_df['Obere_KI_Differenziert'])]
+        lower_bound = [season_values[i % m] + val for i, val in enumerate(forecast_df['Unteres_PI_Differenziert'])]
+        upper_bound = [season_values[i % m] + val for i, val in enumerate(forecast_df['Oberes_PI_Differenziert'])]
 
     else:
         # Keine Rücktransformation nötig oder unbekannte Kombination
@@ -121,19 +121,19 @@ def sarima_forecast_with_backtransform(city, diff_data, original_data, order, se
         if d_trans == 0 and D_trans == 0:
             # Direkte Prognose ohne Rücktransformation
             absolute_forecast = forecast_df['Prognose_Differenziert'].values
-            lower_bound = forecast_df['Untere_KI_Differenziert'].values
-            upper_bound = forecast_df['Obere_KI_Differenziert'].values
+            lower_bound = forecast_df['Unteres_PI_Differenziert'].values
+            upper_bound = forecast_df['Oberes_PI_Differenziert'].values
         else:
             # Fallback: Einfache kumulative Summierung
             last_value = temp_series.iloc[-1]
             absolute_forecast = last_value + np.cumsum(forecast_df['Prognose_Differenziert'].values)
-            lower_bound = last_value + np.cumsum(forecast_df['Untere_KI_Differenziert'].values)
-            upper_bound = last_value + np.cumsum(forecast_df['Obere_KI_Differenziert'].values)
+            lower_bound = last_value + np.cumsum(forecast_df['Unteres_PI_Differenziert'].values)
+            upper_bound = last_value + np.cumsum(forecast_df['Oberes_PI_Differenziert'].values)
 
     # Absolute Werte zum DataFrame hinzufügen
     forecast_df['Absolute_Prognose'] = absolute_forecast
-    forecast_df['Absolute_Untere_KI'] = lower_bound
-    forecast_df['Absolute_Obere_KI'] = upper_bound
+    forecast_df['Absolutes_Unteres_PI'] = lower_bound
+    forecast_df['Absolutes_Oberes_PI'] = upper_bound
 
     return forecast_df
 
@@ -154,11 +154,11 @@ def create_forecast_plot(city, original_data, forecast_df, forecast_steps=10):
              forecast_df['Absolute_Prognose'],
              'r-', label='Prognose', linewidth=2)
 
-    # Konfidenzintervall
+    # Prognoseintervall
     plt.fill_between(range(historical_periods + 1, historical_periods + 1 + forecast_steps),
-                     forecast_df['Absolute_Untere_KI'],
-                     forecast_df['Absolute_Obere_KI'],
-                     color='red', alpha=0.3, label='95% Konfidenzintervall')
+                     forecast_df['Absolutes_Unteres_PI'],
+                     forecast_df['Absolutes_Oberes_PI'],
+                     color='red', alpha=0.3, label='95% Prognoseintervall')
 
     # Trennlinie zwischen historischen Daten und Prognose
     plt.axvline(x=historical_periods + 0.5, color='gray', linestyle='--', alpha=0.7)
