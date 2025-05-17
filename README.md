@@ -1,92 +1,144 @@
 # Zeitreihenanalyse und Vorhersage
 
-## 1. Thematischer Überblick
-Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdaten verschiedener Länder enthalten, analysiert werden. Darüber hinaus soll im Rahmen eines Forecasting Engineerings die zukünftige Entwicklung der jährlichen Durchschnittstemperaturen vorhergesagt werden. Dabei wird folgendes Vorgehen angewandt. Zunächst wird für jede einzelne Zeitreihe ein einzelnes passendes Prognosemodell gesucht. Anschließend wird darauf aufbauend ein übergreifender Algorithmus aufgesetzt, der eine passende Temperaturvorhersage für alle drei gewählten Länder liefert. Die Programmierung wird mittels Python durchgeführt. 
+![Python Version](https://img.shields.io/badge/Python-3.12.10-blue)
 
-## 2. Struktur des Repositories
+---
+## Thematischer Überblick
+Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdaten verschiedener Länder enthalten, analysiert werden. Darüber hinaus soll im Rahmen eines Forecasting Engineerings die zukünftige Entwicklung der jährlichen Durchschnittstemperaturen vorhergesagt werden. Dabei wird folgendes Vorgehen angewandt: Zunächst wird für jede einzelne Zeitreihe ein einzelnes passendes Prognosemodell gesucht. Anschließend wird darauf aufbauend ein übergreifender Algorithmus aufgesetzt, der eine passende Temperaturvorhersage für alle drei gewählten Länder liefert.
 
+---
+## Projekt-Anforderungen
 
-```text
-Zeitreihenanalyse-vorhersage/
-│
-├── daten/
-│   ├── bereinigte-daten/          
-│   │   ├── bereinigt_zeitreihe_abakan.csv
-│   │   ├── bereinigt_zeitreihe_angeles.csv
-│   │   └── bereinigt_zeitreihe_berlin.csv
-│   |
-|   ├── original-daten/                
+- Python 3.12.10 ([Download hier](https://www.python.org/downloads/release/python-31210/))
+- Virtuelle Umgebung (wird durch Setup-Skripte erstellt)
+- Erforderliche Pakete (in requirements.txt spezifiziert)
+
+---
+## Installation
+
+### Python 3.12.10 installieren
+
+Stellen Sie sicher, dass Python 3.12.10 ([Download hier](https://www.python.org/downloads/release/python-31210/)) auf Ihrem System (Windows / macOS / Linux) 
+installiert ist.
+
+### Repository klonen
+
+```bash
+git clone https://github.com/your-username/zeitreihenanalyse-vorhersage.git
+cd zeitreihenanalyse-vorhersage
+```
+
+### Setup ausführen
+
+#### Windows (PowerShell):
+```powershell
+.\setup.ps1
+```
+
+#### macOS / Linux oder Windows mit Bash:
+```bash
+chmod +x setup.sh  # Ausführungsrechte setzen, falls nötig
+./setup.sh
+```
+
+### Virtuelle Umgebung aktivieren
+
+#### Windows (PowerShell):
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+#### macOS/Linux oder Windows mit Bash:
+```bash
+source .venv/bin/activate
+```
+
+---
+## Projektstruktur
+
+```
+zeitreihenanalyse-vorhersage/
+├── archiv/                # Archivierte Daten und Skripte
+├── daten/                 # Eingabedaten
+│   ├── original-daten/    # Rohdaten
 │   │   ├── zeitreihe_abakan.csv
 │   │   ├── zeitreihe_angeles.csv
 │   │   └── zeitreihe_berlin.csv
-│   
-│
-├── module/    
-│   ├── datenbereinigung.py                
-│   ├── hilfsfunktionen/          
-│   │   ├── stationaritätstest.py
-│
-├── main.py                 
-├── config.py                    
-│
-│
-├── ergebnisse/   
-│   ├── zeitreihe-kampala/                                 
-│   │  
-│   ├── zeitreihe_berlin/          
-│   │
-│   │── zeitreihe_guangzhou/ 
-│
-├── requirements.txt                      
-├── .gitignore              
-└── README.md               
-
+│   ├── bereinigte-daten/  # Bereinigte Daten
+│   │   ├── bereinigt_zeitreihe_abakan.csv
+│   │   ├── bereinigt_zeitreihe_angeles.csv
+│   │   └── bereinigt_zeitreihe_berlin.csv
+│   └── stationäre-daten/  # Stationäre Daten
+├── docs/                  # Dokumentation
+├── ergebnisse/            # Ausgabeverzeichnisse für Diagramme und Analysen
+├── module/                # Python-Module
+│   ├── datenbereinigung.py
+│   └── hilfsfunktionen/
+│       └── stationaritätstest.py
+├── skripte/               # Ausführbare Skripte
+├── .gitignore             # Git-Ignorierte Dateien
+├── .python-version        # Python-Versionsanforderung
+├── config.py              # Projektkonfiguration
+├── main.py                # Hauptdatei zum Ausführen der Anwendung
+├── README.md              # Diese Datei
+├── requirements.txt       # Abhängigkeiten
+├── setup.ps1              # Setup-Skript für Windows
+└── setup.sh               # Setup-Skript für macOS/Linux
 ```
 
-**Branch-Struktur**
+---
+## Funktionalitäten
 
-- Main branch (stabile Version)
-- Develop branch (Entwicklungsumgebung)
-- Features:
-  - Zeitreihe_Abakan
-  - Zeitreihe_Angeles
-  - Zeitreihe_Berlin
+Diese Anwendung bietet folgende Funktionen:
 
-## 3. Best Practices
-### 3.1 Commit-Messages
-Orientierung an allgemeiner Konvention (fix, chore, feat, docs, add)
+1. **Datenbereinigung und -aufbereitung**
+  - Behandlung fehlender Werte
+  - Normalisierung und Transformation
 
-https://www.conventionalcommits.org/en/v1.0.0/ 
+2. **Zeitreihenanalyse**
+  - Bestimmung der Stationarität
+  - ACF und PACF Analyse
+  - Modellidentifikation
 
-### 3.2 Code Dokumentation
+3. **Univariate Zeitreihenmodelle**
+  - ARIMA/SARIMA-Modellierung
+  - Residuenanalyse
+  - Modellvalidierung
 
-Kurze einzeilige Beschreibung der Funktion.
+4. **Multivariate Analyse**
+  - Modellvergleich und -bewertung
+  - Automatisierte Modellselektion
 
-Ausführlichere Beschreibung der Funktion, die mehrere Zeilen umfassen kann. Hier solltest du den Zweck und die allgemeine Funktionsweise erklären.
+5. **Vorhersage**
+  - Erstellung von Prognosen
+  - Konfidenzintervallberechnung
+  - Visualisierung der Ergebnisse
 
+---
+## Verwendung
 
-*Parameters:*
-- param1: typ
-- Beschreibung von param1 und seine Rolle
+```python
+# Beispielcode zur Ausführung der Analyse
+from module.pipeline_analyse import run_pipeline
 
+# Pipeline für alle Städte ausführen
+run_pipeline()
 
-*Returns:*
-- rückgabetyp
-- Beschreibung dessen, was zurückgegeben wird
+# Oder für eine spezifische Stadt
+run_pipeline(city="berlin")
+```
 
-*Erklärung spezifischer Funktionsdetails:*
-- Stichpunktartige Beschreibung neben entsprechende Codezeile 
+---
+Entickler Guide
 
-### 3.3 Benennungen
+Genaures [hier](docs/Entwickler_Guide.md)
 
-- Funktionsnamen: UpperCamelCase
-- Hilfsfunktionen: Funktionsnamen
-- Modulnamen: Überbegriff in snake_case
+---
+## Mitwirkende
 
-### 3.4 Umgang mit merge-Konflikten
+Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics" bei Prof. Dr. Christian Menden entwickelt.
 
-Bei signifikanten Unterschieden, Absprache mit entsprechendem Teammitglied
+---
+## Lizenz
 
-        
-    
-   
+Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe die [LICENSE](LICENSE)-Datei für Details.
