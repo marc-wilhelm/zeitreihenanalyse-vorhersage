@@ -1,6 +1,6 @@
 # Zeitreihenanalyse und Vorhersage
 
-![Python Version](https://img.shields.io/badge/Python-3.12.10-blue)
+![Python Version](https://img.shields.io/badge/Python-3.12-blue)
 
 ---
 ## Thematischer Überblick
@@ -9,17 +9,19 @@ Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdat
 ---
 ## Projekt-Anforderungen
 
-- Python 3.12.10 ([Download hier](https://www.python.org/downloads/release/python-31210/))
+- Python 3.12.X (neuere Versionen werden akutell nicht vom [pmdarima](https://pypi.org/project/pmdarima/)-Package unterstützt.
 - Virtuelle Umgebung (wird durch Setup-Skripte erstellt)
 - Erforderliche Pakete (in requirements.txt spezifiziert)
 
 ---
 ## Installation
 
-### Python 3.12.10 installieren
+### Python 3.12.X installieren
 
-Stellen Sie sicher, dass Python 3.12.10 ([Download hier](https://www.python.org/downloads/release/python-31210/)) auf Ihrem System (Windows / macOS / Linux) 
+Stellen Sie sicher, dass eine Python 3.12.X Version auf Ihrem System (Windows / macOS / Linux) 
 installiert ist.
+
+Beispielsweise: Python 3.12.10 ([download](https://www.python.org/downloads/release/python-31210/))
 
 ### Repository klonen
 
@@ -129,14 +131,19 @@ run_pipeline(city="berlin")
 ```
 
 ---
-Entickler Guide
+## Entwickler Guide
 
-Genaures [hier](docs/Entwickler_Guide.md)
+Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/DEVELOPER_GUIDE.md) erstellt. Hier findest du Best Practices, Code-Standards und Workflow-Guidelines.
 
 ---
 ## Mitwirkende
 
 Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics" bei Prof. Dr. Christian Menden entwickelt.
+
+**Team:**
+- Maike Knauer
+- Johanna Kießling
+- Marc Wilhelm
 
 ---
 ## Lizenz
