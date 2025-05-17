@@ -109,7 +109,8 @@ Die Anwendung besteht aus mehreren Skripten, die in folgender Reihenfolge per te
 
 ### Konfigurationsoptionen
 
-Jedes Skript kann mit verschiedenen Parametern und Funktionen konfiguriert werden. Genaue Angaben können in den main, pipeline oder direkten Funktionen eingesehen werden.
+Jedes Skript kann mit verschiedenen Parametern und Funktionen konfiguriert werden. Genaue Angaben können in den main-, pipeline- oder direkten Funktions-Dateien 
+eingesehen werden.
 
 ## Projektstruktur
 
@@ -145,8 +146,8 @@ zeitreihenanalyse-vorhersage/
 ├── .python-version        # Python-Versionsanforderung
 ├── config.py              # Projektkonfiguration
 ├── LICENSE                # Lizenzinformationen
-├── README.md              # Diese Datei
-├── requirements.txt       # Abhängigkeiten
+├── README.md              
+├── requirements.txt       # Abhängigkeiten / Packages
 ├── setup.ps1              # Setup-Skript für Windows
 └── setup.sh               # Setup-Skript für macOS/Linux
 ```
@@ -196,9 +197,11 @@ Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler
 Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics" bei Prof. Dr. Christian Menden entwickelt.
 
 **Team MJM**
-- Maike Knauer
-- Johanna Kießling
-- Marc Wilhelm
+<table>
+  <tr><td>Maike Knauer</td>     <td>6622009</td></tr>
+  <tr><td>Johanna Kießling</td> <td>6622007</td></tr>
+  <tr><td>Marc Wilhelm</td>     <td>6622005</td></tr>
+</table>
 
 
 ## Lizenz
