@@ -2,18 +2,18 @@
 
 ![Python Version](https://img.shields.io/badge/Python-3.12-blue)
 
----
+
 ## Thematischer Überblick
 Im Rahmen dieses Projekts sollen drei verschiedene Zeitreihen, die Temperaturdaten verschiedener Länder enthalten, analysiert werden. Darüber hinaus soll im Rahmen eines Forecasting Engineerings die zukünftige Entwicklung der jährlichen Durchschnittstemperaturen vorhergesagt werden. Dabei wird folgendes Vorgehen angewandt: Zunächst wird für jede einzelne Zeitreihe ein einzelnes passendes Prognosemodell gesucht. Anschließend wird darauf aufbauend ein übergreifender Algorithmus aufgesetzt, der eine passende Temperaturvorhersage für alle drei gewählten Länder liefert.
 
----
+
 ## Projekt-Anforderungen
 
 - Python 3.12.X (neuere Versionen werden akutell nicht vom [pmdarima](https://pypi.org/project/pmdarima/)-Package unterstützt.
 - Virtuelle Umgebung (wird durch Setup-Skripte erstellt)
 - Erforderliche Pakete (in requirements.txt spezifiziert)
 
----
+
 ## Installation
 
 ### Python 3.12.X installieren
@@ -55,7 +55,7 @@ chmod +x setup.sh  # Ausführungsrechte setzen, falls nötig
 source .venv/bin/activate
 ```
 
----
+
 ## Projektstruktur
 
 ```
@@ -88,7 +88,7 @@ zeitreihenanalyse-vorhersage/
 └── setup.sh               # Setup-Skript für macOS/Linux
 ```
 
----
+
 ## Funktionalitäten
 
 Diese Anwendung bietet folgende Funktionen:
@@ -116,7 +116,7 @@ Diese Anwendung bietet folgende Funktionen:
   - Konfidenzintervallberechnung
   - Visualisierung der Ergebnisse
 
----
+
 ## Verwendung
 
 ```python
@@ -130,12 +130,12 @@ run_pipeline()
 run_pipeline(city="berlin")
 ```
 
----
+
 ## Entwickler Guide
 
 Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/DEVELOPER_GUIDE.md) erstellt. Hier findest du Best Practices, Code-Standards und Workflow-Guidelines.
 
----
+
 ## Mitwirkende
 
 Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics" bei Prof. Dr. Christian Menden entwickelt.
@@ -145,7 +145,7 @@ Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics"
 - Johanna Kießling
 - Marc Wilhelm
 
----
+
 ## Lizenz
 
 Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe die [LICENSE](LICENSE)-Datei für Details.
