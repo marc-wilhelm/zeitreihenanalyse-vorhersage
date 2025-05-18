@@ -25,6 +25,7 @@ Der methodische Ansatz umfasst sowohl univariate Analysen für jede einzelne Sta
 - **Virtuelle Umgebung** (werden durch Setup-Skripte erstellt - siehe [Installation](#installation))
 - **Erforderliche Pakete** (in [requirements.txt](requirements.txt) spezifiziert)
 
+> **Hinweis:** Weitere Informationen zu technischen Implementierungsdetails finden sich [hier](docs/Technische_Implementierungsdetails.md).
 
 ## Installation
 
@@ -208,6 +209,7 @@ Dieses Projekt wurde im Rahmen der Veranstaltung "Vertiefung Business Analytics"
   <tr><td>Marc Wilhelm</td>     <td>6622005</td></tr>
 </table>
 
+> **Hinweis:** Ein abschließendes Fazit zum Projekt findet sich [hier](docs/Fazit.md).
 
 ## Lizenz
 
