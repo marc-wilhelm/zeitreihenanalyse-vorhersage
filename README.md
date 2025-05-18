@@ -137,12 +137,16 @@ zeitreihenanalyse-vorhersage/
 │   ├── prognosebewertung
 │   │   ├── __init__.py
 │   │   └── pipeline_prognosebewertung.py
+│   ├── universell
+│   │   ├── __init__.py
+│   │   └── pipeline_universell.py
 │   └── __init__.py
 ├── skripte/               # Ausführbare Skripte (rufen entsprechende pipeline in module ab)
 │   ├── main_analyse.py    
 │   ├── main_datenvorbereitung.py
 │   ├── main_modollierung.py
-│   └── main_prognosebewertung.py
+│   ├── main_prognosebewertung.py
+│   └── main_universell.py
 ├── .gitignore             # Git-Ignorierte Dateien
 ├── .python-version        # Python-Versionsanforderung
 ├── config.py              # Projektkonfiguration
