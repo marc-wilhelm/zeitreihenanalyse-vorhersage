@@ -1,6 +1,6 @@
 """
 Universelle AutoARIMA Evaluationsmetriken für Angeles
-Generiert am: 2025-05-18 00:07:06
+Generiert am: 2025-05-18 13:54:42
 """
 
 evaluation_metrics = {

@@ -30,21 +30,35 @@ def run_complete_modeling():
     completed_steps = 0
     total_steps = 2
 
-    # === Schritt 1: AutoARIMA Modellauswahl ===
-    print(f"\n🤖 SCHRITT 1/{total_steps}: AutoARIMA Modellauswahl")
-    print("-" * 80)
-    print("   → Automatische SARIMA-Modellauswahl für alle Städte")
-    print("   → Speichert optimale Modellparameter")
-    print("   → Erstellt Evaluationsmetriken")
+    try:
+        # === Schritt 1: AutoARIMA Modellauswahl ===
+        print(f"\n🤖 SCHRITT 1/{total_steps}: AutoARIMA Modellauswahl")
+        print("-" * 80)
+        print("   → Automatische SARIMA-Modellauswahl für alle Städte")
+        print("   → Speichert optimale Modellparameter")
+        print("   → Erstellt Evaluationsmetriken")
 
+        # Tatsächlicher Funktionsaufruf!
+        AutoArima.main()
+        completed_steps += 1
+        print(f"✅ Schritt 1/{total_steps} erfolgreich abgeschlossen")
 
-    # === Schritt 2: SARIMA Cross-Validation & Residuenanalyse ===
-    print(f"\n🔬 SCHRITT 2/{total_steps}: SARIMA Cross-Validation & Residuenanalyse")
-    print("-" * 80)
-    print("   → Cross-Validation mit Expanding Window")
-    print("   → Residuenanalyse und Diagnostik")
-    print("   → Prognose-Evaluierung")
+        # === Schritt 2: SARIMA Cross-Validation & Residuenanalyse ===
+        print(f"\n🔬 SCHRITT 2/{total_steps}: SARIMA Cross-Validation & Residuenanalyse")
+        print("-" * 80)
+        print("   → Cross-Validation mit Expanding Window")
+        print("   → Residuenanalyse und Diagnostik")
+        print("   → Prognose-Evaluierung")
 
+        # Tatsächlicher Funktionsaufruf!
+        SarimaCvRes.main()
+        completed_steps += 1
+        print(f"✅ Schritt 2/{total_steps} erfolgreich abgeschlossen")
+
+    except Exception as e:
+        print(f"❌ Fehler in Schritt {completed_steps + 1}: {e}")
+        print("Abbruch der Pipeline...")
+        return False
 
     # === Erfolgreiche Zusammenfassung ===
     end_time = time.time()

@@ -29,7 +29,8 @@ def main():
     # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
     # Option 1: Komplette universelle Pipeline ausführen (Standard)
-    mode = ["cross_validation", "prognose"]   # Ändern Sie das hier für andere Modi
+    #mode = ["cross_validation", "prognose"]   # Ändern Sie das hier für andere Modi
+    mode = "complete"
 
     # Option 2: Nur spezifische Analysen ausführen
     # mode = "auto_arima"        # Nur universelles AutoARIMA

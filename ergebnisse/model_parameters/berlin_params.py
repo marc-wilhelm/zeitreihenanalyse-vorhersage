@@ -1,10 +1,10 @@
 """
 AutoARIMA Modellparameter für Berlin
-Generiert am: 2025-05-17 00:18:17
+Generiert am: 2025-05-18 13:29:07
 """
 
 name = 'berlin'
-order = (0, 0, 1)
+order = (1, 0, 2)
 seasonal_order = (1, 0, 1, 12)
-aic = 6843.238962872178
-bic = 6870.137123635225
+aic = 6782.348927726002
+bic = 6820.006352794269

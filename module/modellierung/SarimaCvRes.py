@@ -8,6 +8,8 @@ import scipy.stats as stats
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tools.eval_measures import rmse, mse
+import warnings
+warnings.filterwarnings("ignore")
 
 # === Zentrale Konfiguration importieren ===
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))

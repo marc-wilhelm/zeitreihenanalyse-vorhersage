@@ -1,10 +1,10 @@
 """
 AutoARIMA Modellparameter für Angeles
-Generiert am: 2025-05-17 00:24:08
+Generiert am: 2025-05-18 13:35:14
 """
 
 name = 'angeles'
 order = (2, 0, 1)
 seasonal_order = (1, 0, 1, 12)
-aic = 1972.7504028473475
-bic = 2010.4078279156142
+aic = 2027.7442025051052
+bic = 2065.401627573372
