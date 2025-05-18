@@ -18,3 +18,10 @@ evaluation_metrics = {
     'n_observations': 1604,
     'significant_parameters': ['ar.L1', 'ma.L1', 'ma.L2', 'ar.S.L12', 'ma.S.L12', 'sigma2'],
 }
+# === Residuenanalyse nach Test des gefundenen SARIMA-Modells ===
+# Folds ausgewertet: 5
+# Durchschnittlicher Train-RMSE: 1.9160
+# Durchschnittlicher Test-RMSE:  2.5921
+# Durchschnittlicher Train-MSE:  3.6710
+# Durchschnittlicher Test-MSE:   6.7272
+# Durchschnittlicher Ljung-Box p-Wert (Lag 10): 0.9326
