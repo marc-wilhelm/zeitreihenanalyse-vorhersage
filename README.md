@@ -39,7 +39,7 @@ Beispielsweise: Python 3.12.10 ([download](https://www.python.org/downloads/rele
 ### 2. Repository klonen
 
 ```bash
-git clone https://github.com/your-username/zeitreihenanalyse-vorhersage.git
+git clone git@github.com:marc-wilhelm/zeitreihenanalyse-vorhersage.git
 cd zeitreihenanalyse-vorhersage
 ```
 
