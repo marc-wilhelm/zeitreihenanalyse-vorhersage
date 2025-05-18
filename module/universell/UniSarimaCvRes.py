@@ -1,6 +1,6 @@
 import os
 import sys
-import importlib
+import importlib.util
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,13 +8,12 @@ import scipy.stats as stats
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tools.eval_measures import rmse, mse
+import warnings
+warnings.filterwarnings("ignore")
 
-# === Zentrale Konfiguration importieren ===
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+# === Projektstruktur einbinden ===
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
-
-# Projektpfade initialisieren
-config.init_project_paths()
 
 # === Expanding-Window-Klasse ===
 class expanding_window(object):
@@ -48,9 +47,10 @@ class expanding_window(object):
         output_test = output_test[:-1]
         return list(zip(output_train, output_test))
 
+
 def plot_residuals(residuals, city, fold):
-    """Erstellt Residuenanalyse-Plots für einen Fold"""
-    output_dir = config.get_city_output_dir(config.OUTPUT_SARIMA_RESIDUEN, city)
+    """Erstellt Residuenanalyse-Plots für einen Fold mit universellen Parametern"""
+    output_dir = config.get_city_output_dir(config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL, city)
 
     plt.figure(figsize=(10, 8))
 
@@ -81,20 +81,27 @@ def plot_residuals(residuals, city, fold):
     plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
     plt.savefig(plot_path)
     plt.close()
-    print(f"📊 Residuenanalyse gespeichert: residuen_fold_{fold}.png")
+    print(f"   📊 Residuenanalyse gespeichert: {plot_path}")
 
-def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
-    """Fügt Residuenanalyse-Zusammenfassung zur Evaluation-Datei hinzu"""
-    file_path = os.path.join(config.OUTPUT_EVALUATIONS_METRIKEN, f"{city}_evaluation.py")
-    header = "# === Residuenanalyse nach Test des gefundenen SARIMA-Modells ==="
 
-    summary_lines = [f"\n{header}"]
-    summary_lines.append(f"# Folds ausgewertet: {len(results_df)}")
+def append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung_pvalue):
+    """Fügt Konfidenzintervall und Evaluationsmetriken zur Evaluation-Datei hinzu"""
+    os.makedirs(config.OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL, exist_ok=True)
+    file_path = os.path.join(config.OUTPUT_EVALUATIONS_METRIKEN_UNIVERSELL, f"{city}_evaluation.py")
+
+    header_ci = "\n# === Konfidenzintervall ==="
+    header_eval = "# === Durchschnittliche Evaluationsmetriken ==="
+
+    summary_lines = [f"\n{header_eval}"]
     summary_lines.append(f"# Durchschnittlicher Train-RMSE: {results_df['train_rmse'].mean():.4f}")
     summary_lines.append(f"# Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
     summary_lines.append(f"# Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
     summary_lines.append(f"# Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
-    summary_lines.append(f"# Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
+    summary_lines.append(f"# Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}\n")
+
+    summary_lines.append(header_ci)
+    for param, row in avg_conf_int.iterrows():
+        summary_lines.append(f"# {param}: [{row[0]:.6f}, {row[1]:.6f}]")
 
     summary_text = "\n".join(summary_lines) + "\n"
 
@@ -102,50 +109,52 @@ def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        if header in content:
-            pre_content = content.split(header)[0].rstrip()
-            new_content = pre_content + summary_text
-        else:
-            new_content = content.rstrip() + summary_text
+        content = content.split("# === Durchschnittliche Evaluationsmetriken ===")[0].rstrip()
+        new_content = content + summary_text
     else:
         new_content = summary_text
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    print(f"📁 Zusammenfassung für {city} gespeichert unter: {file_path}")
+    print(f"📁 Konfidenzintervall und Metriken gespeichert unter: {file_path}")
+
 
 def run_expanding_sarima_cv(city):
-    """Führt Expanding-Window Cross-Validation für SARIMA-Modell durch"""
-    print(f"\n📍 Stadt: {city}")
+    """Führt Expanding-Window Cross-Validation für SARIMA-Modell mit universellen Parametern durch"""
+    # Universelle Parameter laden
+    shared_param_path = os.path.join(config.OUTPUT_MODEL_PARAMETERS_UNIVERSELL, "gemeinsame_parameter.py")
 
-    # === Modellparameter laden ===
-    param_module = f"ergebnisse.model_parameters.{city}_params"
     try:
-        params = importlib.import_module(param_module)
+        spec = importlib.util.spec_from_file_location("shared_params", shared_param_path)
+        params = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(params)
         order = params.order
         seasonal_order = params.seasonal_order
-    except ImportError:
-        print(f"❌ Keine Parameter-Datei gefunden für {city}")
+    except Exception as e:
+        print(f"❌ Fehler beim Laden der universellen Parameter: {e}")
         return pd.DataFrame()
 
-    # === Daten aus CSV laden ===
+    # Daten aus stationärer Zeitreihe laden
     input_path = config.get_stationary_data_path(city)
     try:
         df = pd.read_csv(input_path)
         series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
     except Exception as e:
-        print(f"❌ Fehler beim Laden der Daten für {city}: {e}")
+        print(f"❌ Fehler beim Laden der stationären Daten für {city}: {e}")
         return pd.DataFrame()
 
-    print(f"🔧 Verwende SARIMA{order}x{seasonal_order}")
+    print(f"\n📍 Stadt: {city}")
+    print(f"🔧 Verwende gemeinsame SARIMA{order}x{seasonal_order}")
     print(f"📄 Anzahl Datenpunkte: {len(series)}")
 
+    # CV mit Expanding Window
     splitter = expanding_window(initial=800, horizon=160, period=160)
     splits = splitter.split(series)
 
     results = []
     ljung_pvalues = []
+    conf_int_list = []
 
     for fold, (train_idx, test_idx) in enumerate(splits):
         train = series.iloc[train_idx]
@@ -163,8 +172,12 @@ def run_expanding_sarima_cv(city):
                             enforce_invertibility=False)
             fit = model.fit(disp=False)
 
+            conf_int_params = fit.conf_int(alpha=0.05)
+            conf_int_list.append(conf_int_params)
+
+            forecast_res = fit.get_forecast(steps=len(test))
+            forecast = forecast_res.predicted_mean
             pred_train = fit.get_prediction(start=0, end=len(train)-1).predicted_mean
-            forecast = fit.get_forecast(steps=len(test)).predicted_mean
             residuals = train - pred_train
 
             test_rmse = rmse(test.values, forecast.values)
@@ -199,39 +212,50 @@ def run_expanding_sarima_cv(city):
 
     results_df = pd.DataFrame(results)
 
-    if not results_df.empty:
-        print(f"\n📊 --- Zusammenfassung für {city} ---")
-        print(f"Folds ausgewertet: {len(results_df)}")
-        print(f"Durchschnittlicher Train-RMSE: {results_df['train_rmse'].mean():.4f}")
-        print(f"Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
-        print(f"Durchschnittlicher Train-MSE:  {results_df['train_mse'].mean():.4f}")
-        print(f"Durchschnittlicher Test-MSE:   {results_df['test_mse'].mean():.4f}")
-
-        if ljung_pvalues:
-            avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues)
-            print(f"Durchschnittlicher Ljung-Box p-Wert (Lag 10): {avg_ljung_pvalue:.4f}")
-        else:
-            avg_ljung_pvalue = float("nan")
-
-        append_residual_analysis_summary(city, results_df, avg_ljung_pvalue)
-
-    else:
-        print(f"\n⚠️ Keine gültigen Folds ausgewertet für {city}.")
+    if conf_int_list and not results_df.empty:
+        avg_conf_int = pd.concat(conf_int_list).groupby(level=0).mean()
+        avg_ljung_pvalue = sum(ljung_pvalues) / len(ljung_pvalues) if ljung_pvalues else float("nan")
+        append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung_pvalue)
 
     return results_df
 
+
 def main():
-    """Führt SARIMA Expanding Window Residuenanalyse für alle Städte durch"""
-    print("🔬 SARIMA Expanding Window Residuenanalyse wird gestartet...")
+    """Hauptfunktion für universelle SARIMA Cross-Validation"""
+    print("🔬 Universelle SARIMA Cross-Validation wird gestartet...")
 
-    for city in config.CITIES:
+    # Ausgabeordner erstellen
+    config.ensure_output_dirs()
+
+    # CrossValidation für alle Städte durchführen
+    cities = config.CITIES
+    successful_cities = 0
+
+    for city in cities:
         try:
-            run_expanding_sarima_cv(city)
-        except Exception as e:
-            print(f"❌ Fehler bei Stadt {city}: {e}")
+            print("\n" + "="*50)
+            print(f"📌 Bearbeite Stadt: {city.upper()}")
+            print("="*50)
 
-    print(f"\n✅ SARIMA Residuenanalyse abgeschlossen.")
-    print(f"📁 Ergebnisse gespeichert in: {config.OUTPUT_SARIMA_RESIDUEN}")
+            results_df = run_expanding_sarima_cv(city)
+
+            if not results_df.empty:
+                successful_cities += 1
+                print(f"\n✅ SARIMA CV für {city} erfolgreich durchgeführt.")
+            else:
+                print(f"\n⚠️ Keine validen Ergebnisse für {city}.")
+
+        except Exception as e:
+            print(f"❌ Fehler bei Stadt {city}: {str(e)[:150]}...")
+
+    # Zusammenfassung ausgeben
+    print("\n" + "="*60)
+    print("📋 ZUSAMMENFASSUNG - UNIVERSELLE SARIMA CV")
+    print("="*60)
+    print(f"✅ Erfolgreiche Städte: {successful_cities}/{len(cities)}")
+    print(f"📁 Ergebnisse gespeichert unter: {config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL}")
+    print("="*60)
+
 
 # === Hauptausführung ===
 if __name__ == "__main__":
