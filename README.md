@@ -38,6 +38,8 @@ Beispielsweise: Python 3.12.10 ([download](https://www.python.org/downloads/rele
 
 ### 2. Repository klonen
 
+Öffne das Terminal deines Betriebssystems und navigiere zu dem Ordner, in dem du das Projekt ablegen möchtest. Du kannst mit dem `cd`-Befehl zwischen Verzeichnissen wechseln. Sobald du im gewünschten Ordner bist, führe die folgenden Befehle aus:
+
 ```bash
 git clone git@github.com:marc-wilhelm/zeitreihenanalyse-vorhersage.git
 cd zeitreihenanalyse-vorhersage
@@ -45,10 +47,18 @@ cd zeitreihenanalyse-vorhersage
 
 ### 3. Setup ausführen
 
+Nach dem erfolgreichen Klonen des Repositories hast du zwei Möglichkeiten: Du kannst entweder direkt im Terminal weiterarbeiten oder das geklonte Projekt in deiner 
+bevorzugten IDE öffnen. Das Setup-Skript erstellt automatisch eine virtuelle Python-Umgebung und installiert alle benötigten Abhängigkeiten.
+
+**Führe das entsprechende Setup-Skript für dein Betriebssystem aus:**
+
 **Windows (PowerShell):**
 ```powershell
 .\setup.ps1
 ```
+
+> **Hinweis:** Aus Sicherheitsgründen kann es sein, dass Windows standardmäßig das Skript nicht ausführen lässt. Um das zu beheben verwende `Set-ExecutionPolicy 
+> -ExecutionPolicy RemoteSigned -Scope CurrentUser` im Terminal.
 
 **macOS / Linux oder Windows mit Bash:**
 ```bash
@@ -58,10 +68,34 @@ chmod +x setup.sh  # Ausführungsrechte setzen, falls nötig
 
 ### 4. Virtuelle Umgebung aktivieren
 
-Es wird empfohlen das erstellte **venv** als Standard-Projekt Interpreter zu hinterlegen.
-Das vorgehen ist je nach IDE abhängig. Die .exe ist unter **root > .venv > 
-Scripts > 
-python.exe** zu finden.
+#### Warum eine virtuelle Umgebung?
+
+Die virtuelle Umgebung isoliert die Python-Pakete dieses Projekts von deinem System, um Konflikte mit anderen Projekten zu vermeiden. Es ist wie ein separater Arbeitsplatz für dieses spezifische Projekt mit seinen eigenen Werkzeugen.
+
+#### IDE-Setup (empfohlen)
+
+Es ist empfehlenswert, die erstellte virtuelle Umgebung als Standard-Interpreter in deiner IDE zu hinterlegen. Dadurch erkennt die IDE automatisch alle installierten Pakete und bietet bessere Code-Vervollständigung.
+
+**Visual Studio Code:**
+
+1. Öffne den Repository Ordner
+2. Gib in die Suchleiste `> Python: Select Interpreter` ein
+3. Wähle `Interpreterpfad eingeben`
+4. Suche nach dem Pfad im .venv Ordner nach folgender Adresse oder gib diese direkt ein:
+   - `.venv/Scripts/python.exe` (Windows) oder
+   - `.venv/bin/python` (macOS/Linux)
+
+**PyCharm/IntelliJ:**
+   
+1. Öffne den Repository Ordner als Projekt
+2. Gehe zu Settings > Project Structure > Project > SDK > Add Python SDK from Disk > Existing Environment > Interpreter
+3. Wähle den erstellten .venv Pfad aus mit Klick auf die drei Punkte `...`:
+   - `.venv/Scripts/python.exe` (Windows) oder
+   - `.venv/bin/python` (macOS/Linux).
+
+**Manuelle Aktivierung im Terminal**
+
+Falls du direkt im Terminal arbeiten möchtest, kannst du die virtuelle Umgebung mit folgenden Befehlen aktivieren:
 
 **Windows (PowerShell):**
 ```powershell
@@ -73,12 +107,35 @@ python.exe** zu finden.
 source .venv/bin/activate
 ```
 
+
+#### Troubleshooting - Globale Python Umgebungen
+
+Es kann sein, dass trotz Setzen der virtuellen Python-Umgebung eine andere Python-Umgebung priorisiert wird (z.B. conda base). Bitte deaktiviere dementsprechend
+diese globale Einstellung permanent oder temporär mit folgenden Codes:
+
+**Conda Base temporär deaktivieren:**
+```bash
+# Conda Base-Umgebung verlassen
+conda deactivate
+```
+
+**Conda Base permanent deaktivieren:**
+```bash
+# Automatische Aktivierung der Base-Umgebung beim Terminal-Start deaktivieren
+conda config --set auto_activate_base false
+
+# Überprüfung der Einstellung
+conda config --show auto_activate_base
+```
+
 ## Anwendung
 
 ### Ausführungsreihenfolge
 
 Die Anwendung besteht aus mehreren Skripten, die in folgender Reihenfolge per terminal oder enstprechende IDE (z.B. [VSC](https://code.visualstudio.com/), 
 [IntelliJ](https://www.jetbrains.com/de-de/ides/)) ausgeführt werden sollten:
+
+#### Individuelle Modelle
 
 1. **Datenvorbereitungsphase**
 
@@ -104,9 +161,20 @@ Die Anwendung besteht aus mehreren Skripten, die in folgender Reihenfolge per te
 
 4. **Prognosebewertungsphase**
 
-   Bewertet die erstellten Modelle und generiert Vorhersagen mit Konfidenzintervallen.
+   Bewertet die erstellten Modelle und generiert Vorhersagen mit Prognoseintervallen.
    ```
    python skripte/main_prognosebewertung.py
+   ```
+
+#### Universelle Modelle
+
+Führe wie oben Schritt 1 und 2 aus. Anschließend noch:
+
+3. **Universellephase - Modellierung & Prognose**
+
+   Erstellt und trainiert die ARIMA/SARIMA-Modelle für jede Zeitreihe und bewertet die erstellten Modelle und generiert Vorhersagen mit Prognoseintervallen.
+   ```
+   python skripte/main_universell.py
    ```
 
 ### Konfigurationsoptionen
@@ -142,7 +210,7 @@ zeitreihenanalyse-vorhersage/
 │   │   ├── __init__.py
 │   │   └── pipeline_universell.py
 │   └── __init__.py
-├── skripte/               # Ausführbare Skripte (rufen entsprechende pipeline in module ab)
+├── skripte/               # Ausführbare Skripte (Entry Point zu den Pipelines)
 │   ├── main_analyse.py    
 │   ├── main_datenvorbereitung.py
 │   ├── main_modollierung.py
@@ -158,10 +226,22 @@ zeitreihenanalyse-vorhersage/
 └── setup.sh               # Setup-Skript für macOS/Linux
 ```
 
+## Organisatorischer Workflow
 
-## Funktionalitäten
+Die Projektstruktur folgt einem modularen Pipeline-Ansatz, bei dem jede Analysephase als eigenständiges Modul organisiert ist. Die `__init__.py`-Dateien in jedem Unterordner von `module/` machen die entsprechenden Pipeline-Funktionen als Python-Packages importierbar, während die Main-Skripte in `skripte/` als Einstiegspunkte fungieren und die jeweiligen Pipelines ausführen.
 
-Diese Anwendung bietet folgende Funktionen:
+Dieser Workflow ermöglicht es, jede Phase der Zeitreihenanalyse - von der Datenvorbereitung über die Analyse und Modellierung bis hin zur Prognosebewertung - 
+unabhängig voneinander zu entwickeln und auszuführen. Ein Entwickler kann beispielsweise nur `main_analyse.py` ausführen, um die Analysephase zu testen, ohne die gesamte Pipeline (Datenvorbereitung bis Prognose) durchlaufen zu müssen.
+
+Die modulare Struktur bietet entscheidende Vorteile:
+1. Teammitglieder können parallel an verschiedenen Modulen arbeiten, ohne sich gegenseitig zu blockieren.
+2. Das Debugging wird erheblich vereinfacht, da Fehler in isolierten Komponenten lokalisiert werden können.
+3. Die klare Trennung der Verantwortlichkeiten ermöglicht eine einfache Erweiterung des Systems - neue Analysemethoden oder Modelle können als separate Module 
+   hinzugefügt werden, ohne bestehende Funktionalitäten zu beeinträchtigen.
+
+## Projekt-Funktionalitäten
+
+Diese Projekt beinhaltet folgende Funktionen:
 
 1. **Datenbereinigung und -aufbereitung**
    - Behandlung fehlender & falsch formatierter Werte
@@ -189,13 +269,13 @@ Diese Anwendung bietet folgende Funktionen:
 
 5. **Vorhersage**
    - Erstellung von Prognosen für zukünftige Perioden
-   - Konfidenzintervallberechnung
+   - Prognoseintervallberechnung
    - Visualisierung der Ergebnisse
    - Rücktransformation differenzierter Zeitreihen
 
 ## Entwickler Guide
 
-Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/Entwickler_Guide.md) erstellt. Hier findest du Best Practices, Code-Standards und Workflow-Guidelines.
+Für Entwickler, die zum Projekt beitragen möchten, haben wir einen [Entwickler-Guide](docs/Entwickler_Guide.md) erstellt. Hier finden sich unsere Best Practices, Code-Standards und Workflow-Guidelines.
 
 
 ## Mitwirkende

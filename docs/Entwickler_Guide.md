@@ -55,9 +55,8 @@ Wir folgen [PEP 8](https://peps.python.org/pep-0008/) für Python-Code, mit eini
 
 ### Benennungskonventionen
 
-- Funktionsnamen: `UpperCamelCase` (z.B. `AnalyzeTimeSeries`)
-- Hilfsfunktionen: `UpperCamelCase` (z.B. `CalculateMovingAverage`)
-- Modulnamen: Überbegriff in `snake_case` (z.B. `data_preparation.py`)
+- Python-Dateinamen: `UpperCamelCase` (z.B. `AnalyzeTimeSeries.py`)
+- Funktionen: `snake_case` (z.B. `data_preparation.py`) oder `UpperCamelCase`
 - Variablen: `snake_case` (z.B. `temperature_data`)
 - Konstanten: `UPPER_CASE_WITH_UNDERSCORES` (z.B. `MAX_ITERATIONS`)
 
@@ -91,9 +90,9 @@ def ProcessTimeSeries(data, window_size=7):
 
 ### Setup
 
-1. Python 3.12.10 installieren
+1. Python 3.12.x installieren
 2. Repository klonen
-3. Virtuelle Umgebung erstellen (siehe setup.sh / setup.ps1)
-4. Abhängigkeiten installieren: `pip install -r requirements.txt`
-5. Optionale Entwicklungsabhängigkeiten: `pip install -r requirements-dev.txt`
+3. Setup ausführen (siehe setup.sh oder setup.ps1)
+4. Virtuelle Umgebung aktivieren und in der IDE als Standardinterpreter hinterlegen
+
 

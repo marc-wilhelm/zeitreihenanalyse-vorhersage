@@ -11,7 +11,8 @@ Der erste Schritt konzentrierte sich auf die Etablierung einer professionellen A
 ## 2. Datenbereinigung und -aufbereitung
 
 ### Grundlegende Datenvalidierung
-Die Datenbereinigung bildete das Fundament der gesamten Analyse. Zunächst wurden die rohen Temperaturdaten aus einer Kaggle-Quelle importiert, wobei besondere Aufmerksamkeit auf korrekte Trenn- und Dezimalzeichen gelegt wurde. Diese scheinbar einfachen Details können erhebliche Auswirkungen auf die gesamte nachfolgende Analyse haben.
+Die Datenbereinigung bildete das Fundament der gesamten Analyse. Zunächst wurden die rohen Temperaturdaten aus einer [Kaggle-Quelle](https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data) importiert, wobei besondere 
+Aufmerksamkeit auf korrekte Trenn- und Dezimalzeichen gelegt wurde. Diese scheinbar einfachen Details können erhebliche Auswirkungen auf die gesamte nachfolgende Analyse haben.
 
 ### Standardisierung der Zeitperioden
 Um eine vergleichbare Analysebasis zu schaffen, wurden alle drei Zeitreihen auf einen einheitlichen Startzeitpunkt (Januar 1880) harmonisiert. Dies war notwendig, da die Aufzeichnungen für jede Stadt zu unterschiedlichen Zeitpunkten begannen. Eine solche Standardisierung ist fundamental für multivariate Zeitreihenanalysen.
@@ -29,7 +30,7 @@ Für jede Stadt wurden umfassende statistische Kennzahlen berechnet, die fundame
 - **Berlin** lag zwischen den Extremen (-10°C bis 24°C, Standardabweichung 7°C), repräsentativ für gemäßigtes ozeanisches Klima
 
 ### Normalverteilungstests
-Die Überprüfung der Normalverteilung mittels 70%- und 95%-Regeln lieferte wichtige Erkenntnisse über die Datenverteilung. Während Angeles eine nahezu perfekte Normalverteilung aufwies, zeigten Abakan und Berlin Abweichungen, die bei der Modellwahl berücksichtigt werden mussten.
+Die Überprüfung der Normalverteilung mittels 70%- und 95%-Regeln lieferte wichtige Erkenntnisse über die Datenverteilung. Während Angeles eine nahezu perfekte Normalverteilung aufwies, zeigten Abakan und Berlin Abweichungen.
 
 ## 4. Stationaritätsanalyse
 
@@ -37,11 +38,11 @@ Die Überprüfung der Normalverteilung mittels 70%- und 95%-Regeln lieferte wich
 Der ADF-Test bildete das Herzstück der Stationaritätsanalyse. Stationarität ist eine fundamentale Voraussetzung für die meisten Zeitreihenmodelle, da sie konstante statistische Eigenschaften über die Zeit impliziert.
 
 Die Ergebnisse zeigten unterschiedliche Stationaritätseigenschaften:
-- Abakan und Berlin waren bereits von Natur aus stationär (p < 0,05)
-- Angeles wies einen Trend auf und erforderte eine erste Differenzierung (d = 1)
+- Abakan und Berlin waren bereits von Natur aus stationär (`p < 0,05`)
+- Angeles wies einen Trend auf und erforderte eine erste Differenzierung (`d = 1`)
 
 ### Saisonalitätstest (Kruskal-Wallis)
-Der Kruskal-Wallis-Test identifizierte signifikante saisonale Muster in allen drei Zeitreihen. Diese Erkenntnis führte zur Anwendung saisonaler Differenzierung (D = 1 für alle Städte), um stabile statistische Eigenschaften zu erreichen.
+Der Kruskal-Wallis-Test identifizierte signifikante saisonale Muster in allen drei Zeitreihen. Diese Erkenntnis führte zur Anwendung saisonaler Differenzierung (`D = 1` für alle Städte), um stabile statistische Eigenschaften zu erreichen.
 
 ### Strukturbruchanalyse (CUSUM-Test)
 Der CUSUM-Test untersuchte die Stabilität der Regressionsbeziehungen über die Zeit. Obwohl gelegentliche Ausschläge auftraten, zeigten alle Zeitreihen keine dauerhaften Strukturbrüche, was die Robustheit der verfügbaren Daten bestätigte.
@@ -60,11 +61,11 @@ Die ACF- und PACF-Plots lieferten erste Hinweise auf die Modellstruktur. Signifi
 Der Einsatz von Auto-ARIMA ermöglichte eine systematische Suche nach optimalen Modellparametern. Dieser Ansatz durchsucht automatisch den Parameterraum und identifiziert das beste Modell basierend auf Informationskriterien wie AIC (Akaike Information Criterion).
 
 ### Universelle Modellparameter
-Ein besonders wertvoller Aspekt war die Entwicklung eines einheitlichen Modells für alle drei Zeitreihen. Die Parameter SARIMA(2,0,1)(1,1,1,12) erwiesen sich als optimal:
-- **p=2**: Aktuelle Temperatur hängt von den beiden Vormonaten ab
-- **q=1**: Berücksichtigung des Prognosefehlers vom Vormonat
-- **P=1**: Saisonale Abhängigkeit vom Vorjahresmonat
-- **Q=1**: Saisonaler Prognosefehler fließt in aktuelle Vorhersage ein
+Ein besonders wertvoller Aspekt war die Entwicklung eines einheitlichen Modells für alle drei Zeitreihen. Die Parameter SARIMA(2,0,1)(1,0,1,12) erwiesen sich als optimal:
+- `p = 2`: Aktuelle Temperatur hängt von den beiden Vormonaten ab
+- `q = 1`: Berücksichtigung des Prognosefehlers vom Vormonat
+- `P = 1`: Saisonale Abhängigkeit vom Vorjahresmonat
+- `Q = 1`: Saisonaler Prognosefehler fließt in aktuelle Vorhersage ein
 
 ## 7. Modellvalidierung und -test
 
@@ -72,7 +73,7 @@ Ein besonders wertvoller Aspekt war die Entwicklung eines einheitlichen Modells 
 Die Anwendung einer robusten Validierungsstrategie mit expandierenden Zeitfenstern simulierte reale Prognosebedingungen. Diese Methode beginnt mit 800 Datenpunkten für das Training und erweitert das Trainingsset kontinuierlich um 160 Punkte, wobei auf die nächsten 160 Punkte getestet wird.
 
 ### Residuenanalyse
-Die Ljung-Box-Tests bestätigten, dass die Modellresiduen keine signifikante Autokorrelation aufwiesen (p > 0,05 für alle Städte), was auf eine angemessene Modellspezifikation hindeutet. Die RMSE-Werte zeigten unterschiedliche Vorhersagegenauigkeiten:
+Die Ljung-Box-Tests bestätigten, dass die Modellresiduen keine signifikante Autokorrelation aufwiesen (`p > 0,05` für alle Städte), was auf eine angemessene Modellspezifikation hindeutet. Die RMSE-Werte zeigten unterschiedliche Vorhersagegenauigkeiten:
 - Angeles: 0,7°C (sehr präzise)
 - Berlin: 2,6°C (moderat)
 - Abakan: 3,0°C (akzeptabel für extreme Klimabedingungen)
@@ -80,16 +81,17 @@ Die Ljung-Box-Tests bestätigten, dass die Modellresiduen keine signifikante Aut
 ## 8. Prognose und Rücktransformation
 
 ### Zukunftsprognosen
-Das finale Modell generierte Vorhersagen für die nächsten 10 Monate, einschließlich 95%-Konfidenzintervallen. Diese Intervalle liefern wichtige Informationen über die Unsicherheit der Prognosen.
+Das finale Modell generierte Vorhersagen für die nächsten 10 Monate, einschließlich 95%-Prognoseintervallen. Diese Intervalle liefern wichtige Informationen über die 
+Unsicherheit der Prognosen.
 
 ### Inverse Transformation
 Ein kritischer Schritt war die Rücktransformation der differenzierten Prognosen in interpretierbare Temperaturwerte. Dieser Prozess berücksichtigt sowohl die einfache als auch die saisonale Differenzierung und liefert schlussendlich Temperaturprognosen in Grad Celsius.
 
 ### Validierung mit realen Daten
 Die Überprüfung der ersten Prognosewerte mit tatsächlichen historischen Daten bestätigte die Modellqualität:
-- Abakan: Prognose 9°C vs. Realität 9°C
-- Angeles: Prognose 26,9°C vs. Realität 26°C
-- Berlin: Prognose 15°C vs. Realität 13°C
+- **Abakan**: Prognose 9°C vs. Realität 9°C
+- **Angeles**: Prognose 26,9°C vs. Realität 26°C
+- **Berlin**: Prognose 15°C vs. Realität 13°C
 
 ## Methodische Erkenntnisse
 
