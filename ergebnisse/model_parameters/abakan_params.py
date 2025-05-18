@@ -1,6 +1,6 @@
 """
 AutoARIMA Modellparameter für Abakan
-Generiert am: 2025-05-18 13:23:15
+Generiert am: 2025-05-18 17:39:59
 """
 
 name = 'abakan'

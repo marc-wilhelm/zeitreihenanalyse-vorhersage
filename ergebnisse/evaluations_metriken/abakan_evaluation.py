@@ -1,6 +1,6 @@
 """
 AutoARIMA Evaluationsmetriken für Abakan
-Generiert am: 2025-05-18 13:23:15
+Generiert am: 2025-05-18 17:39:59
 """
 
 evaluation_metrics = {
@@ -9,7 +9,7 @@ evaluation_metrics = {
     'seasonal_order': (1, 0, 1, 12),
     'aic': 7650.585064321601,
     'bic': 7688.246854840586,
-    'generiert_am': '2025-05-18 13:23:15',
+    'generiert_am': '2025-05-18 17:39:59',
     'parameter_names': ['intercept', 'ar.L1', 'ar.L2', 'ma.L1', 'ar.S.L12', 'ma.S.L12', 'sigma2'],
     'parameter_values': [-4.959019491396941e-05, 1.05679596394322, -0.1693211119214285, -0.8935367596640843, 0.9989016625392952, -0.8554367829648419, 7.098026849208404],
     't_values': [-0.1990903491165601, 11.724156865349956, -7.495623579847706, -9.85289478663086, 2580.7712067342895, -53.4320328312059, 32.083198847039256],
@@ -18,10 +18,3 @@ evaluation_metrics = {
     'n_observations': 1604,
     'significant_parameters': ['ar.L1', 'ar.L2', 'ma.L1', 'ar.S.L12', 'ma.S.L12', 'sigma2'],
 }
-# === Residuenanalyse nach Test des gefundenen SARIMA-Modells ===
-# Folds ausgewertet: 5
-# Durchschnittlicher Train-RMSE: 2.5836
-# Durchschnittlicher Test-RMSE:  3.3926
-# Durchschnittlicher Train-MSE:  6.6758
-# Durchschnittlicher Test-MSE:   11.5530
-# Durchschnittlicher Ljung-Box p-Wert (Lag 10): 0.9332

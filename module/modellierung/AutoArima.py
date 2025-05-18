@@ -5,7 +5,7 @@ import pmdarima as pm
 from datetime import datetime
 
 # === Projektstruktur einbinden ===
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import config
 
 def main():
@@ -69,6 +69,10 @@ def main():
             order[1] = 0
             seasonal_order[1] = 0
 
+            # In Tupel konvertieren für konsistente Verwendung
+            order_tuple = tuple(order)
+            seasonal_order_tuple = tuple(seasonal_order)
+
             # === 1. Modellparameter speichern ===
             param_path = os.path.join(config.OUTPUT_MODEL_PARAMETERS, f"{city}_params.py")
             with open(param_path, "w", encoding="utf-8") as f:
@@ -77,8 +81,8 @@ def main():
                 f.write(f'Generiert am: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n')
                 f.write(f'"""\n\n')
                 f.write(f"name = '{city}'\n")
-                f.write(f"order = {tuple(order)}\n")
-                f.write(f"seasonal_order = {tuple(seasonal_order)}\n")
+                f.write(f"order = {order_tuple}\n")
+                f.write(f"seasonal_order = {seasonal_order_tuple}\n")
                 f.write(f"aic = {model.aic()}\n")
                 f.write(f"bic = {model.bic()}\n")
 
@@ -87,8 +91,8 @@ def main():
             # === 2. Evaluationsmetriken extrahieren ===
             metrics = {
                 "stadt": city,
-                "order": model.order,
-                "seasonal_order": model.seasonal_order,
+                "order": order_tuple,           # <-- KORRIGIERT: Verwendet modifizierte order
+                "seasonal_order": seasonal_order_tuple,  # <-- KORRIGIERT: Verwendet modifizierte seasonal_order
                 "aic": model.aic(),
                 "bic": model.bic(),
                 "generiert_am": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -135,11 +139,11 @@ def main():
 
             print(f"   📊 Evaluationsmetriken gespeichert")
 
-            # Zusammenfassung für diese Stadt
+            # Zusammenfassung für diese Stadt (auch hier modifizierte Parameter verwenden)
             results_summary.append({
                 'stadt': city,
-                'order': model.order,
-                'seasonal_order': model.seasonal_order,
+                'order': order_tuple,           # <-- KORRIGIERT
+                'seasonal_order': seasonal_order_tuple,  # <-- KORRIGIERT
                 'aic': round(model.aic(), 2),
                 'bic': round(model.bic(), 2),
                 'status': 'Erfolgreich'

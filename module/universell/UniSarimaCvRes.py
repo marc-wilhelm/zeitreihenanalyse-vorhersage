@@ -12,7 +12,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # === Projektstruktur einbinden ===
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import config
 
 # === Expanding-Window-Klasse ===

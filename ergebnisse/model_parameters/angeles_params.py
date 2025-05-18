@@ -1,6 +1,6 @@
 """
 AutoARIMA Modellparameter für Angeles
-Generiert am: 2025-05-18 13:35:14
+Generiert am: 2025-05-18 17:31:22
 """
 
 name = 'angeles'
