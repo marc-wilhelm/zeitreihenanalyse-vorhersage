@@ -1,6 +1,6 @@
 # Hilfreiche Befehle
 
-### DEVELOP STAND (HART) AUF ALLE BRANCHES MERGEN
+### DEVELOP ➡️ ALLE BRANCHES
 
 ```bash
 # Sicherstellen, dass develop aktuell ist
@@ -26,7 +26,7 @@ done
 git checkout develop
 ```
 
-### DEVELOP STAND (HART) AUF EINEN BRANCH MERGEN
+### DEVELOP ➡️ EIN BRANCH
 
 ```bash
 # Stelle sicher, dass du auf develop bist und alles aktuell ist
