@@ -10,7 +10,7 @@ import config
 config.init_project_paths()
 
 # Import der Dateneinlese-Funktion
-from module.datenvorbereitung.DatenEinlesen import DatenEinlesen
+from archiv.DatenEinlesen import DatenEinlesen
 
 def StatistischeAnalyse(df, spalte, city):
     """

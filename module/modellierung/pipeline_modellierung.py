@@ -10,8 +10,10 @@ import config
 config.init_project_paths()
 
 # === Import der Modellierungs-Module ===
-from module.modellierung import AutoArima
-from module.modellierung import SarimaCvRes
+from . import(
+    AutoArima,
+    SarimaCvRes
+)
 
 def run_complete_modeling():
     """

@@ -8,8 +8,8 @@ import config
 # Projektpfade initialisieren
 config.init_project_paths()
 
-# === Import der Datenvorbereitung-Module ===
-from . import (
+# === Import der Datenvorbereitung-Funktionen ===
+from .bereinigung import (
     DatenEinlesen,
     SpaltennamenKorrigieren,
     DatumFormatieren,

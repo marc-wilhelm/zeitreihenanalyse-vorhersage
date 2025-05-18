@@ -10,7 +10,7 @@ import config
 config.init_project_paths()
 
 # === Import der Prognose-Module ===
-from module.prognosebewertung import PrognoseMitRuecktransformation
+from . import PrognoseMitRuecktransformation
 
 def run_single_forecast(city, forecast_steps=10):
     """

@@ -10,10 +10,12 @@ import config
 config.init_project_paths()
 
 # === Import der Analyse-Module ===
-from module.analyse import StatistischerUeberblick
-from module.analyse import Stationaritätstest
-from module.analyse import AcfUndPacf
-from module.analyse import Liniendiagramme
+from . import (
+    StatistischerUeberblick,
+    Stationaritätstest,
+    AcfUndPacf,
+    Liniendiagramme
+)
 
 def run_complete_analysis():
     """

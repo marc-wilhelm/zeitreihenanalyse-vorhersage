@@ -10,9 +10,11 @@ import config
 config.init_project_paths()
 
 # === Import der universellen Module ===
-from module.universell import UniAutoArima
-from module.universell import UniPrognoseMitRuecktransformation
-from module.universell import UniSarimaCvRes
+from . import (
+    UniAutoArima,
+    UniPrognoseMitRuecktransformation,
+    UniSarimaCvRes
+)
 
 def run_complete_universell_analysis():
     """
