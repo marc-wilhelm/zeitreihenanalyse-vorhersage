@@ -9,7 +9,7 @@ Dieses Dokument enthält Richtlinien und Best Practices für Entwickler, die an 
 Wir verwenden folgende Branch-Struktur:
 - `main`: Stabile Version (nur über Pull Requests)
 - `develop`: Entwicklungsumgebung (Basis für Feature-Branches)
-- Feature-Branches: Nach dem Schema `feature/stadtname]`
+- Feature-Branches: Nach dem Schema `feature/[stadtname]`
 - Refactor-Branches: Nach dem Schema `refactor/[kontext]`
 
 ### Commit-Messages
