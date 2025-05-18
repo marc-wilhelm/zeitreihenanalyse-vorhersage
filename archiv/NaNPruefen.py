@@ -1,8 +1,3 @@
-
-
-
-import pandas as pd
-
 def NaNPruefen(df):
     """
     Gibt die Anzahl der NaN-Werte pro Spalte aus (prozentual) und die Zeilen mit NaN-Werten.

@@ -1,5 +1,3 @@
-import pandas as pd
-
 def SpaltennamenKorrigieren(df):
     """
     Korrigiert die Spaltennamen des DataFrames.

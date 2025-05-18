@@ -1,5 +1,3 @@
-import pandas as pd
-
 def DuplikatePruefen(df):
     """
     Überprüft und entfernt Duplikate im DataFrame.
