@@ -218,6 +218,7 @@ zeitreihenanalyse-vorhersage/
 │   └── main_universell.py
 ├── .gitignore             # Git-Ignorierte Dateien
 ├── .python-version        # Python-Versionsanforderung
+├── .tool-versions         # Tool-Versionsanforderung
 ├── config.py              # Projektkonfiguration
 ├── LICENSE                # Lizenzinformationen
 ├── README.md              
