@@ -1,6 +1,6 @@
 """
 Universelle AutoARIMA Evaluationsmetriken für Abakan
-Generiert am: 2025-05-18 13:54:42
+Generiert am: 2025-05-19 21:40:55
 """
 
 evaluation_metrics = {
