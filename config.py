@@ -30,11 +30,15 @@ PROJECT_ROOT = get_project_root()
 PATH_TS_BERLIN = os.path.join(PROJECT_ROOT, "daten", "original-daten", "zeitreihe_berlin.csv")
 PATH_TS_ANGELES = os.path.join(PROJECT_ROOT, "daten", "original-daten", "zeitreihe_angeles.csv")
 PATH_TS_ABAKAN = os.path.join(PROJECT_ROOT, "daten", "original-daten", "zeitreihe_abakan.csv")
+#Test
+PATH_TS_BERN = os.path.join(PROJECT_ROOT, "daten", "original-daten", "zeitreihe_bern.csv")
 
 # Bereinigte Daten
 PATH_TS_BERLIN_CLEAN = os.path.join(PROJECT_ROOT, "daten", "bereinigte-daten", "bereinigt_zeitreihe_berlin.csv")
 PATH_TS_ANGELES_CLEAN = os.path.join(PROJECT_ROOT, "daten", "bereinigte-daten", "bereinigt_zeitreihe_angeles.csv")
 PATH_TS_ABAKAN_CLEAN = os.path.join(PROJECT_ROOT, "daten", "bereinigte-daten", "bereinigt_zeitreihe_abakan.csv")
+#Test
+PATH_TS_BERN_CLEAN = os.path.join(PROJECT_ROOT, "daten", "bereinigte-daten", "bereinigt_zeitreihe_bern.csv")
 
 # Stationäre Daten
 STATIONAER_DATEN_DIR = os.path.join(PROJECT_ROOT, "daten", "stationäre-daten")
@@ -61,18 +65,20 @@ OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "prognose_er
 OUTPUT_SARIMA_RESIDUEN_UNIVERSELL = os.path.join(OUTPUT_FOLDER, "sarima_residuen_universell")
 
 # === STÄDTELISTE UND DATENPFADE ===
-CITIES = ["abakan", "berlin", "angeles"]
+CITIES = ["abakan", "berlin", "angeles", "bern"]
 
 CITY_PATHS_ORIGINAL = {
     "abakan": PATH_TS_ABAKAN,
     "berlin": PATH_TS_BERLIN,
-    "angeles": PATH_TS_ANGELES
+    "angeles": PATH_TS_ANGELES,
+    "bern": PATH_TS_BERN
 }
 
 CITY_PATHS_CLEAN = {
     "abakan": PATH_TS_ABAKAN_CLEAN,
     "berlin": PATH_TS_BERLIN_CLEAN,
-    "angeles": PATH_TS_ANGELES_CLEAN
+    "angeles": PATH_TS_ANGELES_CLEAN,
+    "bern": PATH_TS_BERN_CLEAN
 }
 
 # === UTILITY FUNKTIONEN ===

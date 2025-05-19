@@ -1,6 +1,6 @@
 """
 AutoARIMA Modellparameter für Berlin
-Generiert am: 2025-05-18 17:24:42
+Generiert am: 2025-05-19 15:23:56
 """
 
 name = 'berlin'
