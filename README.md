@@ -204,7 +204,7 @@ CITY_PATHS_ORIGINAL = {
 }
 
 CITY_PATHS_CLEAN = {
-   #... bisherige Originaldaten
+   #... bisherige Bereinigtedaten
    "stadt": PATH_TS_STADT_CLEAN
 }
 ```
