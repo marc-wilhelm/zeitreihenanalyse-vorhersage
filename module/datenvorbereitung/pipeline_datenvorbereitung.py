@@ -9,7 +9,7 @@ import config
 config.init_project_paths()
 
 # === Import der Datenvorbereitung-Funktionen ===
-from .bereinigung import (
+from .Bereinigung import (
     DatenEinlesen,
     SpaltennamenKorrigieren,
     DatumFormatieren,

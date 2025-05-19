@@ -1,7 +1,7 @@
 # module/datenvorbereitung/__init__.py
 
 # Alle Funktionen aus dem datenvorbereitung Modul importieren
-from .bereinigung import (
+from .Bereinigung import (
     DatenEinlesen,
     SpaltennamenKorrigieren,
     DatumFormatieren,
