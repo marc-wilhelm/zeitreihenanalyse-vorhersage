@@ -28,7 +28,7 @@ def main():
     # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
     # Option 1: Komplette Pipeline ausführen (Standard)
-    mode = "sarima_cv"  # Ändern Sie das hier für andere Modi
+    mode = "complete"  # Ändern Sie das hier für andere Modi
 
     # Option 2: Nur spezifische Schritte ausführen
     # mode = "autoarima"      # Nur AutoARIMA Modellauswahl

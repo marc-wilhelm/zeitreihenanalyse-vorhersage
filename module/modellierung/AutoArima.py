@@ -19,11 +19,7 @@ def main():
     results_summary = []
 
     # === Zeitreihenpfade ===
-    time_series_info = {
-        "abakan": config.PATH_TS_ABAKAN_CLEAN,
-        "berlin": config.PATH_TS_BERLIN_CLEAN,
-        "angeles": config.PATH_TS_ANGELES_CLEAN
-    }
+    time_series_info = config.CITY_PATHS_CLEAN
 
     # === Hauptloop ===
     for i, (city, path) in enumerate(time_series_info.items(), 1):
