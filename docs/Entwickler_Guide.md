@@ -56,7 +56,7 @@ Wir folgen [PEP 8](https://peps.python.org/pep-0008/) für Python-Code, mit eini
 ### Benennungskonventionen
 
 - Python-Dateinamen: `UpperCamelCase` (z.B. `AnalyzeTimeSeries.py`)
-- Funktionen: `snake_case` (z.B. `data_preparation.py`) oder `UpperCamelCase`
+- Funktionen: `snake_case` (z.B. `data_preparation.py`)
 - Variablen: `snake_case` (z.B. `temperature_data`)
 - Konstanten: `UPPER_CASE_WITH_UNDERSCORES` (z.B. `MAX_ITERATIONS`)
 
