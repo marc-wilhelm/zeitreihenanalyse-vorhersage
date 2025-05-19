@@ -1,14 +1,16 @@
 Write-Output "Starte Setup (Windows PowerShell)..."
 
 # Definieren der erforderlichen Python-Version
-$REQUIRED_VERSION = "3.12.10"
+$REQUIRED_MAJOR_MINOR = "3.12"  # Akzeptiere jede 3.12.x Version
+# Optional: Für exakte Version verwenden: $REQUIRED_VERSION = "3.12.10"
 
 # Funktion zum Finden der richtigen Python-Installation
 function Find-PythonVersion {
     # Versuche 1: Verwende py launcher (wenn verfügbar)
     try {
         $pyOutput = py -3.12 --version 2>&1
-        if ($pyOutput -match $REQUIRED_VERSION) {
+        if ($pyOutput -match $REQUIRED_MAJOR_MINOR) {
+            Write-Output "Gefunden mit py launcher: $pyOutput"
             return "py -3.12"
         }
     } catch {}
@@ -25,7 +27,8 @@ function Find-PythonVersion {
         if (Test-Path $path) {
             try {
                 $versionOutput = & $path --version 2>&1
-                if ($versionOutput -match "3.12") {
+                if ($versionOutput -match $REQUIRED_MAJOR_MINOR) {
+                    Write-Output "Gefunden in Pfad: $versionOutput ($path)"
                     return $path
                 }
             } catch {}
@@ -34,9 +37,15 @@ function Find-PythonVersion {
 
     # Versuche 3: Suche in PATH
     try {
-        $python312Path = Get-Command python | Where-Object { $_.Version.ToString() -match "3.12" } | Select-Object -First 1 -ExpandProperty Source
-        if ($python312Path) {
-            return $python312Path
+        $pythonCommands = Get-Command python* -ErrorAction SilentlyContinue
+        foreach ($cmd in $pythonCommands) {
+            try {
+                $versionOutput = & $cmd.Source --version 2>&1
+                if ($versionOutput -match $REQUIRED_MAJOR_MINOR) {
+                    Write-Output "Gefunden in PATH: $versionOutput ($($cmd.Source))"
+                    return $cmd.Source
+                }
+            } catch {}
         }
     } catch {}
 
@@ -48,8 +57,16 @@ function Find-PythonVersion {
 $PYTHON_PATH = Find-PythonVersion
 
 if ($null -eq $PYTHON_PATH) {
-    Write-Error "Python $REQUIRED_VERSION konnte nicht gefunden werden. Bitte installieren Sie Python $REQUIRED_VERSION von:"
-    Write-Error "https://www.python.org/downloads/release/python-31210/"
+    Write-Error "Python $REQUIRED_MAJOR_MINOR konnte nicht gefunden werden."
+    Write-Error "Bitte installieren Sie Python 3.12.x von:"
+    Write-Error "https://www.python.org/downloads/"
+    Write-Output ""
+    Write-Output "Verfügbare Python-Versionen:"
+    try {
+        py --list
+    } catch {
+        Write-Output "Py launcher nicht verfügbar"
+    }
     exit 1
 }
 
@@ -71,9 +88,14 @@ if (!(Test-Path -Path ".venv")) {
 # Aktivieren und Pakete installieren
 .venv\Scripts\Activate.ps1
 
-# Python-Version im venv prüfen
+# Python-Version im venv prüfen und anzeigen
 $VENV_VERSION = (python --version 2>&1).ToString()
 Write-Output "Virtuelle Umgebung verwendet: $VENV_VERSION"
+
+# Überprüfen ob die Version kompatibel ist
+if ($VENV_VERSION -notmatch $REQUIRED_MAJOR_MINOR) {
+    Write-Warning "Achtung: Die Python-Version im venv ($VENV_VERSION) entspricht nicht der gewünschten Version ($REQUIRED_MAJOR_MINOR)"
+}
 
 pip install --upgrade pip
 pip install -r requirements.txt
