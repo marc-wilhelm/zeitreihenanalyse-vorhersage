@@ -270,7 +270,7 @@ Die modulare Struktur bietet entscheidende Vorteile:
 
 ## Projekt-Funktionalitäten
 
-Diese Projekt beinhaltet folgende Funktionen:
+Dieses Projekt beinhaltet folgende Funktionen:
 
 1. **Datenbereinigung und -aufbereitung**
    - Behandlung fehlender & falsch formatierter Werte
