@@ -73,7 +73,7 @@ def statistische_analyse(df, spalte, city):
     stats_path = os.path.join(stats_dir, f"statistische_kennzahlen_{city}.py")
     with open(stats_path, "w", encoding="utf-8") as f:
         f.write(summary_text + "\n")
-    print(f"✅ Statistiken gespeichert unter: {stats_path}")
+    print(f" Statistiken gespeichert unter: {stats_path}")
 
     # === Histogramm mit Linien ===
     plt.figure(figsize=(10, 6))
@@ -92,7 +92,7 @@ def statistische_analyse(df, spalte, city):
     hist_path = os.path.join(hist_dir, f"histogramm_{city}.png")
     plt.savefig(hist_path, dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"📊 Histogramm gespeichert unter: {hist_path}")
+    print(f" Histogramm gespeichert unter: {hist_path}")
 
     # === Boxplot ===
     plt.figure(figsize=(6, 6))
@@ -104,14 +104,14 @@ def statistische_analyse(df, spalte, city):
     boxplot_path = os.path.join(boxplot_dir, f"boxplot_{city}.png")
     plt.savefig(boxplot_path, dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"📦 Boxplot gespeichert unter: {boxplot_path}")
+    print(f" Boxplot gespeichert unter: {boxplot_path}")
 
 def main():
     """
     Hauptfunktion für den statistischen Überblick aller Städte
     """
-    print("📈 Starte Statistischen Überblick...")
-    print(f"📁 Ausgabeverzeichnis: {config.OUTPUT_FOLDER}")
+    print(" Starte Statistischen Überblick...")
+    print(f" Ausgabeverzeichnis: {config.OUTPUT_FOLDER}")
 
     # Alle Städte durchlaufen
     for city in config.CITIES:
@@ -121,16 +121,16 @@ def main():
         df = daten_einlesen(file_path, sep=",", decimal=".")
 
         if df is None:
-            print(f"❌ Fehler beim Einlesen von {file_path}. Überspringe {city}.")
+            print(f" Fehler beim Einlesen von {file_path}. Überspringe {city}.")
             continue
 
         if "MonatlicheDurchschnittsTemperatur" not in df.columns:
-            print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in {file_path}.")
+            print(f" Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in {file_path}.")
             continue
 
         statistische_analyse(df, "MonatlicheDurchschnittsTemperatur", city)
 
-    print(f"\n✅ Statistischer Überblick abgeschlossen. Ergebnisse in: {config.OUTPUT_FOLDER}")
+    print(f"\n Statistischer Überblick abgeschlossen. Ergebnisse in: {config.OUTPUT_FOLDER}")
 
 # === Hauptausführung ===
 if __name__ == "__main__":

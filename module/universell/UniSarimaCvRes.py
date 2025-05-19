@@ -81,7 +81,7 @@ def plot_residuals(residuals, city, fold):
     plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
     plt.savefig(plot_path)
     plt.close()
-    print(f"   📊 Residuenanalyse gespeichert: {plot_path}")
+    print(f"    Residuenanalyse gespeichert: {plot_path}")
 
 
 def append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung_pvalue):
@@ -117,7 +117,7 @@ def append_confidence_interval_summary(city, avg_conf_int, results_df, avg_ljung
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    print(f"📁 Konfidenzintervall und Metriken gespeichert unter: {file_path}")
+    print(f" Konfidenzintervall und Metriken gespeichert unter: {file_path}")
 
 
 def run_expanding_sarima_cv(city):
@@ -132,7 +132,7 @@ def run_expanding_sarima_cv(city):
         order = params.order
         seasonal_order = params.seasonal_order
     except Exception as e:
-        print(f"❌ Fehler beim Laden der universellen Parameter: {e}")
+        print(f" Fehler beim Laden der universellen Parameter: {e}")
         return pd.DataFrame()
 
     # Daten aus stationärer Zeitreihe laden
@@ -141,12 +141,12 @@ def run_expanding_sarima_cv(city):
         df = pd.read_csv(input_path)
         series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
     except Exception as e:
-        print(f"❌ Fehler beim Laden der stationären Daten für {city}: {e}")
+        print(f" Fehler beim Laden der stationären Daten für {city}: {e}")
         return pd.DataFrame()
 
-    print(f"\n📍 Stadt: {city}")
-    print(f"🔧 Verwende gemeinsame SARIMA{order}x{seasonal_order}")
-    print(f"📄 Anzahl Datenpunkte: {len(series)}")
+    print(f"\n Stadt: {city}")
+    print(f" Verwende gemeinsame SARIMA{order}x{seasonal_order}")
+    print(f" Anzahl Datenpunkte: {len(series)}")
 
     # CV mit Expanding Window
     splitter = expanding_window(initial=800, horizon=160, period=160)
@@ -160,7 +160,7 @@ def run_expanding_sarima_cv(city):
         train = series.iloc[train_idx]
         test = series.iloc[test_idx]
 
-        print(f"\n🔁 Fold {fold + 1}")
+        print(f"\n Fold {fold + 1}")
         print(f"   → Trainingsdaten: {len(train)}")
         print(f"   → Testdaten:      {len(test)}")
 
@@ -201,13 +201,13 @@ def run_expanding_sarima_cv(city):
                 "ljung_pvalue": ljung_pvalue
             })
 
-            print(f"   ✅ Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
-            print(f"   ✅ Test-RMSE:  {test_rmse:.4f} | Test-MSE:  {test_mse:.4f}")
+            print(f"    Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
+            print(f"    Test-RMSE:  {test_rmse:.4f} | Test-MSE:  {test_mse:.4f}")
 
             plot_residuals(residuals, city, fold + 1)
 
         except Exception as e:
-            print(f"   ❌ Fehler in Fold {fold + 1}: {e}")
+            print(f"    Fehler in Fold {fold + 1}: {e}")
             continue
 
     results_df = pd.DataFrame(results)
@@ -222,7 +222,7 @@ def run_expanding_sarima_cv(city):
 
 def main():
     """Hauptfunktion für universelle SARIMA Cross-Validation"""
-    print("🔬 Universelle SARIMA Cross-Validation wird gestartet...")
+    print(" Universelle SARIMA Cross-Validation wird gestartet...")
 
     # Ausgabeordner erstellen
     config.ensure_output_dirs()
@@ -234,26 +234,26 @@ def main():
     for city in cities:
         try:
             print("\n" + "="*50)
-            print(f"📌 Bearbeite Stadt: {city.upper()}")
+            print(f" Bearbeite Stadt: {city.upper()}")
             print("="*50)
 
             results_df = run_expanding_sarima_cv(city)
 
             if not results_df.empty:
                 successful_cities += 1
-                print(f"\n✅ SARIMA CV für {city} erfolgreich durchgeführt.")
+                print(f"\n SARIMA CV für {city} erfolgreich durchgeführt.")
             else:
-                print(f"\n⚠️ Keine validen Ergebnisse für {city}.")
+                print(f"\n Keine validen Ergebnisse für {city}.")
 
         except Exception as e:
-            print(f"❌ Fehler bei Stadt {city}: {str(e)[:150]}...")
+            print(f" Fehler bei Stadt {city}: {str(e)[:150]}...")
 
     # Zusammenfassung ausgeben
     print("\n" + "="*60)
-    print("📋 ZUSAMMENFASSUNG - UNIVERSELLE SARIMA CV")
+    print(" ZUSAMMENFASSUNG - UNIVERSELLE SARIMA CV")
     print("="*60)
-    print(f"✅ Erfolgreiche Städte: {successful_cities}/{len(cities)}")
-    print(f"📁 Ergebnisse gespeichert unter: {config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL}")
+    print(f" Erfolgreiche Städte: {successful_cities}/{len(cities)}")
+    print(f" Ergebnisse gespeichert unter: {config.OUTPUT_SARIMA_RESIDUEN_UNIVERSELL}")
     print("="*60)
 
 

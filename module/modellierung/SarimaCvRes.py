@@ -83,7 +83,7 @@ def plot_residuals(residuals, city, fold):
     plot_path = os.path.join(output_dir, f"residuen_fold_{fold}.png")
     plt.savefig(plot_path)
     plt.close()
-    print(f"📊 Residuenanalyse gespeichert: residuen_fold_{fold}.png")
+    print(f" Residuenanalyse gespeichert: residuen_fold_{fold}.png")
 
 def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
     """Fügt Residuenanalyse-Zusammenfassung zur Evaluation-Datei hinzu"""
@@ -115,11 +115,11 @@ def append_residual_analysis_summary(city, results_df, avg_ljung_pvalue):
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    print(f"📁 Zusammenfassung für {city} gespeichert unter: {file_path}")
+    print(f" Zusammenfassung für {city} gespeichert unter: {file_path}")
 
 def run_expanding_sarima_cv(city):
     """Führt Expanding-Window Cross-Validation für SARIMA-Modell durch"""
-    print(f"\n📍 Stadt: {city}")
+    print(f"\n Stadt: {city}")
 
     # === Modellparameter laden ===
     param_module = f"ergebnisse.model_parameters.{city}_params"
@@ -128,7 +128,7 @@ def run_expanding_sarima_cv(city):
         order = params.order
         seasonal_order = params.seasonal_order
     except ImportError:
-        print(f"❌ Keine Parameter-Datei gefunden für {city}")
+        print(f" Keine Parameter-Datei gefunden für {city}")
         return pd.DataFrame()
 
     # === Daten aus CSV laden ===
@@ -137,11 +137,11 @@ def run_expanding_sarima_cv(city):
         df = pd.read_csv(input_path)
         series = df["MonatlicheDurchschnittsTemperatur"].squeeze()
     except Exception as e:
-        print(f"❌ Fehler beim Laden der Daten für {city}: {e}")
+        print(f" Fehler beim Laden der Daten für {city}: {e}")
         return pd.DataFrame()
 
-    print(f"🔧 Verwende SARIMA{order}x{seasonal_order}")
-    print(f"📄 Anzahl Datenpunkte: {len(series)}")
+    print(f" Verwende SARIMA{order}x{seasonal_order}")
+    print(f" Anzahl Datenpunkte: {len(series)}")
 
     splitter = expanding_window(initial=800, horizon=160, period=160)
     splits = splitter.split(series)
@@ -153,7 +153,7 @@ def run_expanding_sarima_cv(city):
         train = series.iloc[train_idx]
         test = series.iloc[test_idx]
 
-        print(f"\n🔁 Fold {fold + 1}")
+        print(f"\n Fold {fold + 1}")
         print(f"   → Trainingsdaten: {len(train)}")
         print(f"   → Testdaten:      {len(test)}")
 
@@ -190,19 +190,19 @@ def run_expanding_sarima_cv(city):
                 "ljung_pvalue": ljung_pvalue
             })
 
-            print(f"   ✅ Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
-            print(f"   ✅ Test-RMSE:  {test_rmse:.4f} | Test-MSE:  {test_mse:.4f}")
+            print(f"    Train-RMSE: {train_rmse:.4f} | Train-MSE: {train_mse:.4f}")
+            print(f"    Test-RMSE:  {test_rmse:.4f} | Test-MSE:  {test_mse:.4f}")
 
             plot_residuals(residuals, city, fold + 1)
 
         except Exception as e:
-            print(f"   ❌ Fehler in Fold {fold + 1}: {e}")
+            print(f"    Fehler in Fold {fold + 1}: {e}")
             continue
 
     results_df = pd.DataFrame(results)
 
     if not results_df.empty:
-        print(f"\n📊 --- Zusammenfassung für {city} ---")
+        print(f"\n --- Zusammenfassung für {city} ---")
         print(f"Folds ausgewertet: {len(results_df)}")
         print(f"Durchschnittlicher Train-RMSE: {results_df['train_rmse'].mean():.4f}")
         print(f"Durchschnittlicher Test-RMSE:  {results_df['test_rmse'].mean():.4f}")
@@ -218,22 +218,22 @@ def run_expanding_sarima_cv(city):
         append_residual_analysis_summary(city, results_df, avg_ljung_pvalue)
 
     else:
-        print(f"\n⚠️ Keine gültigen Folds ausgewertet für {city}.")
+        print(f"\n Keine gültigen Folds ausgewertet für {city}.")
 
     return results_df
 
 def main():
     """Führt SARIMA Expanding Window Residuenanalyse für alle Städte durch"""
-    print("🔬 SARIMA Expanding Window Residuenanalyse wird gestartet...")
+    print(" SARIMA Expanding Window Residuenanalyse wird gestartet...")
 
     for city in config.CITIES:
         try:
             run_expanding_sarima_cv(city)
         except Exception as e:
-            print(f"❌ Fehler bei Stadt {city}: {e}")
+            print(f" Fehler bei Stadt {city}: {e}")
 
-    print(f"\n✅ SARIMA Residuenanalyse abgeschlossen.")
-    print(f"📁 Ergebnisse gespeichert in: {config.OUTPUT_SARIMA_RESIDUEN}")
+    print(f"\n SARIMA Residuenanalyse abgeschlossen.")
+    print(f" Ergebnisse gespeichert in: {config.OUTPUT_SARIMA_RESIDUEN}")
 
 # === Hauptausführung ===
 if __name__ == "__main__":

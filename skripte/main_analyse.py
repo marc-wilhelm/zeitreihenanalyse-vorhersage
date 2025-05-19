@@ -39,7 +39,7 @@ def main():
     # ==================================================================
 
     if mode == "complete":
-        print("🚀 Führe komplette Analysepipeline aus...")
+        print(" Führe komplette Analysepipeline aus...")
         run_complete_analysis()
 
     elif mode in ["statistical_overview", "stationarity", "acf_pacf", "plots"]:
@@ -49,15 +49,15 @@ def main():
             "acf_pacf": "ACF/PACF Analyse",
             "plots": "Liniendiagramme"
         }
-        print(f"📊 Führe nur {analysis_names[mode]} aus...")
+        print(f" Führe nur {analysis_names[mode]} aus...")
         run_single_analysis(mode)
 
     else:
-        print(f"❌ Unbekannter Modus: {mode}")
+        print(f" Unbekannter Modus: {mode}")
         print("Verfügbare Modi: 'complete', 'statistical_overview', 'stationarity', 'acf_pacf', 'plots'")
         return
 
-    print("✅ Zeitreihenanalyse-Pipeline abgeschlossen!")
+    print(" Zeitreihenanalyse-Pipeline abgeschlossen!")
 
 if __name__ == "__main__":
     main()

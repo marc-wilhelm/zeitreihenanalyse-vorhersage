@@ -25,28 +25,28 @@ def run_complete_universell_analysis():
     """
     start_time = time.time()
 
-    print("🚀 Starte universelle Analysepipeline...")
+    print(" Starte universelle Analysepipeline...")
     print("="*60)
 
     # === Schritt 1: Universelles AutoARIMA ===
     try:
         UniAutoArima.main()
     except Exception as e:
-        print(f"❌ Fehler beim AutoARIMA: {e}")
+        print(f" Fehler beim AutoARIMA: {e}")
         return False
 
     # === Schritt 2: Universelle Cross-Validation ===
     try:
         UniSarimaCvRes.main()
     except Exception as e:
-        print(f"❌ Fehler bei Cross-Validation: {e}")
+        print(f" Fehler bei Cross-Validation: {e}")
         return False
 
     # === Schritt 3: Universelle Prognose ===
     try:
         UniPrognoseMitRuecktransformation.main()
     except Exception as e:
-        print(f"❌ Fehler bei Prognose: {e}")
+        print(f" Fehler bei Prognose: {e}")
         return False
 
     # === Zusammenfassung ===
@@ -54,7 +54,7 @@ def run_complete_universell_analysis():
     duration = end_time - start_time
 
     print("="*60)
-    print(f"✅ Pipeline abgeschlossen in {duration:.2f} Sekunden")
+    print(f" Pipeline abgeschlossen in {duration:.2f} Sekunden")
     print("="*60)
 
     return True
@@ -82,23 +82,23 @@ def run_single_universell_analysis(analysis_type):
     }
 
     if analysis_type not in analysis_map:
-        print(f"❌ Unbekannter Typ: {analysis_type}")
+        print(f" Unbekannter Typ: {analysis_type}")
         print(f"Verfügbar: {list(analysis_map.keys())}")
         return False
 
     analysis = analysis_map[analysis_type]
 
     start_time = time.time()
-    print(f"🚀 Starte {analysis['name']}...")
+    print(f" Starte {analysis['name']}...")
 
     try:
         analysis['func']()
         end_time = time.time()
         duration = end_time - start_time
-        print(f"✅ {analysis['name']} abgeschlossen ({duration:.2f}s)")
+        print(f" {analysis['name']} abgeschlossen ({duration:.2f}s)")
         return True
     except Exception as e:
-        print(f"❌ Fehler bei {analysis['name']}: {e}")
+        print(f" Fehler bei {analysis['name']}: {e}")
         return False
 
 def main():

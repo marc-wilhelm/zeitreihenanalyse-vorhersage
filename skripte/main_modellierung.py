@@ -28,7 +28,7 @@ def main():
     # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
     # Option 1: Komplette Pipeline ausführen (Standard)
-    mode = "complete"  # Ändern Sie das hier für andere Modi
+    mode = "sarima_cv"  # Ändern Sie das hier für andere Modi
 
     # Option 2: Nur spezifische Schritte ausführen
     # mode = "autoarima"      # Nur AutoARIMA Modellauswahl
@@ -37,7 +37,7 @@ def main():
     # ==================================================================
 
     if mode == "complete":
-        print("🚀 Führe komplette Modellierungspipeline aus...")
+        print(" Führe komplette Modellierungspipeline aus...")
         run_complete_modeling()
 
     elif mode in ["autoarima", "sarima_cv"]:
@@ -45,15 +45,15 @@ def main():
             "autoarima": "AutoARIMA Modellauswahl",
             "sarima_cv": "SARIMA Cross-Validation"
         }
-        print(f"🔧 Führe nur {analysis_names[mode]} aus...")
+        print(f" Führe nur {analysis_names[mode]} aus...")
         run_single_modeling(mode)
 
     else:
-        print(f"❌ Unbekannter Modus: {mode}")
+        print(f" Unbekannter Modus: {mode}")
         print("Verfügbare Modi: 'complete', 'autoarima', 'sarima_cv'")
         return
 
-    print("✅ Zeitreihen-Modellierungspipeline abgeschlossen!")
+    print(" Zeitreihen-Modellierungspipeline abgeschlossen!")
 
 if __name__ == "__main__":
     main()

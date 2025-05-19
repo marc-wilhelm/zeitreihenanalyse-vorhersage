@@ -27,17 +27,17 @@ def run_complete_analysis():
     """
     start_time = time.time()
 
-    print("🚀 Starte komplette Analysepipeline...")
-    print(f"📁 Projektverzeichnis: {config.PROJECT_ROOT}")
-    print(f"🏙️ Städte: {', '.join(config.CITIES)}")
-    print(f"📊 Ausgabeordner: {config.OUTPUT_FOLDER}")
+    print(" Starte komplette Analysepipeline...")
+    print(f" Projektverzeichnis: {config.PROJECT_ROOT}")
+    print(f" Städte: {', '.join(config.CITIES)}")
+    print(f" Ausgabeordner: {config.OUTPUT_FOLDER}")
     print("\n" + "="*80)
 
     completed_steps = 0
     total_steps = 4
 
     # === Schritt 1: Statistischer Überblick ===
-    print(f"\n📊 SCHRITT 1/{total_steps}: Statistischer Überblick")
+    print(f"\n SCHRITT 1/{total_steps}: Statistischer Überblick")
     print("-" * 50)
     print("   → Berechnet statistische Kennzahlen")
     print("   → Erstellt Histogramme und Boxplots")
@@ -46,11 +46,11 @@ def run_complete_analysis():
         StatistischerUeberblick.main()
         completed_steps += 1
     except Exception as e:
-        print(f"   ❌ Fehler beim Statistischen Überblick: {e}")
+        print(f"    Fehler beim Statistischen Überblick: {e}")
         return False
 
     # === Schritt 2: Stationaritätsanalyse ===
-    print(f"\n🔬 SCHRITT 2/{total_steps}: Stationaritätsanalyse")
+    print(f"\n SCHRITT 2/{total_steps}: Stationaritätsanalyse")
     print("-" * 50)
     print("   → Führt ADF-Tests durch")
     print("   → Führt KPSS-Tests durch")
@@ -59,11 +59,11 @@ def run_complete_analysis():
         Stationaritätstest.main()
         completed_steps += 1
     except Exception as e:
-        print(f"   ❌ Fehler bei Stationaritätsanalyse: {e}")
+        print(f"    Fehler bei Stationaritätsanalyse: {e}")
         return False
 
     # === Schritt 3: ACF/PACF Analyse ===
-    print(f"\n📈 SCHRITT 3/{total_steps}: ACF/PACF Analyse")
+    print(f"\n SCHRITT 3/{total_steps}: ACF/PACF Analyse")
     print("-" * 50)
     print("   → Berechnet Autokorrelationsfunktionen")
     print("   → Berechnet partielle Autokorrelationsfunktionen")
@@ -72,11 +72,11 @@ def run_complete_analysis():
         AcfUndPacf.main()
         completed_steps += 1
     except Exception as e:
-        print(f"   ❌ Fehler bei ACF/PACF Analyse: {e}")
+        print(f"    Fehler bei ACF/PACF Analyse: {e}")
         return False
 
     # === Schritt 4: Liniendiagramme ===
-    print(f"\n📉 SCHRITT 4/{total_steps}: Liniendiagramme erstellen")
+    print(f"\n SCHRITT 4/{total_steps}: Liniendiagramme erstellen")
     print("-" * 50)
     print("   → Erstellt Zeitreihen-Visualisierungen")
     print("   → Zeigt Trends und Saisonalität")
@@ -84,7 +84,7 @@ def run_complete_analysis():
         Liniendiagramme.create_line_plots()
         completed_steps += 1
     except Exception as e:
-        print(f"   ❌ Fehler bei Liniendiagrammen: {e}")
+        print(f"    Fehler bei Liniendiagrammen: {e}")
         return False
 
     # === Zusammenfassung ===
@@ -92,17 +92,17 @@ def run_complete_analysis():
     duration = end_time - start_time
 
     print("\n" + "="*80)
-    print("🎉 ANALYSEPIPELINE ERFOLGREICH ABGESCHLOSSEN! 🎉")
-    print(f"⏱️ Gesamtdauer: {duration:.2f} Sekunden")
-    print(f"✅ Abgeschlossene Schritte: {completed_steps}/{total_steps}")
-    print(f"\n📁 Alle Ergebnisse befinden sich in: {config.OUTPUT_FOLDER}")
-    print("\n📋 Übersicht der Ausgabeordner:")
-    print(f"   📊 Statistische Kennzahlen: {config.OUTPUT_STATISTIK_KENNZAHLEN}")
-    print(f"   📈 Histogramme:             {config.OUTPUT_HISTOGRAMME}")
-    print(f"   📦 Boxplots:                {config.OUTPUT_BOXPLOTS}")
-    print(f"   🔬 Stationarität:           {config.OUTPUT_STATIONARITAET}")
-    print(f"   📈 ACF/PACF Plots:          {config.OUTPUT_ACF_PACF_PLOTS}")
-    print(f"   📉 Liniendiagramme:         {config.OUTPUT_LINIENDIAGRAMME}")
+    print(" ANALYSEPIPELINE ERFOLGREICH ABGESCHLOSSEN! ")
+    print(f" Gesamtdauer: {duration:.2f} Sekunden")
+    print(f" Abgeschlossene Schritte: {completed_steps}/{total_steps}")
+    print(f"\n Alle Ergebnisse befinden sich in: {config.OUTPUT_FOLDER}")
+    print("\n Übersicht der Ausgabeordner:")
+    print(f"    Statistische Kennzahlen: {config.OUTPUT_STATISTIK_KENNZAHLEN}")
+    print(f"    Histogramme:             {config.OUTPUT_HISTOGRAMME}")
+    print(f"    Boxplots:                {config.OUTPUT_BOXPLOTS}")
+    print(f"    Stationarität:           {config.OUTPUT_STATIONARITAET}")
+    print(f"    ACF/PACF Plots:          {config.OUTPUT_ACF_PACF_PLOTS}")
+    print(f"    Liniendiagramme:         {config.OUTPUT_LINIENDIAGRAMME}")
     print("="*80)
 
     return True
@@ -138,16 +138,16 @@ def run_single_analysis(analysis_type):
     }
 
     if analysis_type not in analysis_map:
-        print(f"❌ Unbekannter Analyse-Typ: {analysis_type}")
+        print(f" Unbekannter Analyse-Typ: {analysis_type}")
         print(f"Verfügbare Optionen: {list(analysis_map.keys())}")
         return False
 
     analysis = analysis_map[analysis_type]
 
     start_time = time.time()
-    print(f"🚀 Starte {analysis['name']}...")
-    print(f"📋 Beschreibung: {analysis['description']}")
-    print(f"🏙️ Städte: {', '.join(config.CITIES)}")
+    print(f" Starte {analysis['name']}...")
+    print(f" Beschreibung: {analysis['description']}")
+    print(f" Städte: {', '.join(config.CITIES)}")
     print("="*60)
 
     try:
@@ -156,13 +156,13 @@ def run_single_analysis(analysis_type):
         duration = end_time - start_time
 
         print("="*60)
-        print(f"✅ {analysis['name']} erfolgreich abgeschlossen")
-        print(f"⏱️ Dauer: {duration:.2f} Sekunden")
-        print(f"📁 Ergebnisse in: {config.OUTPUT_FOLDER}")
+        print(f" {analysis['name']} erfolgreich abgeschlossen")
+        print(f" Dauer: {duration:.2f} Sekunden")
+        print(f" Ergebnisse in: {config.OUTPUT_FOLDER}")
         return True
     except Exception as e:
         print("="*60)
-        print(f"❌ Fehler bei {analysis['name']}: {e}")
+        print(f" Fehler bei {analysis['name']}: {e}")
         return False
 
 def main():

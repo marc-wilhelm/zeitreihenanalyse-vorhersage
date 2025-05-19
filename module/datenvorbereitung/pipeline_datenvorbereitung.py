@@ -35,79 +35,79 @@ def process_single_city(city, input_path, output_path, sep=";", decimal=","):
     Returns:
     bool - True wenn erfolgreich, False bei Fehler
     """
-    print(f"\n📍 Stadt: {city}")
-    print(f"   📂 Eingabe: {os.path.basename(input_path)}")
-    print(f"   💾 Ausgabe: {os.path.basename(output_path)}")
+    print(f"\n Stadt: {city}")
+    print(f"    Eingabe: {os.path.basename(input_path)}")
+    print(f"    Ausgabe: {os.path.basename(output_path)}")
 
     try:
         # 1. Daten einlesen
-        print("   🔄 Schritt 1: Daten einlesen...")
+        print("    Schritt 1: Daten einlesen...")
         df = daten_einlesen(input_path, sep=sep, decimal=decimal)
 
         if df is None:
-            print(f"   ❌ Fehler beim Einlesen der Daten. Überspringe {city}.")
+            print(f"    Fehler beim Einlesen der Daten. Überspringe {city}.")
             return False
 
         original_rows = len(df)
-        print(f"   ✅ {original_rows} Datensätze eingelesen")
+        print(f"    {original_rows} Datensätze eingelesen")
 
         # 2. Spaltennamen korrigieren
-        print("   🔄 Schritt 2: Spaltennamen korrigieren...")
+        print("    Schritt 2: Spaltennamen korrigieren...")
         df = spaltennamen_korrigieren(df)
-        print("   ✅ Spaltennamen korrigiert")
+        print("    Spaltennamen korrigiert")
 
         # 3. Datum formatieren
-        print("   🔄 Schritt 3: Datum formatieren...")
+        print("    Schritt 3: Datum formatieren...")
         df = datum_formatieren(df)
-        print("   ✅ Datum formatiert")
+        print("    Datum formatiert")
 
         # 4. Temperatur und Datum extrahieren
-        print("   🔄 Schritt 4: Temperatur und Datum extrahieren...")
+        print("    Schritt 4: Temperatur und Datum extrahieren...")
         df = temperatur_und_datum_extrahieren(df)
-        print("   ✅ Nur relevante Spalten extrahiert")
+        print("    Nur relevante Spalten extrahiert")
 
         # 5. Zeitreihe ab 1880 filtern
-        print("   🔄 Schritt 5: Daten ab 1880 filtern...")
+        print("    Schritt 5: Daten ab 1880 filtern...")
         df = zeitreihe_ab_1880(df)
         filtered_rows = len(df)
-        print(f"   ✅ Daten gefiltert ({original_rows} → {filtered_rows} Datensätze)")
+        print(f"    Daten gefiltert ({original_rows} → {filtered_rows} Datensätze)")
 
         # 6. NaN-Werte prüfen
-        print("   🔄 Schritt 6: NaN-Werte prüfen...")
+        print("    Schritt 6: NaN-Werte prüfen...")
         df = nan_pruefen(df)
-        print("   ✅ NaN-Prüfung abgeschlossen")
+        print("    NaN-Prüfung abgeschlossen")
 
         # 7. Datentypen prüfen
-        print("   🔄 Schritt 7: Datentypen prüfen...")
+        print("    Schritt 7: Datentypen prüfen...")
         datentypen_pruefen(df)
-        print("   ✅ Datentypen geprüft")
+        print("    Datentypen geprüft")
 
         # 8. Duplikate prüfen
-        print("   🔄 Schritt 8: Duplikate prüfen...")
+        print("    Schritt 8: Duplikate prüfen...")
         duplikate_pruefen(df)
-        print("   ✅ Duplikate geprüft")
+        print("    Duplikate geprüft")
 
         # 9. Daten speichern
-        print("   🔄 Schritt 9: Bereinigte Daten speichern...")
+        print("    Schritt 9: Bereinigte Daten speichern...")
         bereinigte_daten_speichern(df, output_path)
         final_rows = len(df)
-        print(f"   ✅ Daten gespeichert ({final_rows} Datensätze)")
+        print(f"    Daten gespeichert ({final_rows} Datensätze)")
 
-        print(f"   🎯 {city} erfolgreich verarbeitet!")
+        print(f"    {city} erfolgreich verarbeitet!")
         print("\n" + "="*80)
         return True
 
     except Exception as e:
-        print(f"   ❌ Fehler bei {city}: {e}")
+        print(f"    Fehler bei {city}: {e}")
         return False
 
 def run_complete_preprocessing():
     """
     Führt die komplette Datenvorbereitungspipeline für alle Städte durch.
     """
-    print("🚀 Starte komplette Datenvorbereitungspipeline...")
-    print(f"📁 Projektverzeichnis: {config.PROJECT_ROOT}")
-    print(f"🏙️ Städte: {', '.join(config.CITIES)}")
+    print(" Starte komplette Datenvorbereitungspipeline...")
+    print(f" Projektverzeichnis: {config.PROJECT_ROOT}")
+    print(f" Städte: {', '.join(config.CITIES)}")
     print("\n" + "="*80)
 
     success_count = 0
@@ -126,11 +126,11 @@ def run_complete_preprocessing():
 
     # Zusammenfassung
     if success_count == len(config.CITIES):
-        print("🎉 DATENVORBEREITUNGSPIPELINE ERFOLGREICH ABGESCHLOSSEN! 🎉")
+        print(" DATENVORBEREITUNGSPIPELINE ERFOLGREICH ABGESCHLOSSEN! ")
     else:
-        print(f"⚠️ DATENVORBEREITUNGSPIPELINE BEENDET - {success_count}/{len(config.CITIES)} STÄDTE ERFOLGREICH")
+        print(f" DATENVORBEREITUNGSPIPELINE BEENDET - {success_count}/{len(config.CITIES)} STÄDTE ERFOLGREICH")
 
-    print(f"📁 Bereinigte Daten befinden sich in: {os.path.join(config.PROJECT_ROOT, 'daten', 'bereinigte-daten')}")
+    print(f" Bereinigte Daten befinden sich in: {os.path.join(config.PROJECT_ROOT, 'daten', 'bereinigte-daten')}")
     print("="*80)
 
     return success_count == len(config.CITIES)
@@ -146,11 +146,11 @@ def run_single_preprocessing(city):
     bool - True wenn erfolgreich, False bei Fehler
     """
     if city not in config.CITIES:
-        print(f"❌ Unbekannte Stadt: {city}")
+        print(f" Unbekannte Stadt: {city}")
         print(f"Verfügbare Städte: {config.CITIES}")
         return False
 
-    print(f"🚀 Starte Datenvorbereitung für {city}...")
+    print(f" Starte Datenvorbereitung für {city}...")
     print("="*60)
 
     input_path = config.CITY_PATHS_ORIGINAL[city]
@@ -164,9 +164,9 @@ def run_single_preprocessing(city):
 
     print("="*60)
     if success:
-        print(f"✅ Datenvorbereitung für {city} erfolgreich abgeschlossen")
+        print(f" Datenvorbereitung für {city} erfolgreich abgeschlossen")
     else:
-        print(f"❌ Datenvorbereitung für {city} fehlgeschlagen")
+        print(f" Datenvorbereitung für {city} fehlgeschlagen")
 
     return success
 

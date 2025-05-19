@@ -21,7 +21,7 @@ def main():
     """
     Hauptfunktion - Führt universelles AutoARIMA für alle Städte durch
     """
-    print("🔄 Starte universelles AutoARIMA für alle Städte...")
+    print(" Starte universelles AutoARIMA für alle Städte...")
 
     # Ausgabeverzeichnisse erstellen
     param_dir, eval_dir = setup_output_dirs()
@@ -29,7 +29,7 @@ def main():
     # Alle Zeitreihen vorbereiten
     all_series = {}
     for city in config.CITIES:
-        print(f"\n🏙️ Lade Zeitreihe für {city.upper()}...")
+        print(f"\n Lade Zeitreihe für {city.upper()}...")
         path = config.CITY_PATHS_CLEAN[city]
         df = pd.read_csv(path)
         df['Datum'] = pd.to_datetime(df['Datum'])
@@ -37,8 +37,8 @@ def main():
         df = df.sort_index()
         series = df['MonatlicheDurchschnittsTemperatur'].dropna()
         all_series[city] = series
-        print(f"   📊 {len(series)} Beobachtungen geladen")
-        print(f"   📅 Zeitraum: {series.index.min()} bis {series.index.max()}")
+        print(f"    {len(series)} Beobachtungen geladen")
+        print(f"    Zeitraum: {series.index.min()} bis {series.index.max()}")
 
     # === Kandidatenparameter pro Stadt sammeln ===
     candidate_params = set()
@@ -60,10 +60,10 @@ def main():
             stepwise=False
         )
         candidate_params.add((tuple(model.order), tuple(model.seasonal_order)))
-        print(f"   ✅ Beste Kandidatenparameter für {city}: SARIMA{model.order}x{model.seasonal_order}")
+        print(f"    Beste Kandidatenparameter für {city}: SARIMA{model.order}x{model.seasonal_order}")
 
     # === Beste gemeinsame Kombination finden (kombinierter AIC/BIC) ===
-    print("\n🔍 Finde beste gemeinsame Parameter...")
+    print("\n Finde beste gemeinsame Parameter...")
     alpha = 0.5  # Gewicht AIC
     beta = 0.5   # Gewicht BIC
 
@@ -94,7 +94,7 @@ def main():
                 best_models = current_models.copy()
 
         except Exception as e:
-            print(f"   ⚠️ Fehler bei Modell {order} x {seasonal_order}: {e}")
+            print(f"    Fehler bei Modell {order} x {seasonal_order}: {e}")
             continue
 
     # === Gemeinsame Parameter speichern ===
@@ -107,11 +107,11 @@ def main():
         f.write(f"order = {tuple(best_order)}\n")
         f.write(f"seasonal_order = {tuple(best_seasonal_order)}\n")
         f.write(f"kombinierter_score = {best_score}\n")
-    print(f"\n💾 Gemeinsame Parameter gespeichert: {param_path}")
-    print(f"   ✅ Beste universelle Parameter: SARIMA{tuple(best_order)}x{tuple(best_seasonal_order)}")
+    print(f"\n Gemeinsame Parameter gespeichert: {param_path}")
+    print(f"    Beste universelle Parameter: SARIMA{tuple(best_order)}x{tuple(best_seasonal_order)}")
 
     # === Evaluation je Stadt speichern ===
-    print("\n📊 Speichere Evaluationsmetriken für jede Stadt...")
+    print("\n Speichere Evaluationsmetriken für jede Stadt...")
     for city, model in best_models.items():
         metrics = {
             "Stadt": city,
@@ -138,7 +138,7 @@ def main():
             metrics["significant_parameters"] = significant_params
 
         except Exception as e:
-            print(f"   ⚠️ Keine t-/p-Werte für {city}: {e}")
+            print(f"    Keine t-/p-Werte für {city}: {e}")
             metrics["parameter_names"] = None
             metrics["t_values"] = None
             metrics["p_values"] = None
@@ -153,20 +153,20 @@ def main():
             for k, v in metrics.items():
                 f.write(f"    '{k}': {repr(v)},\n")
             f.write("}\n")
-        print(f"   ✅ Metriken für {city} gespeichert")
+        print(f"    Metriken für {city} gespeichert")
 
     # === Zusammenfassung ===
     print("\n" + "="*60)
-    print("📋 ZUSAMMENFASSUNG - UNIVERSELLES AUTOARIMA")
+    print(" ZUSAMMENFASSUNG - UNIVERSELLES AUTOARIMA")
     print("="*60)
     print(f"Beste universelle Parameter für alle Städte:")
     print(f"SARIMA{tuple(best_order)}x{tuple(best_seasonal_order)}")
     print(f"Kombinierter Score (AIC+BIC): {best_score:.2f}")
     print("\nStadt-spezifische Metriken mit universellen Parametern:")
     for city, model in best_models.items():
-        print(f"✅ {city.title():<10} | AIC: {model.aic():>8.2f} | BIC: {model.bic():>8.2f}")
+        print(f" {city.title():<10} | AIC: {model.aic():>8.2f} | BIC: {model.bic():>8.2f}")
 
-    print(f"\n📁 Ergebnisse gespeichert in:")
+    print(f"\n Ergebnisse gespeichert in:")
     print(f"   • Universelle Parameter: {param_dir}")
     print(f"   • Evaluationsmetriken: {eval_dir}")
     print("="*60)

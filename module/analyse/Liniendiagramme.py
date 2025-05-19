@@ -12,11 +12,11 @@ config.init_project_paths()
 
 def create_line_plots():
     """Erstellt Liniendiagramme für originale und stationäre Zeitreihen aller Städte"""
-    print("📈 Liniendiagramme werden erstellt...")
+    print(" Liniendiagramme werden erstellt...")
 
     # Schleife über alle Städte
     for city in config.CITIES:
-        print(f"\n📈 Verarbeite Stadt: {city}")
+        print(f"\n Verarbeite Stadt: {city}")
 
         # === Originale Zeitreihe laden ===
         original_path = config.CITY_PATHS_CLEAN[city]
@@ -24,7 +24,7 @@ def create_line_plots():
             df_original = pd.read_csv(original_path)
             df_original['Datum'] = pd.to_datetime(df_original['Datum'])
         except Exception as e:
-            print(f"❌ Fehler beim Laden der Originaldaten für {city}: {e}")
+            print(f" Fehler beim Laden der Originaldaten für {city}: {e}")
             continue
 
         # === Diagramm Originaldaten ===
@@ -40,7 +40,7 @@ def create_line_plots():
         output_path_original = os.path.join(config.OUTPUT_LINIENDIAGRAMME, filename_original)
         plt.savefig(output_path_original, dpi=300)
         plt.close()
-        print(f"✅ Originaldiagramm gespeichert: {filename_original}")
+        print(f" Originaldiagramm gespeichert: {filename_original}")
 
         # === Stationäre Zeitreihe laden ===
         stationary_path = config.get_stationary_data_path(city)
@@ -48,7 +48,7 @@ def create_line_plots():
             df_stationary = pd.read_csv(stationary_path)
             df_stationary['Datum'] = pd.to_datetime(df_stationary['Datum'])
         except Exception as e:
-            print(f"⚠️ Fehler beim Laden der stationären Daten für {city}: {e}")
+            print(f" Fehler beim Laden der stationären Daten für {city}: {e}")
             continue
 
         # === Diagramm stationäre Zeitreihe ===
@@ -64,9 +64,9 @@ def create_line_plots():
         output_path_stationary = os.path.join(config.OUTPUT_LINIENDIAGRAMME, filename_stationary)
         plt.savefig(output_path_stationary, dpi=300)
         plt.close()
-        print(f"✅ Stationäres Diagramm gespeichert: {filename_stationary}")
+        print(f" Stationäres Diagramm gespeichert: {filename_stationary}")
 
-    print(f"\n✅ Alle Liniendiagramme erfolgreich gespeichert in: {config.OUTPUT_LINIENDIAGRAMME}")
+    print(f"\n Alle Liniendiagramme erfolgreich gespeichert in: {config.OUTPUT_LINIENDIAGRAMME}")
 
 # === Hauptausführung ===
 if __name__ == "__main__":

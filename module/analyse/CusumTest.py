@@ -62,6 +62,6 @@ def cusum_test(df, target_column='MonatlicheDurchschnittsTemperatur', date_colum
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path)
         plt.close()
-        print(f"📈 CUSUM-Plot gespeichert: {save_path}")
+        print(f" CUSUM-Plot gespeichert: {save_path}")
     else:
         plt.show()

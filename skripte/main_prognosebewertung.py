@@ -23,7 +23,7 @@ def main():
 
     KONFIGURATION: Hier können Sie einstellen, was ausgeführt werden soll
     """
-    print("🚀 Starte Zeitreihen-Prognosepipeline...\n")
+    print(" Starte Zeitreihen-Prognosepipeline...\n")
 
     # ========== KONFIGURATION - WAS SOLL AUSGEFÜHRT WERDEN? ==========
 
@@ -42,7 +42,7 @@ def main():
 
     # ==================================================================
 
-    print(f"📊 Konfiguration:")
+    print(f" Konfiguration:")
     print(f"   Modus: {mode}")
     if mode == "single":
         print(f"   Stadt: {single_city}")
@@ -50,43 +50,43 @@ def main():
     print("\n" + "="*60)
 
     if mode == "complete":
-        print("🌍 Führe Prognosen für alle Städte durch...")
+        print(" Führe Prognosen für alle Städte durch...")
         success = run_complete_forecasting(forecast_steps=forecast_months)
 
         if success:
-            print("✅ Alle Prognosen erfolgreich erstellt!")
+            print(" Alle Prognosen erfolgreich erstellt!")
         else:
-            print("⚠️ Einige Prognosen sind fehlgeschlagen. Prüfen Sie die Ausgabe oben.")
+            print(" Einige Prognosen sind fehlgeschlagen. Prüfen Sie die Ausgabe oben.")
 
     elif mode == "single":
         if single_city not in config.CITIES:
-            print(f"❌ Fehler: Stadt '{single_city}' ist nicht verfügbar.")
+            print(f" Fehler: Stadt '{single_city}' ist nicht verfügbar.")
             print(f"Verfügbare Städte: {config.CITIES}")
             return
 
-        print(f"🏙️ Führe Prognose für {single_city.capitalize()} durch...")
+        print(f" Führe Prognose für {single_city.capitalize()} durch...")
         success = run_single_forecast(single_city, forecast_steps=forecast_months)
 
         if success:
-            print(f"✅ Prognose für {single_city.capitalize()} erfolgreich erstellt!")
+            print(f" Prognose für {single_city.capitalize()} erfolgreich erstellt!")
         else:
-            print(f"❌ Prognose für {single_city.capitalize()} fehlgeschlagen.")
+            print(f" Prognose für {single_city.capitalize()} fehlgeschlagen.")
 
     else:
-        print(f"❌ Unbekannter Modus: {mode}")
+        print(f" Unbekannter Modus: {mode}")
         print("Verfügbare Modi: 'complete', 'single'")
         return
 
-    print("\n🎯 Zeitreihen-Prognosepipeline abgeschlossen!")
-    print("\n📁 Ergebnisse finden Sie in:")
+    print("\n Zeitreihen-Prognosepipeline abgeschlossen!")
+    print("\n Ergebnisse finden Sie in:")
     print(f"   {os.path.join(config.OUTPUT_FOLDER, 'prognose_ergebnisse')}")
 
     # Zeige Übersicht der erstellten Dateien
     output_dir = os.path.join(config.OUTPUT_FOLDER, "prognose_ergebnisse")
     if os.path.exists(output_dir):
-        print("\n📋 Erstellte Dateien:")
+        print("\n Erstellte Dateien:")
         for file in sorted(os.listdir(output_dir)):
-            print(f"   📄 {file}")
+            print(f"    {file}")
 
 if __name__ == "__main__":
     main()

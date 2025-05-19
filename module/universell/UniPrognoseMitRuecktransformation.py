@@ -105,7 +105,7 @@ def sarima_forecast(city, diff_data, original_data, order, seasonal_order, forec
 
     else:
         # Keine Rücktransformation nötig oder unbekannte Kombination
-        print(f"⚠️ Warnung: Differenzierungsgrad d={d_trans}, D={D_trans} wird nicht explizit unterstützt.")
+        print(f" Warnung: Differenzierungsgrad d={d_trans}, D={D_trans} wird nicht explizit unterstützt.")
         last_value = temp_series.iloc[-1]
         absolute_forecast = last_value + np.cumsum(forecast_df['Prognose_Differenziert'].values)
         lower_bound = last_value + np.cumsum(forecast_df['Unteres_PI_Differenziert'].values)
@@ -121,7 +121,7 @@ def sarima_forecast(city, diff_data, original_data, order, seasonal_order, forec
 
     csv_path = os.path.join(config.OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL, f"prognose_werte_{city}.csv")
     forecast_df.to_csv(csv_path, index=False)
-    print(f"📄 Prognose gespeichert unter: {csv_path}")
+    print(f" Prognose gespeichert unter: {csv_path}")
 
     # === Visualisierung speichern ===
     plt.figure(figsize=(10, 6))
@@ -141,7 +141,7 @@ def sarima_forecast(city, diff_data, original_data, order, seasonal_order, forec
     plot_path = os.path.join(config.OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL, f"prognose_visualisierung_{city}.png")
     plt.savefig(plot_path)
     plt.close()
-    print(f"🖼️ Prognoseplot gespeichert unter: {plot_path}")
+    print(f" Prognoseplot gespeichert unter: {plot_path}")
 
     return forecast_df
 
@@ -150,7 +150,7 @@ def main():
     """Hauptfunktion für universelle SARIMA-Prognose mit Rücktransformation"""
     start_time = time.time()
 
-    print("🔄 Starte universelle SARIMA-Prognosen für alle Städte...")
+    print(" Starte universelle SARIMA-Prognosen für alle Städte...")
 
     # Ausgabeordner erstellen
     config.ensure_output_dirs()
@@ -162,7 +162,7 @@ def main():
     failed_forecasts = []
 
     for city in cities:
-        print(f"\n🔍 Stadt: {city.capitalize()}")
+        print(f"\n Stadt: {city.capitalize()}")
 
         try:
             # Modellparameter laden
@@ -189,7 +189,7 @@ def main():
             forecast_df = sarima_forecast(city, diff_series, df_original, order, seasonal_order)
 
             # Kurze Zusammenfassung ausgeben
-            print(f"📊 Prognosezusammenfassung für {city}:")
+            print(f" Prognosezusammenfassung für {city}:")
             print(f"   Durchschnitt: {forecast_df['Absolute_Prognose'].mean():.2f}°C")
             print(f"   Min: {forecast_df['Absolute_Prognose'].min():.2f}°C")
             print(f"   Max: {forecast_df['Absolute_Prognose'].max():.2f}°C")
@@ -197,7 +197,7 @@ def main():
             successful_forecasts += 1
 
         except Exception as e:
-            print(f"❌ Fehler bei {city}: {e}")
+            print(f" Fehler bei {city}: {e}")
             failed_forecasts.append(city)
             continue
 
@@ -206,17 +206,17 @@ def main():
     duration = end_time - start_time
 
     print("\n" + "="*60)
-    print("📋 ZUSAMMENFASSUNG - UNIVERSELLE SARIMA-PROGNOSEN")
+    print(" ZUSAMMENFASSUNG - UNIVERSELLE SARIMA-PROGNOSEN")
     print("="*60)
-    print(f"⏱️ Gesamtdauer: {duration:.2f} Sekunden")
-    print(f"✅ Erfolgreiche Prognosen: {successful_forecasts}/{len(cities)}")
+    print(f" Gesamtdauer: {duration:.2f} Sekunden")
+    print(f" Erfolgreiche Prognosen: {successful_forecasts}/{len(cities)}")
 
     if failed_forecasts:
-        print(f"❌ Fehlgeschlagene Prognosen: {', '.join(failed_forecasts)}")
+        print(f" Fehlgeschlagene Prognosen: {', '.join(failed_forecasts)}")
 
-    print(f"\n📁 Alle Prognoseergebnisse in: {config.OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL}")
+    print(f"\n Alle Prognoseergebnisse in: {config.OUTPUT_PROGNOSE_ERGEBNISSE_UNIVERSELL}")
     print("="*60)
-    print("\n✅ Alle Prognosen abgeschlossen.")
+    print("\n Alle Prognosen abgeschlossen.")
 
 
 if __name__ == "__main__":

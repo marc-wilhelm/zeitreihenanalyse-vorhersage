@@ -23,7 +23,7 @@ def make_stationary_by_adf(series, city):
         stat = result[0]
         critical = result[4]
 
-        print(f"\n📊 ADF-Test für {city} (Differenzierungsstufe: {differencing_count}):")
+        print(f"\n ADF-Test für {city} (Differenzierungsstufe: {differencing_count}):")
         print(f"   ADF Statistic: {stat:.5f} | p-Wert: {p_value:.5f}")
 
         results.append({
@@ -36,10 +36,10 @@ def make_stationary_by_adf(series, city):
         })
 
         if p_value <= 0.05:
-            print("✅ Stationär.")
+            print(" Stationär.")
             break
         else:
-            print("⚠️ Nicht stationär. Differenzierung wird durchgeführt...")
+            print(" Nicht stationär. Differenzierung wird durchgeführt...")
             series = series.diff().dropna()
             differencing_count += 1
 
@@ -68,13 +68,13 @@ def make_stationary_by_adf(series, city):
         else:
             f.write(f"d = 0\n")
 
-    print(f"📝 ADF-Ergebnisse gespeichert unter: {file_path}")
+    print(f" ADF-Ergebnisse gespeichert unter: {file_path}")
     return series
 
 def analyse_city(city, path):
     """Führt vollständige Stationaritätsanalyse für eine Stadt durch"""
     print(f"\n==============================")
-    print(f"🌆 Stadt: {city}")
+    print(f" Stadt: {city}")
     print(f"==============================")
 
     # === Daten laden ===
@@ -94,13 +94,13 @@ def analyse_city(city, path):
     monatliche_daten = [group['MonatlicheDurchschnittsTemperatur'].values for _, group in df_stationary.groupby('Monat')]
     stat_vor, p_vor = kruskal(*monatliche_daten)
     has_seasonality = p_vor < 0.05
-    print(f"\n📈 Kruskal-Wallis-Test für {city} (vor saisonaler Differenzierung):")
+    print(f"\n Kruskal-Wallis-Test für {city} (vor saisonaler Differenzierung):")
     print(f"   Teststatistik: {stat_vor:.4f} | p-Wert: {p_vor:.5f}")
 
     D = 0
     p_nach = None
     if has_seasonality:
-        print("🔁 Saisonaler Effekt erkannt. Führe saisonale Differenzierung (.diff(12)) durch.")
+        print(" Saisonaler Effekt erkannt. Führe saisonale Differenzierung (.diff(12)) durch.")
         df_stationary['MonatlicheDurchschnittsTemperatur'] = df_stationary['MonatlicheDurchschnittsTemperatur'].diff(12)
         df_stationary = df_stationary.dropna()
         D = 1
@@ -110,31 +110,31 @@ def analyse_city(city, path):
         monatliche_daten = [group['MonatlicheDurchschnittsTemperatur'].values for _, group in df_stationary.groupby('Monat')]
         stat_nach, p_nach = kruskal(*monatliche_daten)
         still_seasonal = p_nach < 0.05
-        print(f"\n📈 Kruskal-Wallis-Test für {city} (nach saisonaler Differenzierung):")
+        print(f"\n Kruskal-Wallis-Test für {city} (nach saisonaler Differenzierung):")
         print(f"   Teststatistik: {stat_nach:.4f} | p-Wert: {p_nach:.5f}")
 
         if still_seasonal:
-            print(f"⚠️ WARNUNG: Zeitreihe {city} zeigt auch nach saisonaler Differenzierung noch Saisonalität.")
+            print(f" WARNUNG: Zeitreihe {city} zeigt auch nach saisonaler Differenzierung noch Saisonalität.")
             print(f"   → Die Datei wird **nicht gespeichert**. Bitte manuell prüfen.")
             return
         else:
-            print(f"✅ Keine Saisonalität mehr nach Differenzierung für {city}. Speichere Zeitreihe.")
+            print(f" Keine Saisonalität mehr nach Differenzierung für {city}. Speichere Zeitreihe.")
     else:
-        print(f"✅ Kein saisonaler Effekt festgestellt für {city}. Speichere direkt.")
+        print(f" Kein saisonaler Effekt festgestellt für {city}. Speichere direkt.")
 
     # === Speicherung der finalen Zeitreihe ===
     output_path = config.get_stationary_data_path(city)
     df_stationary = df_stationary[['Datum', 'MonatlicheDurchschnittsTemperatur']]
     df_stationary.to_csv(output_path, index=False)
-    print(f"💾 Stationäre Zeitreihe gespeichert unter: {output_path}")
+    print(f" Stationäre Zeitreihe gespeichert unter: {output_path}")
 
     # === CUSUM-Test ===
     cusum_output_path = os.path.join(config.OUTPUT_STATIONARITAET, f"cusum_result_{city}.png")
     try:
         cusum_test(df_stationary, city=city, save_path=cusum_output_path)
-        print(f"🖼️ CUSUM-Plot gespeichert unter: {cusum_output_path}")
+        print(f" CUSUM-Plot gespeichert unter: {cusum_output_path}")
     except Exception as e:
-        print(f"❌ Fehler beim CUSUM-Test für {city}: {e}")
+        print(f" Fehler beim CUSUM-Test für {city}: {e}")
 
     # === Speichern von Kruskal-Wallis-Auswertung als Variablen ===
     result_path = os.path.join(config.OUTPUT_STATIONARITAET, f"kruskal_result_{city}.py")
@@ -143,21 +143,21 @@ def analyse_city(city, path):
         f.write(f"p_wert_vor = {p_vor:.5f}\n")
         f.write(f"p_wert_nach = {p_nach:.5f}\n" if p_nach is not None else "p_wert_nach = None\n")
         f.write(f"D = {D}\n")
-    print(f"📝 Kruskal-Ergebnis gespeichert unter: {result_path}")
+    print(f" Kruskal-Ergebnis gespeichert unter: {result_path}")
 
 def main():
     """Führt Stationaritätsanalyse für alle Städte durch"""
-    print("🔬 Stationaritätsanalyse wird gestartet...")
+    print(" Stationaritätsanalyse wird gestartet...")
 
     for city in config.CITIES:
         path = config.CITY_PATHS_CLEAN[city]
         try:
             analyse_city(city, path)
         except Exception as e:
-            print(f"❌ Fehler bei Stadt {city}: {e}")
+            print(f" Fehler bei Stadt {city}: {e}")
 
-    print(f"\n✅ Stationaritätsanalyse abgeschlossen.")
-    print(f"📁 Ergebnisse gespeichert in: {config.OUTPUT_STATIONARITAET}")
+    print(f"\n Stationaritätsanalyse abgeschlossen.")
+    print(f" Ergebnisse gespeichert in: {config.OUTPUT_STATIONARITAET}")
 
 # === Hauptausführung ===
 if __name__ == "__main__":

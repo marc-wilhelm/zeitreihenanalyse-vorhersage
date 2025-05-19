@@ -38,19 +38,19 @@ def main():
     # ==================================================================
 
     if mode == "complete":
-        print("🚀 Führe komplette Datenvorbereitungspipeline aus...")
+        print(" Führe komplette Datenvorbereitungspipeline aus...")
         run_complete_preprocessing()
 
     elif mode in ["abakan", "berlin", "angeles"]:
-        print(f"📍 Führe Datenvorbereitung nur für {mode} aus...")
+        print(f" Führe Datenvorbereitung nur für {mode} aus...")
         run_single_preprocessing(mode)
 
     else:
-        print(f"❌ Unbekannter Modus: {mode}")
+        print(f" Unbekannter Modus: {mode}")
         print("Verfügbare Modi: 'complete', 'abakan', 'berlin', 'angeles'")
         return
 
-    print("✅ Datenvorbereitungs-Pipeline abgeschlossen!")
+    print(" Datenvorbereitungs-Pipeline abgeschlossen!")
 
 if __name__ == "__main__":
     main()

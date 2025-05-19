@@ -19,7 +19,7 @@ def plot_acf_series(series, lags, city):
     acf_path = os.path.join(config.OUTPUT_ACF_PACF_PLOTS, f"acf_plot_{city}.png")
     plt.savefig(acf_path, dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"✅ ACF gespeichert: {acf_path}")
+    print(f" ACF gespeichert: {acf_path}")
 
 def plot_pacf_series(series, lags, city):
     """Erstellt und speichert PACF-Plot für eine Stadt"""
@@ -29,33 +29,33 @@ def plot_pacf_series(series, lags, city):
     pacf_path = os.path.join(config.OUTPUT_ACF_PACF_PLOTS, f"pacf_plot_{city}.png")
     plt.savefig(pacf_path, dpi=300, bbox_inches="tight")
     plt.close()
-    print(f"✅ PACF gespeichert: {pacf_path}")
+    print(f" PACF gespeichert: {pacf_path}")
 
 # === Hauptausführung ===
 def main():
-    print("🔍 ACF- und PACF-Analyse wird gestartet...")
+    print(" ACF- und PACF-Analyse wird gestartet...")
 
     # Schleife über alle Städte
     for city in config.CITIES:
         path = config.get_stationary_data_path(city)
 
         if not os.path.exists(path):
-            print(f"❌ Datei nicht gefunden für Stadt: {city} → {path}")
+            print(f" Datei nicht gefunden für Stadt: {city} → {path}")
             continue
 
         df = pd.read_csv(path)
         if "MonatlicheDurchschnittsTemperatur" not in df.columns:
-            print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in Datei: {path}")
+            print(f" Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in Datei: {path}")
             continue
 
         series = df["MonatlicheDurchschnittsTemperatur"]
-        print(f"\n🔍 Verarbeite Stadt: {city} – {len(series)} Datenpunkte")
+        print(f"\n Verarbeite Stadt: {city} – {len(series)} Datenpunkte")
 
         plot_acf_series(series, lags=30, city=city)
         plot_pacf_series(series, lags=30, city=city)
 
-    print(f"\n✅ ACF- und PACF-Analyse für alle Städte abgeschlossen.")
-    print(f"📁 Alle Plots gespeichert in: {config.OUTPUT_ACF_PACF_PLOTS}")
+    print(f"\n ACF- und PACF-Analyse für alle Städte abgeschlossen.")
+    print(f" Alle Plots gespeichert in: {config.OUTPUT_ACF_PACF_PLOTS}")
 
 if __name__ == "__main__":
     main()

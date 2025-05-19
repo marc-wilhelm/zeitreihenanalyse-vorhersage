@@ -24,9 +24,9 @@ def run_complete_modeling():
     start_time = time.time()
 
     print("="*80)
-    print(f"📁 Projektverzeichnis: {config.PROJECT_ROOT}")
-    print(f"🏙️ Städte: {', '.join(config.CITIES)}")
-    print(f"📊 Ausgabeverzeichnis: {config.OUTPUT_FOLDER}")
+    print(f" Projektverzeichnis: {config.PROJECT_ROOT}")
+    print(f" Städte: {', '.join(config.CITIES)}")
+    print(f" Ausgabeverzeichnis: {config.OUTPUT_FOLDER}")
     print("="*80)
 
     completed_steps = 0
@@ -34,7 +34,7 @@ def run_complete_modeling():
 
     try:
         # === Schritt 1: AutoARIMA Modellauswahl ===
-        print(f"\n🤖 SCHRITT 1/{total_steps}: AutoARIMA Modellauswahl")
+        print(f"\n SCHRITT 1/{total_steps}: AutoARIMA Modellauswahl")
         print("-" * 80)
         print("   → Automatische SARIMA-Modellauswahl für alle Städte")
         print("   → Speichert optimale Modellparameter")
@@ -43,10 +43,10 @@ def run_complete_modeling():
         # Tatsächlicher Funktionsaufruf!
         AutoArima.main()
         completed_steps += 1
-        print(f"✅ Schritt 1/{total_steps} erfolgreich abgeschlossen")
+        print(f" Schritt 1/{total_steps} erfolgreich abgeschlossen")
 
         # === Schritt 2: SARIMA Cross-Validation & Residuenanalyse ===
-        print(f"\n🔬 SCHRITT 2/{total_steps}: SARIMA Cross-Validation & Residuenanalyse")
+        print(f"\n SCHRITT 2/{total_steps}: SARIMA Cross-Validation & Residuenanalyse")
         print("-" * 80)
         print("   → Cross-Validation mit Expanding Window")
         print("   → Residuenanalyse und Diagnostik")
@@ -55,10 +55,10 @@ def run_complete_modeling():
         # Tatsächlicher Funktionsaufruf!
         SarimaCvRes.main()
         completed_steps += 1
-        print(f"✅ Schritt 2/{total_steps} erfolgreich abgeschlossen")
+        print(f" Schritt 2/{total_steps} erfolgreich abgeschlossen")
 
     except Exception as e:
-        print(f"❌ Fehler in Schritt {completed_steps + 1}: {e}")
+        print(f" Fehler in Schritt {completed_steps + 1}: {e}")
         print("Abbruch der Pipeline...")
         return False
 
@@ -67,14 +67,14 @@ def run_complete_modeling():
     duration = end_time - start_time
 
     print("\n" + "="*80)
-    print("🎉 MODELLIERUNGSPIPELINE ERFOLGREICH ABGESCHLOSSEN! 🎉")
-    print(f"⏱️ Gesamtdauer: {duration:.2f} Sekunden")
-    print(f"✅ Abgeschlossene Schritte: {completed_steps}/{total_steps}")
-    print(f"\n📁 Alle Ergebnisse befinden sich in: {config.OUTPUT_FOLDER}")
-    print("\n📋 Übersicht der Ausgabeordner:")
-    print(f"   🤖 Modellparameter:         {config.OUTPUT_MODEL_PARAMETERS}")
-    print(f"   📊 Evaluationsmetriken:     {config.OUTPUT_EVALUATIONS_METRIKEN}")
-    print(f"   🔬 SARIMA Residuenanalyse:  {config.OUTPUT_SARIMA_RESIDUEN}")
+    print(" MODELLIERUNGSPIPELINE ERFOLGREICH ABGESCHLOSSEN! ")
+    print(f"️ Gesamtdauer: {duration:.2f} Sekunden")
+    print(f" Abgeschlossene Schritte: {completed_steps}/{total_steps}")
+    print(f"\n Alle Ergebnisse befinden sich in: {config.OUTPUT_FOLDER}")
+    print("\n Übersicht der Ausgabeordner:")
+    print(f"    Modellparameter:         {config.OUTPUT_MODEL_PARAMETERS}")
+    print(f"    Evaluationsmetriken:     {config.OUTPUT_EVALUATIONS_METRIKEN}")
+    print(f"    SARIMA Residuenanalyse:  {config.OUTPUT_SARIMA_RESIDUEN}")
     print("="*80)
 
     return True
@@ -90,19 +90,19 @@ def run_single_modeling(modeling_type):
         'autoarima': {
             'name': 'AutoARIMA Modellauswahl',
             'func': AutoArima.main,
-            'icon': '🤖',
+            'icon': ' ',
             'description': 'Automatische SARIMA-Modellauswahl für alle Städte'
         },
         'sarima_cv': {
             'name': 'SARIMA Cross-Validation',
             'func': SarimaCvRes.main,
-            'icon': '🔬',
+            'icon': ' ',
             'description': 'Cross-Validation und Residuenanalyse'
         }
     }
 
     if modeling_type not in modeling_map:
-        print(f"❌ Unbekannter Modellierungs-Typ: {modeling_type}")
+        print(f" Unbekannter Modellierungs-Typ: {modeling_type}")
         print(f"Verfügbare Optionen: {list(modeling_map.keys())}")
         return False
 
@@ -111,8 +111,8 @@ def run_single_modeling(modeling_type):
     start_time = time.time()
     print(f"{analysis['icon']} STARTE {analysis['name'].upper()}")
     print("="*80)
-    print(f"📋 Beschreibung: {analysis['description']}")
-    print(f"🏙️ Städte: {', '.join(config.CITIES)}")
+    print(f" Beschreibung: {analysis['description']}")
+    print(f" Städte: {', '.join(config.CITIES)}")
     print("="*80)
 
     try:
@@ -121,14 +121,14 @@ def run_single_modeling(modeling_type):
         duration = end_time - start_time
 
         print("="*80)
-        print(f"✅ {analysis['name']} erfolgreich abgeschlossen")
-        print(f"⏱️ Dauer: {duration:.2f} Sekunden")
-        print(f"📁 Ergebnisse in: {config.OUTPUT_FOLDER}")
+        print(f" {analysis['name']} erfolgreich abgeschlossen")
+        print(f" Dauer: {duration:.2f} Sekunden")
+        print(f" Ergebnisse in: {config.OUTPUT_FOLDER}")
         print("="*80)
         return result if result is not None else True
     except Exception as e:
         print("="*80)
-        print(f"❌ Fehler bei {analysis['name']}: {e}")
+        print(f" Fehler bei {analysis['name']}: {e}")
         print("="*80)
         return False
 

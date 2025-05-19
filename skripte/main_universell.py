@@ -30,7 +30,7 @@ def main():
 
     # Option 1: Komplette universelle Pipeline ausführen (Standard)
     #mode = ["cross_validation", "prognose"]   # Ändern Sie das hier für andere Modi
-    mode = "complete"
+    mode = ["cross_validation", "prognose"]
 
     # Option 2: Nur spezifische Analysen ausführen
     # mode = "auto_arima"        # Nur universelles AutoARIMA
@@ -45,10 +45,10 @@ def main():
     # ==================================================================
 
     if mode == "complete":
-        print("🚀 Führe komplette universelle Analysepipeline aus...")
-        print("   1️⃣ AutoARIMA (Parameteroptimierung)")
-        print("   2️⃣ Cross-Validation (Modellvalidierung)")
-        print("   3️⃣ Prognose (mit Rücktransformation)")
+        print(" Führe komplette universelle Analysepipeline aus...")
+        print("    AutoARIMA (Parameteroptimierung)")
+        print("    Cross-Validation (Modellvalidierung)")
+        print("    Prognose (mit Rücktransformation)")
         run_complete_universell_analysis()
 
     elif mode in ["auto_arima", "cross_validation", "prognose"]:
@@ -57,21 +57,21 @@ def main():
             "cross_validation": "Cross-Validation",
             "prognose": "Prognose mit Rücktransformation"
         }
-        print(f"📊 Führe nur {analysis_names[mode]} aus...")
+        print(f" Führe nur {analysis_names[mode]} aus...")
         run_single_universell_analysis(mode)
 
     else:
         # Fallback für mehrere Modi oder unbekannte Modi
         if isinstance(mode, list):
-            print(f"🔄 Führe mehrere Analysen aus: {mode}")
+            print(f" Führe mehrere Analysen aus: {mode}")
             for single_mode in mode:
                 if single_mode in ["auto_arima", "cross_validation", "prognose"]:
-                    print(f"\n▶️ Starte {single_mode}...")
+                    print(f"\n Starte {single_mode}...")
                     run_single_universell_analysis(single_mode)
                 else:
-                    print(f"❌ Unbekannter Modus: {single_mode}")
+                    print(f" Unbekannter Modus: {single_mode}")
         else:
-            print(f"❌ Unbekannter Modus: {mode}")
+            print(f" Unbekannter Modus: {mode}")
             print("Verfügbare Modi:")
             print("  'complete'         - Komplette Pipeline")
             print("  'auto_arima'       - Nur AutoARIMA Parameteroptimierung")
@@ -80,12 +80,12 @@ def main():
             print("\nBeispiel für mehrere Modi: modes = ['auto_arima', 'prognose']")
             return
 
-    print("\n✅ Universelle Zeitreihenanalyse-Pipeline abgeschlossen!")
-    print("\n📋 Die universelle Pipeline hat folgende Vorteile:")
-    print("   🔧 Ein Parametersatz für alle Städte")
-    print("   ⚡ Effiziente Modellierung")
-    print("   📊 Vergleichbare Ergebnisse")
-    print("   🎯 Robuste Prognosen")
+    print("\n Universelle Zeitreihenanalyse-Pipeline abgeschlossen!")
+    print("\n Die universelle Pipeline hat folgende Vorteile:")
+    print("    Ein Parametersatz für alle Städte")
+    print("    Effiziente Modellierung")
+    print("    Vergleichbare Ergebnisse")
+    print("    Robuste Prognosen")
 
 if __name__ == "__main__":
     main()

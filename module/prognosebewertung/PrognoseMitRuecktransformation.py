@@ -117,7 +117,7 @@ def sarima_forecast_with_backtransform(city, diff_data, original_data, order, se
 
     else:
         # Keine Rücktransformation nötig oder unbekannte Kombination
-        print(f"⚠️ Warnung: Differenzierungsgrad d={d_trans}, D={D_trans} - verwende direkte Prognose")
+        print(f" Warnung: Differenzierungsgrad d={d_trans}, D={D_trans} - verwende direkte Prognose")
         if d_trans == 0 and D_trans == 0:
             # Direkte Prognose ohne Rücktransformation
             absolute_forecast = forecast_df['Prognose_Differenziert'].values
@@ -230,14 +230,14 @@ def run_forecast_for_city(city, forecast_steps=10):
 
         csv_path = os.path.join(output_dir, f"prognose_werte_{city}.csv")
         forecast_df.to_csv(csv_path, index=False)
-        print(f"   📄 Prognose gespeichert: {csv_path}")
+        print(f"    Prognose gespeichert: {csv_path}")
 
         # Visualisierung erstellen
         plot_path = create_forecast_plot(city, df_original, forecast_df, forecast_steps)
-        print(f"   🖼️ Plot gespeichert: {plot_path}")
+        print(f"    Plot gespeichert: {plot_path}")
 
         # Kurze Zusammenfassung der Prognose
-        print(f"   📊 Prognosewerte für nächste {forecast_steps} Monate:")
+        print(f"    Prognosewerte für nächste {forecast_steps} Monate:")
         print(f"      Durchschnitt: {forecast_df['Absolute_Prognose'].mean():.2f}°C")
         print(f"      Min: {forecast_df['Absolute_Prognose'].min():.2f}°C")
         print(f"      Max: {forecast_df['Absolute_Prognose'].max():.2f}°C")
@@ -245,7 +245,7 @@ def run_forecast_for_city(city, forecast_steps=10):
         return True
 
     except Exception as e:
-        print(f"   ❌ Fehler bei Prognose für {city}: {e}")
+        print(f"    Fehler bei Prognose für {city}: {e}")
         return False
 
 def main():
@@ -254,7 +254,7 @@ def main():
     """
     start_time = time.time()
 
-    print("🔄 Starte SARIMA-Prognosen für alle Städte...")
+    print(" Starte SARIMA-Prognosen für alle Städte...")
 
     # Ausgabeordner erstellen
     output_dir = os.path.join(config.OUTPUT_FOLDER, "prognose_ergebnisse")
@@ -265,7 +265,7 @@ def main():
 
     # Prognosen für alle Städte erstellen
     for city in config.CITIES:
-        print(f"\n🔍 Stadt: {city.capitalize()}")
+        print(f"\n Stadt: {city.capitalize()}")
         success = run_forecast_for_city(city, forecast_steps=10)
         if success:
             successful_forecasts += 1
@@ -277,36 +277,36 @@ def main():
     duration = end_time - start_time
 
     print("\n" + "="*80)
-    print("🎯 PROGNOSEPIPELINE ABGESCHLOSSEN! 🎯")
-    print(f"⏱️ Gesamtdauer: {duration:.2f} Sekunden")
-    print(f"✅ Erfolgreiche Prognosen: {successful_forecasts}/{len(config.CITIES)}")
+    print(" PROGNOSEPIPELINE ABGESCHLOSSEN! ")
+    print(f" Gesamtdauer: {duration:.2f} Sekunden")
+    print(f" Erfolgreiche Prognosen: {successful_forecasts}/{len(config.CITIES)}")
 
     if failed_forecasts:
-        print(f"❌ Fehlgeschlagene Prognosen: {failed_forecasts}")
+        print(f" Fehlgeschlagene Prognosen: {failed_forecasts}")
 
-    print(f"\n📁 Alle Prognoseergebnisse in: {output_dir}")
+    print(f"\n Alle Prognoseergebnisse in: {output_dir}")
 
     # Zeige tatsächlich erstellte Dateien
-    print("📋 Erstellte Dateien:")
+    print(" Erstellte Dateien:")
     if os.path.exists(output_dir) and os.listdir(output_dir):
         created_files = sorted(os.listdir(output_dir))
         csv_files = [f for f in created_files if f.endswith('.csv')]
         png_files = [f for f in created_files if f.endswith('.png')]
 
         if csv_files:
-            print("   📊 Prognosewerte:")
+            print("    Prognosewerte:")
             for file in csv_files:
                 print(f"      • {file}")
 
         if png_files:
-            print("   📈 Visualisierungen:")
+            print("    Visualisierungen:")
             for file in png_files:
                 print(f"      • {file}")
     else:
-        print("   ⚠️ Noch keine Dateien erstellt")
+        print("    Noch keine Dateien erstellt")
 
     print("="*80)
-    print("✅ Alle Prognosen abgeschlossen.")
+    print(" Alle Prognosen abgeschlossen.")
 
 if __name__ == "__main__":
     main()

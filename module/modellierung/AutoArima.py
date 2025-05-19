@@ -27,23 +27,23 @@ def main():
 
     # === Hauptloop ===
     for i, (city, path) in enumerate(time_series_info.items(), 1):
-        print(f"\n[{i}/{len(time_series_info)}] 🏙️ BEARBEITE: {city.upper()}")
+        print(f"\n[{i}/{len(time_series_info)}]  BEARBEITE: {city.upper()}")
         print("-" * 40)
 
         try:
             # Daten laden
-            print(f"   📂 Lade Zeitreihe...")
+            print(f"    Lade Zeitreihe...")
             df = pd.read_csv(path)
             df['Datum'] = pd.to_datetime(df['Datum'])
             df.set_index('Datum', inplace=True)
             df = df.sort_index()
             series = df['MonatlicheDurchschnittsTemperatur'].dropna()
 
-            print(f"   📊 {len(series)} Beobachtungen geladen")
-            print(f"   📅 Zeitraum: {series.index.min()} bis {series.index.max()}")
+            print(f"    {len(series)} Beobachtungen geladen")
+            print(f"    Zeitraum: {series.index.min()} bis {series.index.max()}")
 
             # Auto-ARIMA fitten
-            print(f"   🤖 Starte AutoARIMA...")
+            print(f"    Starte AutoARIMA...")
             model = pm.auto_arima(
                 series,
                 start_p=0, max_p=3,
@@ -60,8 +60,8 @@ def main():
                 stepwise=False
             )
 
-            print(f"   ✅ Bestes Modell: SARIMA{model.order}x{model.seasonal_order}")
-            print(f"   📈 AIC: {model.aic():.2f}, BIC: {model.bic():.2f}")
+            print(f"    Bestes Modell: SARIMA{model.order}x{model.seasonal_order}")
+            print(f"    AIC: {model.aic():.2f}, BIC: {model.bic():.2f}")
 
             # Parameter extrahieren, aber d und D manuell auf 0 setzen
             order = list(model.order)
@@ -86,7 +86,7 @@ def main():
                 f.write(f"aic = {model.aic()}\n")
                 f.write(f"bic = {model.bic()}\n")
 
-            print(f"   💾 Parameter gespeichert")
+            print(f"    Parameter gespeichert")
 
             # === 2. Evaluationsmetriken extrahieren ===
             metrics = {
@@ -117,7 +117,7 @@ def main():
                 metrics["significant_parameters"] = significant_params
 
             except Exception as e:
-                print(f"   ⚠️ Erweiterte Statistiken nicht verfügbar: {e}")
+                print(f"    Erweiterte Statistiken nicht verfügbar: {e}")
                 metrics.update({
                     "parameter_names": None,
                     "t_values": None,
@@ -137,7 +137,7 @@ def main():
                     f.write(f"    '{k}': {repr(v)},\n")
                 f.write("}\n")
 
-            print(f"   📊 Evaluationsmetriken gespeichert")
+            print(f"    Evaluationsmetriken gespeichert")
 
             # Zusammenfassung für diese Stadt (auch hier modifizierte Parameter verwenden)
             results_summary.append({
@@ -149,10 +149,10 @@ def main():
                 'status': 'Erfolgreich'
             })
 
-            print(f"   ✅ {city.title()} erfolgreich abgeschlossen!")
+            print(f"    {city.title()} erfolgreich abgeschlossen!")
 
         except Exception as e:
-            print(f"   ❌ Fehler bei {city}: {e}")
+            print(f"    Fehler bei {city}: {e}")
             results_summary.append({
                 'stadt': city,
                 'status': f'Fehler: {str(e)[:50]}...'
@@ -161,15 +161,15 @@ def main():
 
     # === Zusammenfassung aller Ergebnisse ===
     print("\n" + "="*60)
-    print("📋 ZUSAMMENFASSUNG - AUTOARIMA ERGEBNISSE")
+    print(" ZUSAMMENFASSUNG - AUTOARIMA ERGEBNISSE")
     print("="*60)
 
     successful_cities = [r for r in results_summary if r['status'] == 'Erfolgreich']
     failed_cities = [r for r in results_summary if r['status'] != 'Erfolgreich']
 
-    print(f"✅ Erfolgreich: {len(successful_cities)}/{len(config.CITIES)} Städte")
+    print(f" Erfolgreich: {len(successful_cities)}/{len(config.CITIES)} Städte")
     if failed_cities:
-        print(f"❌ Fehlgeschlagen: {len(failed_cities)}/{len(config.CITIES)} Städte")
+        print(f" Fehlgeschlagen: {len(failed_cities)}/{len(config.CITIES)} Städte")
 
     print("\nDetaillierte Ergebnisse:")
     for result in results_summary:
@@ -182,7 +182,7 @@ def main():
         else:
             print(f"Status: {result['status']}")
 
-    print(f"\n📁 Ergebnisse gespeichert in:")
+    print(f"\n Ergebnisse gespeichert in:")
     print(f"   • Modellparameter: {config.OUTPUT_MODEL_PARAMETERS}")
     print(f"   • Evaluationsmetriken: {config.OUTPUT_EVALUATIONS_METRIKEN}")
     print("="*60)
