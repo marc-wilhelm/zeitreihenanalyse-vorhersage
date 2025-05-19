@@ -187,8 +187,7 @@ eingesehen werden.
 Um eine neue Zeitreihe mit in die Anwendung aufzunehmen, füge bitte folgende Parameter und Variablen in die `config.py` hinzu. **STADT** ist ein Platzhalter für die 
 jeweilige Stadt welche analysiert werden soll.
 
-> **Hinweis:** Die neuen Daten müssen, die gleiche Struktur haben wie die bisherigen Stadtdaten. [Hier](https://www.kaggle.
-> com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data) können weitere Stadtdaten gefunden werden, welche mit dem Projekt kompatibel sein sollten.
+> **Hinweis:** Die neuen Daten müssen, die gleiche Struktur haben wie die bisherigen Stadtdaten. [Hier](https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data) können weitere Stadtdaten gefunden werden, welche mit dem Projekt kompatibel sein sollten.
 
 ```python
 # Relativer Dateipfad zu Rohdaten
