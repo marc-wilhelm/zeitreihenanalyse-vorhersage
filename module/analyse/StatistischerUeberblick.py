@@ -10,7 +10,7 @@ import config
 config.init_project_paths()
 
 # Import der Dateneinlese-Funktion
-from archiv.DatenEinlesen import DatenEinlesen
+from module.datenvorbereitung import daten_einlesen
 
 def statistische_analyse(df, spalte, city):
     """
@@ -118,7 +118,7 @@ def main():
         file_path = config.CITY_PATHS_CLEAN[city]
         print(f"\nAnalysiere Datei: {file_path} für Stadt: {city}")
 
-        df = DatenEinlesen(file_path, sep=",", decimal=".")
+        df = daten_einlesen(file_path, sep=",", decimal=".")
 
         if df is None:
             print(f"❌ Fehler beim Einlesen von {file_path}. Überspringe {city}.")

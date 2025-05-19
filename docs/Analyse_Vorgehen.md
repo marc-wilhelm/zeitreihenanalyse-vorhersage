@@ -89,9 +89,9 @@ Ein kritischer Schritt war die Rücktransformation der differenzierten Prognosen
 
 ### Validierung mit realen Daten
 Die Überprüfung der ersten Prognosewerte mit tatsächlichen historischen Daten bestätigte die Modellqualität:
-- **Abakan**: Prognose 9°C vs. Realität 9°C
-- **Angeles**: Prognose 26,9°C vs. Realität 26°C
-- **Berlin**: Prognose 15°C vs. Realität 13°C
+- **Abakan**: Prognose 9°C vs. Realität 9°C ([Quelle](https://www.timeanddate.de/wetter/russland/abakan/rueckblick?month=9&year=2013))
+- **Angeles**: Prognose 26,9°C vs. Realität 26°C ([Quelle](https://www.timeanddate.de/wetter/philippinen/angeles/rueckblick?month=9&year=2013))
+- **Berlin**: Prognose 15°C vs. Realität 13°C ([Quelle](https://www.timeanddate.de/wetter/deutschland/berlin/rueckblick?month=9&year=2013))
 
 ## Methodische Erkenntnisse
 
