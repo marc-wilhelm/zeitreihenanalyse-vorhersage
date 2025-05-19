@@ -10,15 +10,15 @@ config.init_project_paths()
 
 # === Import der Datenvorbereitung-Funktionen ===
 from .Bereinigung import (
-    DatenEinlesen,
-    SpaltennamenKorrigieren,
-    DatumFormatieren,
-    TemperaturUndDatumExtrahieren,
-    ZeitreiheAb1880,
-    NaNPruefen,
-    DatentypenPruefen,
-    DuplikatePruefen,
-    BereinigteDatenSpeichern
+    daten_einlesen,
+    spaltennamen_korrigieren,
+    datum_formatieren,
+    temperatur_und_datum_extrahieren,
+    zeitreihe_ab_1880,
+    nan_pruefen,
+    datentypen_pruefen,
+    duplikate_pruefen,
+    bereinigte_daten_speichern
 )
 
 def process_single_city(city, input_path, output_path, sep=";", decimal=","):
@@ -42,7 +42,7 @@ def process_single_city(city, input_path, output_path, sep=";", decimal=","):
     try:
         # 1. Daten einlesen
         print("   🔄 Schritt 1: Daten einlesen...")
-        df = DatenEinlesen(input_path, sep=sep, decimal=decimal)
+        df = daten_einlesen(input_path, sep=sep, decimal=decimal)
 
         if df is None:
             print(f"   ❌ Fehler beim Einlesen der Daten. Überspringe {city}.")
@@ -53,43 +53,43 @@ def process_single_city(city, input_path, output_path, sep=";", decimal=","):
 
         # 2. Spaltennamen korrigieren
         print("   🔄 Schritt 2: Spaltennamen korrigieren...")
-        df = SpaltennamenKorrigieren(df)
+        df = spaltennamen_korrigieren(df)
         print("   ✅ Spaltennamen korrigiert")
 
         # 3. Datum formatieren
         print("   🔄 Schritt 3: Datum formatieren...")
-        df = DatumFormatieren(df)
+        df = datum_formatieren(df)
         print("   ✅ Datum formatiert")
 
         # 4. Temperatur und Datum extrahieren
         print("   🔄 Schritt 4: Temperatur und Datum extrahieren...")
-        df = TemperaturUndDatumExtrahieren(df)
+        df = temperatur_und_datum_extrahieren(df)
         print("   ✅ Nur relevante Spalten extrahiert")
 
         # 5. Zeitreihe ab 1880 filtern
         print("   🔄 Schritt 5: Daten ab 1880 filtern...")
-        df = ZeitreiheAb1880(df)
+        df = zeitreihe_ab_1880(df)
         filtered_rows = len(df)
         print(f"   ✅ Daten gefiltert ({original_rows} → {filtered_rows} Datensätze)")
 
         # 6. NaN-Werte prüfen
         print("   🔄 Schritt 6: NaN-Werte prüfen...")
-        df = NaNPruefen(df)
+        df = nan_pruefen(df)
         print("   ✅ NaN-Prüfung abgeschlossen")
 
         # 7. Datentypen prüfen
         print("   🔄 Schritt 7: Datentypen prüfen...")
-        DatentypenPruefen(df)
+        datentypen_pruefen(df)
         print("   ✅ Datentypen geprüft")
 
         # 8. Duplikate prüfen
         print("   🔄 Schritt 8: Duplikate prüfen...")
-        DuplikatePruefen(df)
+        duplikate_pruefen(df)
         print("   ✅ Duplikate geprüft")
 
         # 9. Daten speichern
         print("   🔄 Schritt 9: Bereinigte Daten speichern...")
-        BereinigteDatenSpeichern(df, output_path)
+        bereinigte_daten_speichern(df, output_path)
         final_rows = len(df)
         print(f"   ✅ Daten gespeichert ({final_rows} Datensätze)")
 

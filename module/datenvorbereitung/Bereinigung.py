@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def DatenEinlesen(Dateipfad, sep=';', decimal=','):
+def daten_einlesen(Dateipfad, sep=';', decimal=','):
     """
     Liest eine CSV-Datei ein und gibt das DataFrame zurück.
 
@@ -26,7 +26,7 @@ def DatenEinlesen(Dateipfad, sep=';', decimal=','):
         return None
 
 
-def SpaltennamenKorrigieren(df):
+def spaltennamen_korrigieren(df):
     """
     Korrigiert die Spaltennamen des DataFrames.
 
@@ -58,7 +58,7 @@ def SpaltennamenKorrigieren(df):
     return df
 
 
-def DatumFormatieren(df):
+def datum_formatieren(df):
     """
     Konvertiert gemischte Datumsformate in einheitliches YYYY-MM-DD-Format.
     """
@@ -78,7 +78,7 @@ def DatumFormatieren(df):
     return df
 
 
-def TemperaturUndDatumExtrahieren(df):
+def temperatur_und_datum_extrahieren(df):
     """
     Erstellt einen DataFrame mit nur den Spalten 'Datum' und 'MonatlicheDurchschnittsTemperatur'.
 
@@ -97,7 +97,7 @@ def TemperaturUndDatumExtrahieren(df):
     return df_selected
 
 
-def ZeitreiheAb1880(df):
+def zeitreihe_ab_1880(df):
     """
     Entfernt nur Zeilen, deren Datum im Format YYYY-MM-DD erkannt wird und vor dem Jahr 1880 liegt.
 
@@ -122,7 +122,7 @@ def ZeitreiheAb1880(df):
     return df[maske].reset_index(drop=True)
 
 
-def NaNPruefen(df):
+def nan_pruefen(df):
     """
     Gibt die Anzahl der NaN-Werte pro Spalte aus (prozentual) und die Zeilen mit NaN-Werten.
 
@@ -159,7 +159,7 @@ def NaNPruefen(df):
     return df_cleaned
 
 
-def DatentypenPruefen(df):
+def datentypen_pruefen(df):
     """
     Prüft die Datentypen der Spalten.
 
@@ -198,7 +198,7 @@ def DatentypenPruefen(df):
     return df
 
 
-def DuplikatePruefen(df):
+def duplikate_pruefen(df):
     """
     Überprüft und entfernt Duplikate im DataFrame.
 
@@ -227,7 +227,7 @@ def DuplikatePruefen(df):
     return df_cleaned
 
 
-def BereinigteDatenSpeichern(df, Dateipfad):
+def bereinigte_daten_speichern(df, Dateipfad):
     """
     Speichert den DataFrame in eine neue CSV-Datei.
 

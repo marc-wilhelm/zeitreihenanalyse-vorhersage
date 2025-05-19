@@ -12,7 +12,7 @@ config.init_project_paths()
 # Import der Dateneinlese-Funktion
 from archiv.DatenEinlesen import DatenEinlesen
 
-def StatistischeAnalyse(df, spalte, city):
+def statistische_analyse(df, spalte, city):
     """
     Führt statistische Analyse für eine gegebene Stadt durch:
     - Berechnet Kennzahlen
@@ -128,7 +128,7 @@ def main():
             print(f"❌ Spalte 'MonatlicheDurchschnittsTemperatur' fehlt in {file_path}.")
             continue
 
-        StatistischeAnalyse(df, "MonatlicheDurchschnittsTemperatur", city)
+        statistische_analyse(df, "MonatlicheDurchschnittsTemperatur", city)
 
     print(f"\n✅ Statistischer Überblick abgeschlossen. Ergebnisse in: {config.OUTPUT_FOLDER}")
 
